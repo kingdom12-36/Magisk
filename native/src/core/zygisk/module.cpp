@@ -1,8 +1,14 @@
 #include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/syscall.h>
 #include <android/dlext.h>
 #include <dlfcn.h>
 #include <sys/system_properties.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cerrno>
 #include <cstring>
+#include <string>
 
 #include <lsplt.hpp>
 
@@ -14,25 +20,58 @@
 using namespace std;
 
 // ---------------------------------------------------------------------------
-// Property spoofing for DenyList target processes
+// Root-detection evasion for DenyList target processes
 //
-// When a process is on the DenyList we intercept __system_property_get in
-// libc.so (via PLT hook, applied in the child after fork) and return clean
-// production values for properties that integrity-check systems commonly
-// inspect to infer root/modified-system status.
+// Applied in app_specialize_pre() immediately after fork, before the app's
+// own code runs.  All hooks operate only inside the target process — Zygote
+// itself and non-DenyList apps are unaffected.
+//
+// Three layers of defence:
+//  1. Property spoofing  — __system_property_get hook hides root/debug props
+//                          and returns a stock verified-boot fingerprint so
+//                          Play Integrity / SafetyNet verdicts pass.
+//  2. File-access hiding — open/openat/access/faccessat/stat/lstat/fstatat
+//                          return ENOENT for su binaries, Magisk paths, and
+//                          any path containing "magisk" or root-manager names.
+//  3. /proc filtering    — When the app opens /proc/self/maps or
+//                          /proc/net/unix the returned fd points to an
+//                          in-memory copy with Magisk/Zygisk lines stripped,
+//                          so memory-map and socket scans come up clean.
 // ---------------------------------------------------------------------------
+
+// ---- 1. Property spoofing -------------------------------------------------
 
 struct SpoofEntry {
     const char *key;
     const char *value;
 };
 
+// Pixel 6 (oriole) Android 13 TQ3A stock fingerprint — widely accepted by
+// Google Play Integrity and common game anti-cheat integrity checks.
+#define STOCK_FINGERPRINT \
+    "google/oriole/oriole:13/TQ3A.230901.001/10750268:user/release-keys"
+
 static const SpoofEntry SPOOF_PROPS[] = {
-    {"ro.build.tags",      "release-keys"},
-    {"ro.debuggable",      "0"},
-    {"ro.build.type",      "user"},
-    {"ro.secure",          "1"},
-    {"ro.adb.secure",      "1"},
+    // Core build identity
+    {"ro.build.tags",                   "release-keys"},
+    {"ro.build.type",                   "user"},
+    {"ro.product.build.tags",           "release-keys"},
+    {"ro.debuggable",                   "0"},
+    {"ro.secure",                       "1"},
+    {"ro.adb.secure",                   "1"},
+    // Verified-boot / bootloader state — checked by Play Integrity and games
+    {"ro.boot.verifiedbootstate",       "green"},
+    {"ro.boot.flash.locked",            "1"},
+    {"ro.boot.vbmeta.device_state",     "locked"},
+    {"ro.boot.veritymode",              "enforcing"},
+    {"ro.boot.warranty_bit",            "0"},
+    {"ro.warranty_bit",                 "0"},
+    // Build fingerprint — Play Integrity cross-checks against Google's
+    // certified device list; all three partitions should agree.
+    {"ro.build.fingerprint",            STOCK_FINGERPRINT},
+    {"ro.vendor.build.fingerprint",     STOCK_FINGERPRINT},
+    {"ro.system.build.fingerprint",     STOCK_FINGERPRINT},
+    {"ro.product.build.fingerprint",    STOCK_FINGERPRINT},
 };
 
 using prop_get_fn_t = int (*)(const char *, char *);
@@ -50,32 +89,199 @@ static int new_property_get(const char *key, char *value) {
     return old_property_get(key, value);
 }
 
-static void install_prop_spoof_hooks() {
+// ---- 2. File-access hiding ------------------------------------------------
+
+// Any path whose string contains one of these fragments will be made
+// invisible to the target process (ENOENT returned).
+static const char *HIDDEN_PATH_FRAGS[] = {
+    "magisk",
+    "zygisk",
+    "/sbin/su",
+    "/sbin/.su",
+    "/system/xbin/su",
+    "/system/bin/su",
+    "/system/bin/.ext/.su",
+    "/system/usr/we-need-root",
+    "/system/app/Superuser",
+    "/system/app/SuperSU",
+    "/system/app/KingUser",
+    "/system/app/Kinguser",
+    "supersu",
+    "SuperSU",
+    ".superuser",
+    nullptr,
+};
+
+static bool path_is_hidden(const char *path) {
+    if (!path) return false;
+    for (int i = 0; HIDDEN_PATH_FRAGS[i]; ++i) {
+        if (strstr(path, HIDDEN_PATH_FRAGS[i])) return true;
+    }
+    return false;
+}
+
+// ---- 3. /proc filtering ---------------------------------------------------
+
+static bool is_proc_maps_path(const char *path) {
+    if (!path) return false;
+    if (strcmp(path, "/proc/self/maps") == 0) return true;
+    // Match /proc/<digits>/maps
+    if (strncmp(path, "/proc/", 6) != 0) return false;
+    const char *p = path + 6;
+    while (*p >= '0' && *p <= '9') ++p;
+    return strcmp(p, "/maps") == 0;
+}
+
+static bool is_proc_net_unix(const char *path) {
+    return path && strcmp(path, "/proc/net/unix") == 0;
+}
+
+// Read fd, filter lines for which keep_fn returns false, write result to a
+// new memfd, close the original fd, and return the memfd.
+static int make_filtered_fd(int orig_fd,
+                            bool (*drop_line)(const char *line, size_t len)) {
+    // Read original content
+    std::string content;
+    char buf[4096];
+    ssize_t n;
+    while ((n = ::read(orig_fd, buf, sizeof(buf))) > 0)
+        content.append(buf, static_cast<size_t>(n));
+    ::close(orig_fd);
+
+    // Filter line by line
+    std::string out;
+    out.reserve(content.size());
+    size_t pos = 0;
+    while (pos < content.size()) {
+        size_t nl = content.find('\n', pos);
+        size_t end = (nl == std::string::npos) ? content.size() : nl + 1;
+        const char *line = content.c_str() + pos;
+        size_t line_len = end - pos;
+        if (!drop_line(line, line_len))
+            out.append(line, line_len);
+        pos = end;
+    }
+
+    // Write to anonymous memfd
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC 0x0001U
+#endif
+    int mfd = (int)syscall(__NR_memfd_create, "proc_view", MFD_CLOEXEC);
+    if (mfd < 0) return -1;  // graceful: caller sees a closed fd
+    ::write(mfd, out.c_str(), out.size());
+    ::lseek(mfd, 0, SEEK_SET);
+    return mfd;
+}
+
+static bool maps_drop_line(const char *line, size_t) {
+    return strstr(line, "magisk") || strstr(line, "zygisk");
+}
+
+static bool unix_drop_line(const char *line, size_t) {
+    return strstr(line, "magisk") != nullptr;
+}
+
+// ---- Hook implementations -------------------------------------------------
+
+using open_fn_t    = int (*)(const char *, int, mode_t);
+using openat_fn_t  = int (*)(int, const char *, int, mode_t);
+using access_fn_t  = int (*)(const char *, int);
+using faccess_fn_t = int (*)(int, const char *, int, int);
+using stat_fn_t    = int (*)(const char *, struct stat *);
+using fstatat_fn_t = int (*)(int, const char *, struct stat *, int);
+
+static open_fn_t    old_open    = nullptr;
+static openat_fn_t  old_openat  = nullptr;
+static access_fn_t  old_access  = nullptr;
+static faccess_fn_t old_faccessat = nullptr;
+static stat_fn_t    old_stat    = nullptr;
+static stat_fn_t    old_lstat   = nullptr;
+static fstatat_fn_t old_fstatat = nullptr;
+
+static int new_open(const char *path, int flags, mode_t mode) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    int fd = old_open(path, flags, mode);
+    if (fd >= 0 && (flags & O_ACCMODE) == O_RDONLY) {
+        if (is_proc_maps_path(path)) return make_filtered_fd(fd, maps_drop_line);
+        if (is_proc_net_unix(path))  return make_filtered_fd(fd, unix_drop_line);
+    }
+    return fd;
+}
+
+static int new_openat(int dirfd, const char *path, int flags, mode_t mode) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    int fd = old_openat(dirfd, path, flags, mode);
+    if (fd >= 0 && (flags & O_ACCMODE) == O_RDONLY) {
+        if (is_proc_maps_path(path)) return make_filtered_fd(fd, maps_drop_line);
+        if (is_proc_net_unix(path))  return make_filtered_fd(fd, unix_drop_line);
+    }
+    return fd;
+}
+
+static int new_access(const char *path, int mode) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_access(path, mode);
+}
+
+static int new_faccessat(int dirfd, const char *path, int mode, int flags) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_faccessat(dirfd, path, mode, flags);
+}
+
+static int new_stat(const char *path, struct stat *buf) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_stat(path, buf);
+}
+
+static int new_lstat(const char *path, struct stat *buf) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_lstat(path, buf);
+}
+
+static int new_fstatat(int dirfd, const char *path, struct stat *buf, int flags) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_fstatat(dirfd, path, buf, flags);
+}
+
+// ---- Master installer -----------------------------------------------------
+
+static void install_spoof_hooks() {
+    // Locate libc.so once; reuse dev+inode for all hooks.
     ino_t libc_inode = 0;
-    dev_t libc_dev = 0;
+    dev_t libc_dev   = 0;
     for (auto &map : lsplt::MapInfo::Scan()) {
         if (map.path.ends_with("/libc.so")) {
             libc_inode = map.inode;
-            libc_dev = map.dev;
+            libc_dev   = map.dev;
             break;
         }
     }
     if (!libc_inode) {
-        ZLOGE("prop spoof: libc.so not found in maps\n");
+        ZLOGE("spoof: libc.so not found in maps\n");
         return;
     }
-    if (!lsplt::RegisterHook(libc_dev, libc_inode,
-                             "__system_property_get",
-                             reinterpret_cast<void *>(new_property_get),
-                             reinterpret_cast<void **>(&old_property_get))) {
-        ZLOGE("prop spoof: failed to register __system_property_get hook\n");
-        return;
+
+    struct HookEntry { const char *sym; void *hook; void **backup; };
+    const HookEntry hooks[] = {
+        // property
+        {"__system_property_get", (void *)new_property_get, (void **)&old_property_get},
+        // file access
+        {"open",        (void *)new_open,       (void **)&old_open},
+        {"openat",      (void *)new_openat,     (void **)&old_openat},
+        {"access",      (void *)new_access,     (void **)&old_access},
+        {"faccessat",   (void *)new_faccessat,  (void **)&old_faccessat},
+        {"stat",        (void *)new_stat,       (void **)&old_stat},
+        {"lstat",       (void *)new_lstat,      (void **)&old_lstat},
+        {"fstatat",     (void *)new_fstatat,    (void **)&old_fstatat},
+    };
+    for (const auto &h : hooks) {
+        if (!lsplt::RegisterHook(libc_dev, libc_inode, h.sym, h.hook, h.backup))
+            ZLOGE("spoof: failed to register hook for %s\n", h.sym);
     }
-    if (!lsplt::CommitHook()) {
-        ZLOGE("prop spoof: CommitHook failed\n");
-    } else {
-        ZLOGI("prop spoof: installed for denylist process\n");
-    }
+    if (!lsplt::CommitHook())
+        ZLOGE("spoof: CommitHook failed\n");
+    else
+        ZLOGI("spoof: all hooks installed for denylist process\n");
 }
 
 static int zygisk_request(int req) {
@@ -472,9 +678,9 @@ void ZygiskContext::app_specialize_pre() {
     if ((info_flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
         ZLOGI("[%s] is on the denylist\n", process);
         flags |= DO_REVERT_UNMOUNT;
-        // Spoof integrity-sensitive build properties so this process cannot
-        // detect root/modified-system via __system_property_get calls.
-        install_prop_spoof_hooks();
+        // Install all root-detection evasion hooks: property spoofing,
+        // file-access hiding, and /proc content filtering.
+        install_spoof_hooks();
     } else if (fd >= 0) {
         run_modules_pre(module_fds);
     }
