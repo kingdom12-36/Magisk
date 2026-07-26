@@ -860,7 +860,15 @@ void ZygiskContext::app_specialize_pre() {
         flags |= DO_REVERT_UNMOUNT;
         // Install all root-detection evasion hooks: property spoofing,
         // file-access hiding, and /proc content filtering.
-        install_spoof_hooks();
+        // Skip for the Magisk Manager itself — it needs to read its own
+        // mount entries and SELinux labels to detect that Magisk is active.
+        // Without this guard the Manager's /proc/self/mountinfo and
+        // /proc/self/attr/current reads are intercepted by the same hooks
+        // that hide root from third-party apps, causing the Manager UI to
+        // report "Magisk not installed" even though root is fully functional.
+        if (!(info_flags & +ZygiskStateFlags::ProcessIsMagiskApp)) {
+            install_spoof_hooks();
+        }
     } else if (fd >= 0) {
         run_modules_pre(module_fds);
     }
