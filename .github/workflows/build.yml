@@ -1,4 +1,4 @@
-name: Magisk Build
+name: ShadowMask Build
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build Magisk artifacts
+    name: Build ShadowMask artifacts
     runs-on: macos-26
     permissions:
       contents: write
@@ -37,21 +37,21 @@ jobs:
 
       - name: Rename APKs
         run: |
-          mv out/app-debug.apk   out/magisk-debug.apk
-          mv out/app-release.apk out/magisk-release.apk
+          mv out/app-debug.apk   out/shadowmask-debug.apk
+          mv out/app-release.apk out/shadowmask-release.apk
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v7
         with:
-          name: magisk-debug
-          path: out/magisk-debug.apk
+          name: shadowmask-debug
+          path: out/shadowmask-debug.apk
           compression-level: 9
 
       - name: Upload release APK
         uses: actions/upload-artifact@v7
         with:
-          name: magisk-release
-          path: out/magisk-release.apk
+          name: shadowmask-release
+          path: out/shadowmask-release.apk
           compression-level: 9
 
       - name: Publish to GitHub Releases
@@ -63,6 +63,6 @@ jobs:
           git tag -d latest 2>/dev/null || true
           git push origin :refs/tags/latest 2>/dev/null || true
           gh release create latest \
-            --title "Magisk Custom Build (latest)" \
-            --notes "Automatically built from the master branch. Install magisk-release.apk to get the full Magisk Manager." \
-            out/magisk-release.apk
+            --title "ShadowMask Build (latest)" \
+            --notes "Automatically built from the master branch. Install shadowmask-release.apk to get the full ShadowMask app." \
+            out/shadowmask-release.apk
