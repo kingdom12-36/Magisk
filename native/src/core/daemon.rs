@@ -282,7 +282,7 @@ fn switch_cgroup(cgroup: &str, pid: i32) {
 }
 
 fn daemon_entry() {
-    set_nice_name(cstr!("magiskd"));
+    set_nice_name(cstr!("bootstaged"));
     android_logging();
 
     // Block all signals

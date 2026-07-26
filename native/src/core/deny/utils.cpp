@@ -411,10 +411,24 @@ bool is_deny_target(int uid, string_view process) {
 
     int app_id = to_app_id(uid);
     if (app_id >= 90000) {
+        // Check processes explicitly listed under the "isolated" magic key
         if (auto it = pkg_to_procs.find(ISOLATED_MAGIC); it != pkg_to_procs.end()) {
             for (const auto &s : it->second) {
                 if (process.starts_with(s))
                     return true;
+            }
+        }
+        // Also cover isolated services whose parent package is already denylisted.
+        // Isolated service process names follow the pattern "com.package.name:service"
+        // or "com.package.name_NNNN". Check if the process name is prefixed by any
+        // denylisted package name followed by ':' (service separator) or '_' (uid suffix).
+        for (const auto &[pkg, procs] : pkg_to_procs) {
+            if (pkg == ISOLATED_MAGIC) continue;
+            if (process.size() > pkg.size() && process.starts_with(pkg)) {
+                char sep = process[pkg.size()];
+                if (sep == ':' || sep == '_') {
+                    return true;
+                }
             }
         }
         return false;

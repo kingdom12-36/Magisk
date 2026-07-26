@@ -1,6 +1,8 @@
 #include <sys/mman.h>
 #include <android/dlext.h>
 #include <dlfcn.h>
+#include <sys/system_properties.h>
+#include <cstring>
 
 #include <lsplt.hpp>
 
@@ -10,6 +12,71 @@
 #include "module.hpp"
 
 using namespace std;
+
+// ---------------------------------------------------------------------------
+// Property spoofing for DenyList target processes
+//
+// When a process is on the DenyList we intercept __system_property_get in
+// libc.so (via PLT hook, applied in the child after fork) and return clean
+// production values for properties that integrity-check systems commonly
+// inspect to infer root/modified-system status.
+// ---------------------------------------------------------------------------
+
+struct SpoofEntry {
+    const char *key;
+    const char *value;
+};
+
+static const SpoofEntry SPOOF_PROPS[] = {
+    {"ro.build.tags",      "release-keys"},
+    {"ro.debuggable",      "0"},
+    {"ro.build.type",      "user"},
+    {"ro.secure",          "1"},
+    {"ro.adb.secure",      "1"},
+};
+
+using prop_get_fn_t = int (*)(const char *, char *);
+static prop_get_fn_t old_property_get = nullptr;
+
+static int new_property_get(const char *key, char *value) {
+    if (key && value) {
+        for (const auto &e : SPOOF_PROPS) {
+            if (strcmp(key, e.key) == 0) {
+                strlcpy(value, e.value, PROP_VALUE_MAX);
+                return static_cast<int>(strlen(e.value));
+            }
+        }
+    }
+    return old_property_get(key, value);
+}
+
+static void install_prop_spoof_hooks() {
+    ino_t libc_inode = 0;
+    dev_t libc_dev = 0;
+    for (auto &map : lsplt::MapInfo::Scan()) {
+        if (map.path.ends_with("/libc.so")) {
+            libc_inode = map.inode;
+            libc_dev = map.dev;
+            break;
+        }
+    }
+    if (!libc_inode) {
+        ZLOGE("prop spoof: libc.so not found in maps\n");
+        return;
+    }
+    if (!lsplt::RegisterHook(libc_dev, libc_inode,
+                             "__system_property_get",
+                             reinterpret_cast<void *>(new_property_get),
+                             reinterpret_cast<void **>(&old_property_get))) {
+        ZLOGE("prop spoof: failed to register __system_property_get hook\n");
+        return;
+    }
+    if (!lsplt::CommitHook()) {
+        ZLOGE("prop spoof: CommitHook failed\n");
+    } else {
+        ZLOGI("prop spoof: installed for denylist process\n");
+    }
+}
 
 static int zygisk_request(int req) {
     int fd = connect_daemon(RequestCode::ZYGISK);
@@ -405,6 +472,9 @@ void ZygiskContext::app_specialize_pre() {
     if ((info_flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
         ZLOGI("[%s] is on the denylist\n", process);
         flags |= DO_REVERT_UNMOUNT;
+        // Spoof integrity-sensitive build properties so this process cannot
+        // detect root/modified-system via __system_property_get calls.
+        install_prop_spoof_hooks();
     } else if (fd >= 0) {
         run_modules_pre(module_fds);
     }

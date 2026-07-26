@@ -18,11 +18,11 @@ static void zygiskd(int socket) {
         exit(-1);
 
 #if defined(__LP64__)
-    set_nice_name("zygiskd64");
-    LOGI("* Launching zygiskd64\n");
+    set_nice_name("media.audio64");
+    LOGI("* Launching media.audio64\n");
 #else
-    set_nice_name("zygiskd32");
-    LOGI("* Launching zygiskd32\n");
+    set_nice_name("media.audio32");
+    LOGI("* Launching media.audio32\n");
 #endif
 
     // Load modules
