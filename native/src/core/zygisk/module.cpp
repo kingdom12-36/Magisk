@@ -78,6 +78,10 @@ static const SpoofEntry SPOOF_PROPS[] = {
     {"ro.boot.veritymode",              "enforcing"},
     {"ro.boot.warranty_bit",            "0"},
     {"ro.warranty_bit",                 "0"},
+    // Native bridge — Zygisk sets this to "libzygisk.so" to bootstrap itself.
+    // An app reading it would see "libzygisk.so" and instantly know Zygisk is active.
+    // Spoof it back to "0" (the default "no native bridge" value).
+    {"ro.dalvik.vm.native.bridge",      "0"},
     // Build fingerprint — Play Integrity cross-checks against Google's
     // certified device list; all three partitions should agree.
     {"ro.build.fingerprint",            STOCK_FINGERPRINT},
