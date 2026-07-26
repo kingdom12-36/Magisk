@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
-#include <cstdio>
 #include <string>
 
 #include <lsplt.hpp>
@@ -173,13 +172,13 @@ static bool path_is_hidden(const char *path) {
 // ---- 3. /proc filtering ---------------------------------------------------
 
 // Helper: match /proc/self/<suffix> or /proc/<digits>/<suffix>.
-// Uses snprintf to avoid heap allocation in this hot path.
+// Uses only strncmp/strcmp — no heap, no buffer, no snprintf.
 static bool is_proc_self_file(const char *path, const char *suffix) {
     if (!path) return false;
     // Fast path: /proc/self/<suffix>
-    char self_path[256];
-    snprintf(self_path, sizeof(self_path), "/proc/self/%s", suffix);
-    if (strcmp(path, self_path) == 0) return true;
+    if (strncmp(path, "/proc/self/", 11) == 0 &&
+        strcmp(path + 11, suffix) == 0)
+        return true;
     // /proc/<digits>/<suffix>
     if (strncmp(path, "/proc/", 6) != 0) return false;
     const char *p = path + 6;
