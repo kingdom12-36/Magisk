@@ -81,7 +81,8 @@ static int new_property_get(const char *key, char *value) {
     if (key && value) {
         for (const auto &e : SPOOF_PROPS) {
             if (strcmp(key, e.key) == 0) {
-                strlcpy(value, e.value, PROP_VALUE_MAX);
+                strncpy(value, e.value, PROP_VALUE_MAX - 1);
+                value[PROP_VALUE_MAX - 1] = '\0';
                 return static_cast<int>(strlen(e.value));
             }
         }
