@@ -18,6 +18,9 @@
 #include "zygisk.hpp"
 #include "module.hpp"
 
+// Defined in hook.cpp — prevents munmap of Magisk when PLT hooks point into us.
+extern void disable_magisk_unmap();
+
 using namespace std;
 
 // ---------------------------------------------------------------------------
@@ -460,8 +463,13 @@ static void install_spoof_hooks() {
     }
     if (!lsplt::CommitHook())
         ZLOGE("spoof: CommitHook failed\n");
-    else
+    else {
         ZLOGI("spoof: all hooks installed for denylist process\n");
+        // Spoof hook functions live inside our library. If Magisk unmaps itself
+        // the patched GOT entries (e.g. in libjavacore.so) become dangling
+        // pointers → SIGSEGV SEGV_MAPERR. Keep Magisk mapped for process lifetime.
+        disable_magisk_unmap();
+    }
 }
 
 static int zygisk_request(int req) {
