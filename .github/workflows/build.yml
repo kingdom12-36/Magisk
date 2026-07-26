@@ -64,4 +64,3 @@ jobs:
             --title "Magisk Custom Build (latest)" \
             --notes "Automatically built from the master branch. Install magisk-release.apk to get the full Magisk Manager." \
             out/magisk-release.apk
-        token: ({secret.hello})
