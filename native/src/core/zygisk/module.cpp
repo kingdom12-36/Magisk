@@ -858,19 +858,26 @@ void ZygiskContext::app_specialize_pre() {
     if ((info_flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
         ZLOGI("[%s] is on the denylist\n", process);
         flags |= DO_REVERT_UNMOUNT;
-        // Install all root-detection evasion hooks: property spoofing,
-        // file-access hiding, and /proc content filtering.
         // Skip for the Magisk Manager itself — it needs to read its own
         // mount entries and SELinux labels to detect that Magisk is active.
-        // Without this guard the Manager's /proc/self/mountinfo and
-        // /proc/self/attr/current reads are intercepted by the same hooks
-        // that hide root from third-party apps, causing the Manager UI to
-        // report "Magisk not installed" even though root is fully functional.
         if (!(info_flags & +ZygiskStateFlags::ProcessIsMagiskApp)) {
             install_spoof_hooks();
         }
-    } else if (fd >= 0) {
-        run_modules_pre(module_fds);
+    } else {
+        if (fd >= 0) {
+            run_modules_pre(module_fds);
+        }
+        // Auto-deny: hide Magisk from every app that has not been explicitly
+        // granted root access and is not the Magisk Manager itself.
+        //
+        // This means you never have to touch the DenyList at all — games,
+        // banking apps, and everything else see a clean unrooted phone by
+        // default.  Only apps you have explicitly allowed root (via the
+        // superuser prompt) can see that Magisk exists.
+        if (!(info_flags & +ZygiskStateFlags::ProcessIsMagiskApp) &&
+            !(info_flags & +ZygiskStateFlags::ProcessGrantedRoot)) {
+            install_spoof_hooks();
+        }
     }
 }
 
