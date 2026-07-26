@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
+#include <cstdio>
 #include <string>
 
 #include <lsplt.hpp>
@@ -27,17 +28,25 @@ using namespace std;
 // own code runs.  All hooks operate only inside the target process — Zygote
 // itself and non-DenyList apps are unaffected.
 //
-// Three layers of defence:
-//  1. Property spoofing  — __system_property_get hook hides root/debug props
-//                          and returns a stock verified-boot fingerprint so
-//                          Play Integrity / SafetyNet verdicts pass.
-//  2. File-access hiding — open/openat/access/faccessat/stat/lstat/fstatat
-//                          return ENOENT for su binaries, Magisk paths, and
-//                          any path containing "magisk" or root-manager names.
-//  3. /proc filtering    — When the app opens /proc/self/maps or
-//                          /proc/net/unix the returned fd points to an
-//                          in-memory copy with Magisk/Zygisk lines stripped,
-//                          so memory-map and socket scans come up clean.
+// Six layers of defence:
+//  1. Property spoofing  — __system_property_get AND __system_property_read_callback
+//                          hooks hide root/debug props and return a stock
+//                          verified-boot fingerprint covering both the legacy
+//                          and modern prop-read APIs.
+//  2. File-access hiding — open/openat/access/faccessat/stat/lstat/fstatat/
+//                          stat64/lstat64 return ENOENT for su binaries, the
+//                          /data/adb secure directory, and any path containing
+//                          "magisk", "zygisk", or root-manager names.
+//  3. /proc filtering    — /proc/self/maps, /proc/net/unix, /proc/mounts,
+//                          /proc/self/mountinfo — returned fds point to
+//                          in-memory copies with Magisk/Zygisk lines stripped.
+//  4. SELinux attr spoof — /proc/self/attr/current reads return a clean
+//                          untrusted_app context so the Magisk domain is never
+//                          exposed.
+//  5. SELinux xattr hide — getxattr/lgetxattr/fgetxattr replace any
+//                          magisk_file / magisk_log_file label with
+//                          u:object_r:system_file:s0, covering both path-based
+//                          and fd-based callers (getfilecon uses lgetxattr).
 // ---------------------------------------------------------------------------
 
 // ---- 1. Property spoofing -------------------------------------------------
@@ -91,6 +100,44 @@ static int new_property_get(const char *key, char *value) {
     return old_property_get(key, value);
 }
 
+// Hook __system_property_read_callback — modern alternative to __system_property_get.
+// Many detection tools call __system_property_find + __system_property_read_callback
+// instead of the legacy API, so we must intercept this path too.
+struct PropInfo; // opaque bionic type
+using prop_read_cb_fn_t = void (*)(
+    const PropInfo *,
+    void (*)(void * /*cookie*/, const char * /*name*/, const char * /*value*/, uint32_t /*serial*/),
+    void * /*cookie*/
+);
+static prop_read_cb_fn_t old_prop_read_callback = nullptr;
+
+// We wrap the caller's callback so we can substitute spoof values by name.
+struct PropReadCtx {
+    void (*orig_cb)(void *, const char *, const char *, uint32_t);
+    void *orig_cookie;
+};
+
+static void prop_intercept_cb(void *cookie,
+                               const char *name, const char *value, uint32_t serial) {
+    auto *ctx = static_cast<PropReadCtx *>(cookie);
+    for (const auto &e : SPOOF_PROPS) {
+        if (name && strcmp(name, e.key) == 0) {
+            ctx->orig_cb(ctx->orig_cookie, name, e.value, serial);
+            return;
+        }
+    }
+    ctx->orig_cb(ctx->orig_cookie, name, value, serial);
+}
+
+static void new_prop_read_callback(
+    const PropInfo *pi,
+    void (*cb)(void *, const char *, const char *, uint32_t),
+    void *cookie)
+{
+    PropReadCtx ctx{ cb, cookie };
+    old_prop_read_callback(pi, prop_intercept_cb, &ctx);
+}
+
 // ---- 2. File-access hiding ------------------------------------------------
 
 // Any path whose string contains one of these fragments will be made
@@ -98,6 +145,7 @@ static int new_property_get(const char *key, char *value) {
 static const char *HIDDEN_PATH_FRAGS[] = {
     "magisk",
     "zygisk",
+    "/data/adb",       // secure root directory — any subpath leaks installer state
     "/sbin/su",
     "/sbin/.su",
     "/system/xbin/su",
@@ -124,12 +172,14 @@ static bool path_is_hidden(const char *path) {
 
 // ---- 3. /proc filtering ---------------------------------------------------
 
-// Helper: match /proc/self/<suffix> or /proc/<digits>/<suffix>
+// Helper: match /proc/self/<suffix> or /proc/<digits>/<suffix>.
+// Uses snprintf to avoid heap allocation in this hot path.
 static bool is_proc_self_file(const char *path, const char *suffix) {
     if (!path) return false;
     // Fast path: /proc/self/<suffix>
-    std::string self = std::string("/proc/self/") + suffix;
-    if (strcmp(path, self.c_str()) == 0) return true;
+    char self_path[256];
+    snprintf(self_path, sizeof(self_path), "/proc/self/%s", suffix);
+    if (strcmp(path, self_path) == 0) return true;
     // /proc/<digits>/<suffix>
     if (strncmp(path, "/proc/", 6) != 0) return false;
     const char *p = path + 6;
@@ -237,9 +287,15 @@ using openat_fn_t  = int (*)(int, const char *, int, mode_t);
 using access_fn_t  = int (*)(const char *, int);
 using faccess_fn_t = int (*)(int, const char *, int, int);
 using stat_fn_t    = int (*)(const char *, struct stat *);
-using fstatat_fn_t = int (*)(int, const char *, struct stat *, int);
+using fstatat_fn_t   = int (*)(int, const char *, struct stat *, int);
 using getxattr_fn_t  = ssize_t (*)(const char *, const char *, void *, size_t);
 using lgetxattr_fn_t = ssize_t (*)(const char *, const char *, void *, size_t);
+using fgetxattr_fn_t = ssize_t (*)(int, const char *, void *, size_t);
+// stat64 / lstat64 — distinct bionic symbols on 32-bit; aliases on 64-bit.
+// Using void* for the struct pointer avoids pulling in _LARGEFILE64_SOURCE
+// guards: we only inspect the path argument, never the stat buffer.
+using stat64_fn_t  = int (*)(const char *, void *);
+using lstat64_fn_t = int (*)(const char *, void *);
 
 static open_fn_t      old_open      = nullptr;
 static openat_fn_t    old_openat    = nullptr;
@@ -248,34 +304,49 @@ static faccess_fn_t   old_faccessat = nullptr;
 static stat_fn_t      old_stat      = nullptr;
 static stat_fn_t      old_lstat     = nullptr;
 static fstatat_fn_t   old_fstatat   = nullptr;
+static stat64_fn_t    old_stat64    = nullptr;
+static lstat64_fn_t   old_lstat64   = nullptr;
 static getxattr_fn_t  old_getxattr  = nullptr;
 static lgetxattr_fn_t old_lgetxattr = nullptr;
+static fgetxattr_fn_t old_fgetxattr = nullptr;
 
-// Clean SELinux label returned instead of any magisk_* type.
+// Clean SELinux label substituted for any magisk_* context.
+// Length (25 chars + NUL) intentionally matches MAGISK_FILE_CON / MAGISK_LOG_FILE_CON
+// so no buffer arithmetic is needed; we use memcpy for safety.
 static const char CLEAN_FILE_CTX[] = "u:object_r:system_file:s0";
+static constexpr size_t   CLEAN_FILE_CTX_LEN = sizeof(CLEAN_FILE_CTX) - 1; // excl. NUL
 
-static void maybe_clean_selinux_xattr(const char *name, void *value, ssize_t ret) {
+// Replace the SELinux context in `value` if it mentions "magisk".
+// `buf_size` is the caller-provided buffer capacity (the `size` arg they passed).
+static void maybe_clean_selinux_xattr(const char *name, void *value,
+                                      ssize_t ret, size_t buf_size) {
     if (ret <= 0 || !name || !value) return;
     if (strcmp(name, "security.selinux") != 0) return;
-    // value is a NUL-terminated context string
     char *ctx = static_cast<char *>(value);
-    if (strstr(ctx, "magisk")) {
-        strncpy(ctx, CLEAN_FILE_CTX, static_cast<size_t>(ret));
-        ctx[ret - 1] = '\0';
-    }
+    if (!strstr(ctx, "magisk")) return;
+    // Guard: only overwrite if our replacement fits in the caller's buffer.
+    if (buf_size < CLEAN_FILE_CTX_LEN + 1) return;
+    memcpy(ctx, CLEAN_FILE_CTX, CLEAN_FILE_CTX_LEN + 1); // includes NUL
 }
 
 static ssize_t new_getxattr(const char *path, const char *name, void *value, size_t size) {
     if (path_is_hidden(path)) { errno = ENODATA; return -1; }
     ssize_t ret = old_getxattr(path, name, value, size);
-    maybe_clean_selinux_xattr(name, value, ret);
+    maybe_clean_selinux_xattr(name, value, ret, size);
     return ret;
 }
 
 static ssize_t new_lgetxattr(const char *path, const char *name, void *value, size_t size) {
     if (path_is_hidden(path)) { errno = ENODATA; return -1; }
     ssize_t ret = old_lgetxattr(path, name, value, size);
-    maybe_clean_selinux_xattr(name, value, ret);
+    maybe_clean_selinux_xattr(name, value, ret, size);
+    return ret;
+}
+
+// fd-based xattr read — can't filter by path, but still cleans the label value.
+static ssize_t new_fgetxattr(int fd, const char *name, void *value, size_t size) {
+    ssize_t ret = old_fgetxattr(fd, name, value, size);
+    maybe_clean_selinux_xattr(name, value, ret, size);
     return ret;
 }
 
@@ -333,6 +404,18 @@ static int new_fstatat(int dirfd, const char *path, struct stat *buf, int flags)
     return old_fstatat(dirfd, path, buf, flags);
 }
 
+// stat64 / lstat64 — on 32-bit these are separate symbols with 64-bit st_ino/st_size;
+// we only need to check the path, so the void* buf pointer is never dereferenced.
+static int new_stat64(const char *path, void *buf) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_stat64(path, buf);
+}
+
+static int new_lstat64(const char *path, void *buf) {
+    if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    return old_lstat64(path, buf);
+}
+
 // ---- Master installer -----------------------------------------------------
 
 static void install_spoof_hooks() {
@@ -353,9 +436,10 @@ static void install_spoof_hooks() {
 
     struct HookEntry { const char *sym; void *hook; void **backup; };
     const HookEntry hooks[] = {
-        // property
-        {"__system_property_get", (void *)new_property_get, (void **)&old_property_get},
-        // file access
+        // property — legacy API and modern callback API
+        {"__system_property_get",             (void *)new_property_get,       (void **)&old_property_get},
+        {"__system_property_read_callback",   (void *)new_prop_read_callback, (void **)&old_prop_read_callback},
+        // file access — path-based
         {"open",        (void *)new_open,       (void **)&old_open},
         {"openat",      (void *)new_openat,     (void **)&old_openat},
         {"access",      (void *)new_access,     (void **)&old_access},
@@ -363,9 +447,13 @@ static void install_spoof_hooks() {
         {"stat",        (void *)new_stat,       (void **)&old_stat},
         {"lstat",       (void *)new_lstat,      (void **)&old_lstat},
         {"fstatat",     (void *)new_fstatat,    (void **)&old_fstatat},
-        // SELinux xattr — hides magisk_file / magisk_log_file labels
+        // stat64/lstat64 — separate symbols on 32-bit processes
+        {"stat64",      (void *)new_stat64,     (void **)&old_stat64},
+        {"lstat64",     (void *)new_lstat64,    (void **)&old_lstat64},
+        // SELinux xattr — path-based and fd-based callers
         {"getxattr",    (void *)new_getxattr,   (void **)&old_getxattr},
         {"lgetxattr",   (void *)new_lgetxattr,  (void **)&old_lgetxattr},
+        {"fgetxattr",   (void *)new_fgetxattr,  (void **)&old_fgetxattr},
     };
     for (const auto &h : hooks) {
         if (!lsplt::RegisterHook(libc_dev, libc_inode, h.sym, h.hook, h.backup))
