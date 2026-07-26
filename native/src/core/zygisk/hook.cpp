@@ -131,6 +131,16 @@ private:
 ZygiskContext *g_ctx;
 static HookContext *g_hook;
 
+// Called by install_spoof_hooks() to prevent use-after-unmap crashes.
+// When PLT/GOT entries in libraries like libjavacore.so are patched to
+// redirect access()/open()/stat() into our own library, we must NOT
+// munmap ourselves afterwards — those GOT entries would become dangling
+// pointers and crash the target process with SIGSEGV (SEGV_MAPERR).
+// See: Crash.d — launcher + messaging crash at same fault addr 0x754fa94828.
+void disable_magisk_unmap() {
+    if (g_hook) g_hook->should_unmap = false;
+}
+
 static JniHookDefinitions *get_defs() {
     return g_hook;
 }
