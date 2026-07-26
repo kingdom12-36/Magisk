@@ -13,10 +13,10 @@ android {
     namespace = "com.topjohnwu.magisk"
     enableKotlin = false
 
-    val url = "https://github.com/kingdom12-36/Magisk/releases/latest/download/magisk-release.apk"
+    val url = "https://github.com/kingdom12-36/Magisk/releases/latest/download/shadowmask-release.apk"
 
     defaultConfig {
-        applicationId = "com.topjohnwu.magisk"
+        applicationId = "com.shadowmask"
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String", "APK_URL", "\"$url\"")
@@ -40,4 +40,3 @@ setupStubApk()
 dependencies {
     implementation(project(":shared"))
 }
-
