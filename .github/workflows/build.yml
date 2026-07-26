@@ -16,6 +16,8 @@ jobs:
   build:
     name: Build Magisk artifacts
     runs-on: macos-26
+    permissions:
+      contents: write
     steps:
       - name: Check out
         uses: actions/checkout@v6
@@ -55,7 +57,7 @@ jobs:
       - name: Publish to GitHub Releases
         if: github.event_name != 'pull_request'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
         run: |
           gh release delete latest --yes 2>/dev/null || true
           git tag -d latest 2>/dev/null || true
