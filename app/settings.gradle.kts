@@ -16,5 +16,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Magisk"
+rootProject.name = "ShadowMask"
 include(":apk", ":apk-ng", ":core", ":shared", ":stub", ":stub-res", ":test")
