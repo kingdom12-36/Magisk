@@ -13,8 +13,7 @@ android {
     namespace = "com.topjohnwu.magisk"
     enableKotlin = false
 
-    val base = "https://github.com/topjohnwu/Magisk/releases/download/"
-    val url = base + "v${Config.version}/Magisk-v${Config.version}.apk"
+    val url = "https://github.com/kingdom12-36/Magisk/releases/latest/download/magisk-release.apk"
 
     defaultConfig {
         applicationId = "com.topjohnwu.magisk"
@@ -41,3 +40,4 @@ setupStubApk()
 dependencies {
     implementation(project(":shared"))
 }
+
