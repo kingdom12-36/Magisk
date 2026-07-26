@@ -13,7 +13,7 @@ android {
     namespace = "com.topjohnwu.magisk"
     enableKotlin = false
 
-    val url = "https://github.com/kingdom12-36/Magisk/releases/latest/download/shadowmask-release.apk"
+    val url = "https://github.com/kingdom12-36/ShadowMask/releases/latest/download/shadowmask-release.apk"
 
     defaultConfig {
         applicationId = "com.shadowmask"
