@@ -4,6 +4,7 @@
 #include <android/dlext.h>
 #include <dlfcn.h>
 #include <sys/system_properties.h>
+#include <sys/xattr.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <cerrno>
@@ -123,18 +124,43 @@ static bool path_is_hidden(const char *path) {
 
 // ---- 3. /proc filtering ---------------------------------------------------
 
-static bool is_proc_maps_path(const char *path) {
+// Helper: match /proc/self/<suffix> or /proc/<digits>/<suffix>
+static bool is_proc_self_file(const char *path, const char *suffix) {
     if (!path) return false;
-    if (strcmp(path, "/proc/self/maps") == 0) return true;
-    // Match /proc/<digits>/maps
+    // Fast path: /proc/self/<suffix>
+    std::string self = std::string("/proc/self/") + suffix;
+    if (strcmp(path, self.c_str()) == 0) return true;
+    // /proc/<digits>/<suffix>
     if (strncmp(path, "/proc/", 6) != 0) return false;
     const char *p = path + 6;
     while (*p >= '0' && *p <= '9') ++p;
-    return strcmp(p, "/maps") == 0;
+    if (*p != '/') return false;
+    ++p;
+    return strcmp(p, suffix) == 0;
+}
+
+static bool is_proc_maps_path(const char *path) {
+    return is_proc_self_file(path, "maps");
 }
 
 static bool is_proc_net_unix(const char *path) {
     return path && strcmp(path, "/proc/net/unix") == 0;
+}
+
+// /proc/mounts  and  /proc/self/mountinfo (or /proc/<pid>/mountinfo)
+static bool is_proc_mounts_path(const char *path) {
+    if (!path) return false;
+    if (strcmp(path, "/proc/mounts") == 0) return true;
+    return is_proc_self_file(path, "mounts");
+}
+
+static bool is_proc_mountinfo_path(const char *path) {
+    return is_proc_self_file(path, "mountinfo");
+}
+
+// /proc/self/attr/current — SELinux domain of this process
+static bool is_proc_attr_current(const char *path) {
+    return is_proc_self_file(path, "attr/current");
 }
 
 // Read fd, filter lines for which keep_fn returns false, write result to a
@@ -182,6 +208,28 @@ static bool unix_drop_line(const char *line, size_t) {
     return strstr(line, "magisk") != nullptr;
 }
 
+// Drop mount entries that reference magisk/zygisk bind-mounts.
+// Both /proc/mounts and /proc/self/mountinfo use whitespace-delimited
+// fields where the mount-point or source may contain "magisk" or ".magisk".
+static bool mounts_drop_line(const char *line, size_t) {
+    return strstr(line, "magisk") || strstr(line, ".magisk") || strstr(line, "zygisk");
+}
+
+// Return a memfd whose content is a clean SELinux process context so that
+// /proc/self/attr/current never reveals the magisk domain.
+static int make_selinux_attr_fd() {
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC 0x0001U
+#endif
+    // Use the standard untrusted_app context; adjust if needed.
+    static const char ctx[] = "u:r:untrusted_app:s0\n";
+    int mfd = (int)syscall(__NR_memfd_create, "attr_view", MFD_CLOEXEC);
+    if (mfd < 0) return -1;
+    ::write(mfd, ctx, sizeof(ctx) - 1);
+    ::lseek(mfd, 0, SEEK_SET);
+    return mfd;
+}
+
 // ---- Hook implementations -------------------------------------------------
 
 using open_fn_t    = int (*)(const char *, int, mode_t);
@@ -190,31 +238,72 @@ using access_fn_t  = int (*)(const char *, int);
 using faccess_fn_t = int (*)(int, const char *, int, int);
 using stat_fn_t    = int (*)(const char *, struct stat *);
 using fstatat_fn_t = int (*)(int, const char *, struct stat *, int);
+using getxattr_fn_t  = ssize_t (*)(const char *, const char *, void *, size_t);
+using lgetxattr_fn_t = ssize_t (*)(const char *, const char *, void *, size_t);
 
-static open_fn_t    old_open    = nullptr;
-static openat_fn_t  old_openat  = nullptr;
-static access_fn_t  old_access  = nullptr;
-static faccess_fn_t old_faccessat = nullptr;
-static stat_fn_t    old_stat    = nullptr;
-static stat_fn_t    old_lstat   = nullptr;
-static fstatat_fn_t old_fstatat = nullptr;
+static open_fn_t      old_open      = nullptr;
+static openat_fn_t    old_openat    = nullptr;
+static access_fn_t    old_access    = nullptr;
+static faccess_fn_t   old_faccessat = nullptr;
+static stat_fn_t      old_stat      = nullptr;
+static stat_fn_t      old_lstat     = nullptr;
+static fstatat_fn_t   old_fstatat   = nullptr;
+static getxattr_fn_t  old_getxattr  = nullptr;
+static lgetxattr_fn_t old_lgetxattr = nullptr;
+
+// Clean SELinux label returned instead of any magisk_* type.
+static const char CLEAN_FILE_CTX[] = "u:object_r:system_file:s0";
+
+static void maybe_clean_selinux_xattr(const char *name, void *value, ssize_t ret) {
+    if (ret <= 0 || !name || !value) return;
+    if (strcmp(name, "security.selinux") != 0) return;
+    // value is a NUL-terminated context string
+    char *ctx = static_cast<char *>(value);
+    if (strstr(ctx, "magisk")) {
+        strncpy(ctx, CLEAN_FILE_CTX, static_cast<size_t>(ret));
+        ctx[ret - 1] = '\0';
+    }
+}
+
+static ssize_t new_getxattr(const char *path, const char *name, void *value, size_t size) {
+    if (path_is_hidden(path)) { errno = ENODATA; return -1; }
+    ssize_t ret = old_getxattr(path, name, value, size);
+    maybe_clean_selinux_xattr(name, value, ret);
+    return ret;
+}
+
+static ssize_t new_lgetxattr(const char *path, const char *name, void *value, size_t size) {
+    if (path_is_hidden(path)) { errno = ENODATA; return -1; }
+    ssize_t ret = old_lgetxattr(path, name, value, size);
+    maybe_clean_selinux_xattr(name, value, ret);
+    return ret;
+}
 
 static int new_open(const char *path, int flags, mode_t mode) {
     if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    // Spoof /proc/self/attr/current before real open — no fd needed
+    if ((flags & O_ACCMODE) == O_RDONLY && is_proc_attr_current(path))
+        return make_selinux_attr_fd();
     int fd = old_open(path, flags, mode);
     if (fd >= 0 && (flags & O_ACCMODE) == O_RDONLY) {
-        if (is_proc_maps_path(path)) return make_filtered_fd(fd, maps_drop_line);
-        if (is_proc_net_unix(path))  return make_filtered_fd(fd, unix_drop_line);
+        if (is_proc_maps_path(path))     return make_filtered_fd(fd, maps_drop_line);
+        if (is_proc_net_unix(path))      return make_filtered_fd(fd, unix_drop_line);
+        if (is_proc_mounts_path(path))   return make_filtered_fd(fd, mounts_drop_line);
+        if (is_proc_mountinfo_path(path))return make_filtered_fd(fd, mounts_drop_line);
     }
     return fd;
 }
 
 static int new_openat(int dirfd, const char *path, int flags, mode_t mode) {
     if (path_is_hidden(path)) { errno = ENOENT; return -1; }
+    if ((flags & O_ACCMODE) == O_RDONLY && is_proc_attr_current(path))
+        return make_selinux_attr_fd();
     int fd = old_openat(dirfd, path, flags, mode);
     if (fd >= 0 && (flags & O_ACCMODE) == O_RDONLY) {
-        if (is_proc_maps_path(path)) return make_filtered_fd(fd, maps_drop_line);
-        if (is_proc_net_unix(path))  return make_filtered_fd(fd, unix_drop_line);
+        if (is_proc_maps_path(path))     return make_filtered_fd(fd, maps_drop_line);
+        if (is_proc_net_unix(path))      return make_filtered_fd(fd, unix_drop_line);
+        if (is_proc_mounts_path(path))   return make_filtered_fd(fd, mounts_drop_line);
+        if (is_proc_mountinfo_path(path))return make_filtered_fd(fd, mounts_drop_line);
     }
     return fd;
 }
@@ -274,6 +363,9 @@ static void install_spoof_hooks() {
         {"stat",        (void *)new_stat,       (void **)&old_stat},
         {"lstat",       (void *)new_lstat,      (void **)&old_lstat},
         {"fstatat",     (void *)new_fstatat,    (void **)&old_fstatat},
+        // SELinux xattr — hides magisk_file / magisk_log_file labels
+        {"getxattr",    (void *)new_getxattr,   (void **)&old_getxattr},
+        {"lgetxattr",   (void *)new_lgetxattr,  (void **)&old_lgetxattr},
     };
     for (const auto &h : hooks) {
         if (!lsplt::RegisterHook(libc_dev, libc_inode, h.sym, h.hook, h.backup))
