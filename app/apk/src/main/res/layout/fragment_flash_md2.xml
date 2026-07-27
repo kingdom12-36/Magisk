@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.topjohnwu.magisk.ui.flash.FlashViewModel" />
+            type="com.shadowmask.ui.flash.FlashViewModel" />
 
     </data>
 
