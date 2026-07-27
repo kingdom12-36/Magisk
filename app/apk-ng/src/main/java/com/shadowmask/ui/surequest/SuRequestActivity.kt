@@ -82,12 +82,16 @@ class SuRequestActivity : ComponentActivity(), UntrackedActivity {
         }
 
         setContent {
-            MagiskTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    SuRequestScreen(viewModel = viewModel)
-                }
-            }
+    // استبدل MagiskTheme بالثيمة الافتراضية الخاصة بـ Compose أو تأكد من اسمها الصحيح
+    MaterialTheme { 
+        Box(modifier = Modifier.fillMaxSize()) {
+            SuRequestScreen(viewModel = viewModel)
         }
+    }
+}
+
+            
+        
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
