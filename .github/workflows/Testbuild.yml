@@ -26,7 +26,7 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      # تفعيل الكاش لملفات الـ C/C++ (يتخطى الملفات الثابتة ويعيد بناء المُعدل فقط)
+      # تفعيل الكاش لملفات الـ C/C++
       - name: Setup ccache
         uses: hendrikmi/ccache-action@v3
         with:
@@ -39,12 +39,19 @@ jobs:
           CXX: "ccache clang++"
         run: ./build.py native
 
+      - name: Verify Output Directory
+        run: |
+          echo "Checking contents of native/out/ directory:"
+          ls -R native/out/
+
+      # رفع الملفات من مسارها الصحيح native/out/
       - name: Upload Native Binaries Artifact
         uses: actions/upload-artifact@v4
         with:
           name: native-binaries
-          path: out/
+          path: native/out/
           retention-days: 1
+          if-no-files-found: error
 
   # ==========================================
   # 2. بناء نسخة الـ Debug (مع كاش Gradle)
@@ -60,15 +67,15 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      # تفعيل كاش Gradle الذكي لبناء الجافا/كتلن (Incremental Compilation & Dependencies Cache)
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
 
+      # تحميل ملفات الـ Native إلى مسارها الصحيح native/out/
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
           name: native-binaries
-          path: out/
+          path: native/out/
 
       - name: Build Debug APK
         run: ./build.py app
@@ -98,15 +105,15 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      # تفعيل كاش Gradle الذكي لنسخة الـ Release
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
 
+      # تحميل ملفات الـ Native إلى مسارها الصحيح native/out/
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
           name: native-binaries
-          path: out/
+          path: native/out/
 
       - name: Configure Keystore & Signing
         if: github.event_name != 'pull_request'
