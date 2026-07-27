@@ -23,7 +23,6 @@ jobs:
       - name: Setup Gradle CLI
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Compile Java & Kotlin Only (Skip NDK/Rust)
-        run: |
-          gradle :app:compileReleaseJavaWithJavac :app:compileReleaseKotlin --continue
-
+      - name: Compile Java & Kotlin Only
+        working-directory: ./app
+        run: gradle compileReleaseJavaWithJavac compileReleaseKotlin --continue
