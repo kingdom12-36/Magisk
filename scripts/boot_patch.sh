@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #######################################################################################
-# Magisk Boot Image Patcher
+# ShadowMask Boot Image Patcher
 #######################################################################################
 #
 # Usage: boot_patch.sh <bootimage>
@@ -21,7 +21,7 @@
 # magisk             binary    The magisk binary.
 # magiskboot         binary    A tool to manipulate boot images.
 # init-ld            binary    The library that will be LD_PRELOAD of /init
-# stub.apk           binary    The stub Magisk app to embed into ramdisk.
+# stub.apk           binary    The stub ShadowMask app to embed into ramdisk.
 # chromeos           folder    This folder includes the utility and keys to sign
 #                  (optional)  chromeos boot images. Only used for Pixel C.
 #
@@ -140,10 +140,10 @@ case $STATUS in
     cp -af $RAMDISK ramdisk.cpio.orig 2>/dev/null
     ;;
   1 )
-    # Magisk patched
-    ui_print "- Magisk patched boot image detected"
+    # ShadowMask patched
+    ui_print "- ShadowMask patched boot image detected"
     ./magiskboot cpio $RAMDISK \
-    "extract .backup/.magisk config.orig" \
+    "extract .backup/.shadowmask config.orig" \
     "restore"
     cp -af $RAMDISK ramdisk.cpio.orig
     rm -f stock_boot.img
@@ -199,7 +199,7 @@ fi
 "patch" \
 "$SKIP_BACKUP backup ramdisk.cpio.orig" \
 "mkdir 000 .backup" \
-"add 000 .backup/.magisk config" \
+"add 000 .backup/.shadowmask config" \
 || abort "! Unable to patch ramdisk"
 
 rm -f ramdisk.cpio.orig config *.xz
