@@ -1,6 +1,6 @@
 #MAGISK
 ############################################
-# Magisk Uninstaller (updater-script)
+# ShadowMask Uninstaller (updater-script)
 ############################################
 
 ##############
@@ -35,10 +35,10 @@ else
 fi
 print_title "Magisk $PRETTY_VER Uninstaller"
 
-is_mounted /data || mount /data || abort "! Unable to mount /data, please uninstall with the Magisk app"
+is_mounted /data || mount /data || abort "! Unable to mount /data, please uninstall with the ShadowMask app"
 mount_partitions
 check_data
-$DATA_DE || abort "! Cannot access /data, please uninstall with the Magisk app"
+$DATA_DE || abort "! Cannot access /data, please uninstall with the ShadowMask app"
 get_flags
 find_boot_image
 
@@ -100,16 +100,16 @@ case $((STATUS & 3)) in
   0 )  # Stock boot
     ui_print "- Stock boot image detected"
     ;;
-  1 )  # Magisk patched
-    ui_print "- Magisk patched image detected"
+  1 )  # ShadowMask patched
+    ui_print "- ShadowMask patched image detected"
     # Find SHA1 of stock boot image
-    ./magiskboot cpio ramdisk.cpio "extract .backup/.magisk config.orig"
+    ./magiskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
     if [ -f config.orig ]; then
       chmod 0644 config.orig
       SHA1=$(grep_prop SHA1 config.orig)
       rm config.orig
     fi
-    BACKUPDIR=/data/magisk_backup_$SHA1
+    BACKUPDIR=/data/shadowmask_backup_$SHA1
     if [ -d $BACKUPDIR ]; then
       ui_print "- Restoring stock boot image"
       flash_image $BACKUPDIR/boot.img.gz $BOOTIMAGE
@@ -146,14 +146,14 @@ if $BOOTMODE; then
   magisk --remove-modules -n
 fi
 
-ui_print "- Removing Magisk files"
+ui_print "- Removing ShadowMask files"
 rm -rf \
-/cache/*magisk* /cache/unblock /data/*magisk* /data/cache/*magisk* /data/property/*magisk* \
-/data/Magisk.apk /data/busybox /data/custom_ramdisk_patch.sh /data/adb/*magisk* \
+/cache/*shadowmask* /cache/unblock /data/*shadowmask* /data/cache/*shadowmask* /data/property/*shadowmask* \
+/data/ShadowMask.apk /data/busybox /data/custom_ramdisk_patch.sh /data/adb/*shadowmask* \
 /data/adb/post-fs-data.d /data/adb/service.d /data/adb/modules* \
-/data/unencrypted/magisk /metadata/magisk /metadata/watchdog/magisk /persist/magisk /mnt/vendor/persist/magisk
+/data/unencrypted/shadowmask /metadata/shadowmask /metadata/watchdog/shadowmask /persist/shadowmask /mnt/vendor/persist/shadowmask
 
-ADDOND=/system/addon.d/99-magisk.sh
+ADDOND=/system/addon.d/99-shadowmask.sh
 if [ -f $ADDOND ]; then
   blockdev --setrw /dev/block/mapper/system$SLOT 2>/dev/null
   mount -o rw,remount /system || mount -o rw,remount /
@@ -164,13 +164,13 @@ cd /
 
 if $BOOTMODE; then
   ui_print "********************************************"
-  ui_print " The Magisk app will uninstall itself, and"
+  ui_print " The ShadowMask app will uninstall itself, and"
   ui_print " the device will reboot after a few seconds"
   ui_print "********************************************"
   (sleep 8; /system/bin/reboot)&
 else
   ui_print "********************************************"
-  ui_print " The Magisk app will not be uninstalled"
+  ui_print " The ShadowMask app will not be uninstalled"
   ui_print " Please uninstall it manually after reboot"
   ui_print "********************************************"
   recovery_cleanup
