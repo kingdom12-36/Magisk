@@ -9,7 +9,7 @@ use home::cargo_home;
  ********************************
  *
  * The command `rustup component list` does not work with custom toolchains:
- * > error: toolchain 'magisk' does not support components
+ * > error: toolchain 'shadowmask' does not support components
  *
  * However, this command is used by several IDEs to determine component
  * availability, such as clippy, rustfmt etc.
