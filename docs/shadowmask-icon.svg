@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">ShadowMask app icon</title>
+  <desc id="desc">A dark geometric mask with a bright cyan eye.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M256 52 442 160v192L256 460 70 352V160z" fill="#67e8f9"/>
+  <path d="M256 86 408 174v164l-152 88-152-88V174z" fill="#111827"/>
+  <path d="M108 256c29-58 82-92 148-92s119 34 148 92c-29 58-82 92-148 92s-119-34-148-92Z" fill="#f8fafc"/>
+  <circle cx="256" cy="256" r="52" fill="#111827"/>
+  <circle cx="256" cy="256" r="25" fill="#67e8f9"/>
+</svg>
