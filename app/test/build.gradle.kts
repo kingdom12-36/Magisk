@@ -3,10 +3,10 @@ plugins {
 }
 
 android {
-    namespace = "com.topjohnwu.magisk.test"
+    namespace = "com.shadowmask.test"
 
     defaultConfig {
-        applicationId = "com.topjohnwu.magisk.test"
+        applicationId = "com.shadowmask.test"
         versionCode = 1
         versionName = "1.0"
         proguardFile("proguard-rules.pro")
