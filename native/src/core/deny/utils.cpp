@@ -223,8 +223,10 @@ static bool ensure_data() {
 
     default_new(pkg_to_procs_);
     bool res = db_exec("SELECT * FROM denylist", {}, [](StringSlice columns, const DbValues &values) {
-        const char *package_name;
-        const char *process;
+        // تهيئة المتغيرات بقيمة nullptr لمنع خطأ الـ Uninitialized variable
+        const char *package_name = nullptr;
+        const char *process = nullptr;
+        
         for (int i = 0; i < columns.size(); ++i) {
             const auto &name = columns[i];
             if (name == "package_name") {
@@ -233,7 +235,11 @@ static bool ensure_data() {
                 process = values.get_text(i);
             }
         }
-        add_hide_set(package_name, process);
+        
+        // التاكد من وجود القيم قبل الإضافة
+        if (package_name && process) {
+            add_hide_set(package_name, process);
+        }
     });
     if (!res)
         goto error;
