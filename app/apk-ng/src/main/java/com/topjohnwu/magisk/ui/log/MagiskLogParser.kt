@@ -1,6 +1,6 @@
 package com.topjohnwu.magisk.ui.log
 
-data class MagiskLogEntry(
+data class ShadowMaskLogEntry(
     val timestamp: String = "",
     val pid: Int = 0,
     val tid: Int = 0,
@@ -10,18 +10,18 @@ data class MagiskLogEntry(
     val isParsed: Boolean = false,
 )
 
-object MagiskLogParser {
+object ShadowMaskLogParser {
 
     // Logcat format: "MM-DD HH:MM:SS.mmm  PID  TID LEVEL TAG     : message"
     private val logcatRegex = Regex(
         """(\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d{3})\s+(\d+)\s+(\d+)\s+([VDIWEF])\s+(.+?)\s*:\s+(.*)"""
     )
 
-    fun parse(raw: String): List<MagiskLogEntry> {
+    fun parse(raw: String): List<ShadowMaskLogEntry> {
         if (raw.isBlank()) return emptyList()
 
         val lines = raw.lines()
-        val result = mutableListOf<MagiskLogEntry>()
+        val result = mutableListOf<ShadowMaskLogEntry>()
 
         for (line in lines) {
             if (line.isBlank()) continue
@@ -29,7 +29,7 @@ object MagiskLogParser {
             val match = logcatRegex.find(line)
             if (match != null) {
                 result.add(
-                    MagiskLogEntry(
+                    ShadowMaskLogEntry(
                         timestamp = match.groupValues[1],
                         pid = match.groupValues[2].toIntOrNull() ?: 0,
                         tid = match.groupValues[3].toIntOrNull() ?: 0,
@@ -47,7 +47,7 @@ object MagiskLogParser {
                 )
             } else {
                 result.add(
-                    MagiskLogEntry(message = line.trimEnd())
+                    ShadowMaskLogEntry(message = line.trimEnd())
                 )
             }
         }
