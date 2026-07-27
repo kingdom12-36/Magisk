@@ -1,4 +1,4 @@
-name: ShadowMask Ultra Modular Build
+name: ShadowMask Modular Build
 
 on:
   push:
@@ -14,14 +14,11 @@ on:
 
 jobs:
   # ==========================================
-  # 1. بناء الـ Native على 4 أجهزة بالتوازي (Matrix - الخيار الثاني)
+  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات
   # ==========================================
   build-native:
-    name: Build Native (${{ matrix.abi }})
+    name: Build Native Binaries (NDK)
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        abi: [arm64-v8a, armeabi-v7a, x86, x86_64]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,18 +26,18 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Compile Native Binary for ${{ matrix.abi }}
-        run: ./build.py native:${{ matrix.abi }}
+      - name: Compile Native C/C++ Binaries
+        run: ./build.py native
 
-      - name: Upload Native Artifact
+      - name: Upload Native Binaries Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: native-${{ matrix.abi }}
+          name: native-binaries
           path: out/
           retention-days: 1
 
   # ==========================================
-  # 2. بناء نسخة الـ Debug (الخيار الأول)
+  # 2. بناء نسخة الـ Debug (بالتوازي مع الـ Release)
   # ==========================================
   build-debug-apk:
     name: Build Debug APK
@@ -53,12 +50,11 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Download All Native Artifacts
+      - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
-          pattern: native-*
+          name: native-binaries
           path: out/
-          merge-multiple: true
 
       - name: Build Debug APK
         run: ./build.py app
@@ -73,7 +69,7 @@ jobs:
           path: out/shadowmask-debug.apk
 
   # ==========================================
-  # 3. بناء نسخة الـ Release (الخيار الأول)
+  # 3. بناء نسخة الـ Release والمفاتيح والـ Release التلقائي
   # ==========================================
   build-release-apk:
     name: Build Signed Release APK & Publish
@@ -88,12 +84,11 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Download All Native Artifacts
+      - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
-          pattern: native-*
+          name: native-binaries
           path: out/
-          merge-multiple: true
 
       - name: Configure Keystore & Signing
         if: github.event_name != 'pull_request'
@@ -169,5 +164,5 @@ jobs:
           git push origin :refs/tags/latest 2>/dev/null || true
           gh release create latest \
             --title "ShadowMask Build (latest)" \
-            --notes "Automatically built using ultra modular matrix strategy." \
+            --notes "Automatically built using modular runner strategy." \
             out/shadowmask-release.apk
