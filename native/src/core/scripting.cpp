@@ -158,7 +158,7 @@ rm -f $APK
 )EOF";
 
 void install_apk(Utf8CStr apk) {
-    setfilecon(apk.c_str(), MAGISK_FILE_CON);
+    setfilecon(apk.c_str(), SHADOWMASK_FILE_CON);
     char cmds[sizeof(install_script) + 4096];
     ssprintf(cmds, sizeof(cmds), install_script, apk.c_str(), JAVA_PACKAGE_NAME);
     exec_command_async("/system/bin/sh", "-c", cmds);
@@ -200,7 +200,7 @@ static void abort(FILE *fp, const char *fmt, ...) {
 }
 
 constexpr char install_module_script[] = R"EOF(
-. /data/adb/magisk/util_functions.sh
+. /data/adb/shadowmask/util_functions.sh
 install_module
 exit 0
 )EOF";
