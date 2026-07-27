@@ -47,13 +47,13 @@ run_setup() {
   local apk=$1
   adb shell 'PATH=$PATH:/debug_ramdisk magisk -v'
 
-  # Install the Magisk app
+  # Install the ShadowMask app
   adb install -r -g $apk
 
   # Install the test app
   adb install -r -g out/test.apk
 
-  local app='com.topjohnwu.magisk.test/com.topjohnwu.magisk.test.AppTestRunner'
+  local app='com.shadowmask.test/com.shadowmask.test.AppTestRunner'
 
   # Run setup through the test app
   am_instrument '.Environment#setupEnvironment' $app
@@ -68,7 +68,7 @@ print_apks() {
 }
 
 run_tests() {
-  local pkg='com.topjohnwu.magisk.test'
+  local pkg='com.shadowmask.test'
   local self="$pkg/$pkg.TestRunner"
   local app="$pkg/$pkg.AppTestRunner"
   local stub="repackaged.$pkg/$pkg.AppTestRunner"
