@@ -90,7 +90,7 @@ cat config
 "patch" \
 "backup ramdisk.cpio.orig" \
 "mkdir 000 .backup" \
-"add 000 .backup/.magisk config"
+"add 000 .backup/.shadowmask config"
 
 rm -f ramdisk.cpio.orig config *.xz
 if $IS_RAMDISK; then
