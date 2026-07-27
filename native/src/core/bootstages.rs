@@ -42,8 +42,8 @@ impl MagiskD {
 
         // Alternative binaries paths
         let alt_bin_dirs = &[
-            cstr!("/cache/data_adb/magisk"),
-            cstr!("/data/magisk"),
+            cstr!("/cache/data_adb/shadowmask"),
+            cstr!("/data/shadowmask"),
             app_bin_dir,
         ];
         for dir in alt_bin_dirs {
