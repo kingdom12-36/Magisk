@@ -1,5 +1,5 @@
 // IRootUtils.aidl
-package com.topjohnwu.magisk.core.utils;
+package com.shadowmask.core.utils;
 
 // Declare any non-default types here with import statements
 
