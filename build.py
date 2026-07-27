@@ -32,7 +32,7 @@ abi_alias = {
     "x64": "x86_64",
 }
 default_abis = support_abis.keys() - {"riscv64"}
-support_targets = {"shadowmask", "magiskinit", "magiskboot", "magiskpolicy", "resetprop"}
+support_targets = {"shadowmask", "magiskinit", "magiskboot", "shadowmaskpolicy", "resetprop"}
 default_targets = support_targets - {"resetprop"}
 rust_targets = default_targets.copy()
 clean_targets = {"native", "cpp", "rust", "app"}
@@ -166,7 +166,7 @@ def build_cpp_src(targets: set[str]):
         cmds.append("B_MAGISK=1")
         clean = True
 
-    if "magiskpolicy" in targets:
+    if "shadowmaskpolicy" in targets:
         cmds.append("B_POLICY=1")
         clean = True
 

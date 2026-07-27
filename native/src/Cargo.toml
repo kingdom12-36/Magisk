@@ -12,7 +12,7 @@ edition = "2024"
 [workspace.dependencies]
 base = { path = "base" }
 derive = { path = "base/derive" }
-magiskpolicy = { path = "sepolicy" }
+shadowmaskpolicy = { path = "sepolicy" }
 cxx = { path = "external/cxx-rs" }
 cxx-gen = { path = "external/cxx-rs/gen/lib" }
 libc = "0.2.184"
