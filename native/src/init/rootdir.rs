@@ -41,7 +41,7 @@ pub struct OverlayAttr(Utf8CString, Utf8CString);
 
 impl MagiskInit {
     pub(crate) fn parse_config_file(&mut self) {
-        if let Ok(fd) = cstr!("/data/.backup/.magisk").open(OFlag::O_RDONLY) {
+        if let Ok(fd) = cstr!("/data/.backup/.shadowmask").open(OFlag::O_RDONLY) {
             let mut reader = BufReader::new(fd);
             reader.for_each_prop(|key, val| {
                 if key == "PREINITDEVICE" {
