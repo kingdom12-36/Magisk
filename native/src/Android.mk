@@ -100,7 +100,7 @@ endif
 ifdef B_POLICY
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := magiskpolicy
+LOCAL_MODULE := shadowmaskpolicy
 LOCAL_STATIC_LIBRARIES := \
     libbase \
     libpolicy \
