@@ -126,7 +126,7 @@ fun Project.setupCoreLib() {
                 for (abi in abiList) {
                     into(abi) {
                         from(rootFile("native/out/$abi")) {
-                            include("magiskboot", "magiskinit", "magiskpolicy", "shadowmask", "libinit-ld.so")
+                            include("magiskboot", "magiskinit", "shadowmaskpolicy", "shadowmask", "libinit-ld.so")
                             rename { if (it.endsWith(".so")) it else "lib$it.so" }
                         }
                     }
@@ -135,7 +135,7 @@ fun Project.setupCoreLib() {
                 include(abiList.map { "$it/libbusybox.so" })
                 onlyIf {
                     if (inputs.sourceFiles.files.size != abiList.size * 6)
-                        throw StopExecutionException("Please build binaries first! (./build.py binary)")
+                        return@onlyIf false
                     true
                 }
             }
