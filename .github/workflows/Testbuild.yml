@@ -14,7 +14,7 @@ on:
 
 jobs:
   # ==========================================
-  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات
+  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات (مع تفعيل ccache للتسريع)
   # ==========================================
   build-native:
     name: Build Native Binaries (NDK)
@@ -26,7 +26,17 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      # تفعيل الكاش لتسريع بناء الـ C/C++ وتخطي الملفات غير المُعدلة
+      - name: Setup ccache
+        uses: hendrikmi/ccache-action@v3
+        with:
+          key: native-ndk-${{ hashFiles('native/**') }}
+          max-size: 1G
+
       - name: Compile Native C/C++ Binaries
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
         run: ./build.py native
 
       - name: Upload Native Binaries Artifact
