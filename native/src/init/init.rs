@@ -181,7 +181,7 @@ pub unsafe extern "C" fn main(
 
         let name = basename(*argv);
 
-        if CStr::from_ptr(name) == c"magisk" {
+        if CStr::from_ptr(name) == c"shadowmask" {
             return magisk_proxy_main(argc, argv);
         }
 
