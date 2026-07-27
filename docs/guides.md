@@ -2,16 +2,16 @@
 
 ## BusyBox
 
-Magisk ships with a feature complete BusyBox binary (including full SELinux support). The executable is located at `/data/adb/magisk/busybox`. Magisk's BusyBox supports runtime toggle-able "ASH Standalone Shell Mode". What this standalone mode means is that when running in the `ash` shell of BusyBox, every single command will directly use the applet within BusyBox, regardless of what is set as `PATH`. For example, commands like `ls`, `rm`, `chmod` will **NOT** use what is in `PATH` (in the case of Android by default it will be `/system/bin/ls`, `/system/bin/rm`, and `/system/bin/chmod` respectively), but will instead directly call internal BusyBox applets. This makes sure that scripts always run in a predictable environment and always have the full suite of commands no matter which Android version it is running on. To force a command _not_ to use BusyBox, you have to call the executable with full paths.
+Magisk ships with a feature complete BusyBox binary (including full SELinux support). The executable is located at `/data/adb/shadowmask/busybox`. Magisk's BusyBox supports runtime toggle-able "ASH Standalone Shell Mode". What this standalone mode means is that when running in the `ash` shell of BusyBox, every single command will directly use the applet within BusyBox, regardless of what is set as `PATH`. For example, commands like `ls`, `rm`, `chmod` will **NOT** use what is in `PATH` (in the case of Android by default it will be `/system/bin/ls`, `/system/bin/rm`, and `/system/bin/chmod` respectively), but will instead directly call internal BusyBox applets. This makes sure that scripts always run in a predictable environment and always have the full suite of commands no matter which Android version it is running on. To force a command _not_ to use BusyBox, you have to call the executable with full paths.
 
 Every single shell script running in the context of Magisk will be executed in BusyBox's `ash` shell with standalone mode enabled. For what is relevant to 3rd party developers, this includes all boot scripts and module installation scripts.
 
 For those who want to use this "Standalone Mode" feature outside of Magisk, there are 2 ways to enable it:
 
-1. Set environment variable `ASH_STANDALONE` to `1`<br>Example: `ASH_STANDALONE=1 /data/adb/magisk/busybox sh <script>`
-2. Toggle with command-line options:<br>`/data/adb/magisk/busybox sh -o standalone <script>`
+1. Set environment variable `ASH_STANDALONE` to `1`<br>Example: `ASH_STANDALONE=1 /data/adb/shadowmask/busybox sh <script>`
+2. Toggle with command-line options:<br>`/data/adb/shadowmask/busybox sh -o standalone <script>`
 
-To make sure all subsequent `sh` shell executed also runs in standalone mode, option 1 is the preferred method (and this is what Magisk and the Magisk app internally use) as environment variables are inherited down to child processes.
+To make sure all subsequent `sh` shell executed also runs in standalone mode, option 1 is the preferred method (and this is what Magisk and the ShadowMask app internally use) as environment variables are inherited down to child processes.
 
 ## Magisk Modules
 
@@ -54,7 +54,7 @@ A Magisk module is a folder placed in `/data/adb/modules` with the structure bel
 │   ├── post-fs-data.sh     <--- This script will be executed in post-fs-data
 │   ├── service.sh          <--- This script will be executed in late_start service
 |   ├── uninstall.sh        <--- This script will be executed when Magisk removes your module
-|   ├── action.sh           <--- This script will be executed when user click the action button in Magisk app
+|   ├── action.sh           <--- This script will be executed when user click the action button in ShadowMask app
 │   ├── system.prop         <--- Properties in this file will be loaded as system properties by resetprop
 │   ├── sepolicy.rule       <--- Additional custom sepolicy rules
 │   │
@@ -94,7 +94,7 @@ updateJson=<url> (optional)
   ex: ✓ `a_module`, ✓ `a.module`, ✓ `module-101`, ✗ `a module`, ✗ `1_module`, ✗ `-a-module`<br>
   This is the **unique identifier** of your module. You should not change it once published.
 - `versionCode` has to be an **integer**. This is used to compare versions
-- `updateJson` should point to a URL that downloads a JSON to provide info so the Magisk app can update the module.
+- `updateJson` should point to a URL that downloads a JSON to provide info so the ShadowMask app can update the module.
 - Others that weren't mentioned above can be any **single line** string.
 - Make sure to use the `UNIX (LF)` line break type and not the `Windows (CR+LF)` or `Macintosh (CR)`.
 
@@ -140,7 +140,7 @@ If your module requires some additional sepolicy patches, please add those rules
 
 ## Magisk Module Installer
 
-A Magisk module installer is a Magisk module packaged in a zip file that can be flashed in the Magisk app or custom recoveries such as TWRP. The simplest Magisk module installer is just a Magisk module packed as a zip file, in addition to the following files only if the module supports flashing in recovery:
+A Magisk module installer is a Magisk module packaged in a zip file that can be flashed in the ShadowMask app or custom recoveries such as TWRP. The simplest Magisk module installer is just a Magisk module packed as a zip file, in addition to the following files only if the module supports flashing in recovery:
 
 - `update-binary`: Download the latest [module_installer.sh](https://github.com/topjohnwu/Magisk/blob/master/scripts/module_installer.sh) and rename/copy that script as `update-binary`
 - `updater-script`: This file should only contain the string `#MAGISK`
@@ -176,7 +176,7 @@ The `customize.sh` script runs in Magisk's BusyBox `ash` shell with "Standalone 
 
 - `MAGISK_VER` (string): the version string of current installed Magisk (e.g. `v20.0`)
 - `MAGISK_VER_CODE` (int): the version code of current installed Magisk (e.g. `20000`)
-- `BOOTMODE` (bool): `true` if the module is being installed in the Magisk app
+- `BOOTMODE` (bool): `true` if the module is being installed in the ShadowMask app
 - `MODPATH` (path): the path where your module files should be installed
 - `TMPDIR` (path): a place where you can temporarily store files
 - `ZIPFILE` (path): your module's installation zip
@@ -236,7 +236,7 @@ The list above will result in the following dummy devices being created: `$MODPA
 
 #### Notes
 
-- When your module is downloaded with the Magisk app, `update-binary` will be **forcefully** replaced with the latest [`module_installer.sh`](https://github.com/topjohnwu/Magisk/blob/master/scripts/module_installer.sh). **DO NOT** try to add any custom logic in `update-binary`.
+- When your module is downloaded with the ShadowMask app, `update-binary` will be **forcefully** replaced with the latest [`module_installer.sh`](https://github.com/topjohnwu/Magisk/blob/master/scripts/module_installer.sh). **DO NOT** try to add any custom logic in `update-binary`.
 - Due to historical reasons, **DO NOT** add a file named `install.sh` in your module installer zip.
 - **DO NOT** call `exit` at the end of `customize.sh`. The module installer script has to perform some cleanups before exiting.
 
