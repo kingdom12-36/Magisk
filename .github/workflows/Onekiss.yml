@@ -1,4 +1,4 @@
-name: Fast Project Validation (Res, Java, C)
+name: Fast Project Validation (Res, Java, C, Themes)
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   # ==========================================
-  # 1. فحص الموارد (XML Resources)
+  # 1. فحص الموارد (XML Resources) والـ Themes
   # ==========================================
   check-resources:
     runs-on: ubuntu-latest
@@ -16,45 +16,79 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Validate XML Resources & Check Duplicates
+      - name: Validate XML Resources, Duplicates & Themes Consistency
         run: |
           python3 -c '
-          import os, sys, xml.etree.ElementTree as ET
+          import os, sys, re, xml.etree.ElementTree as ET
           from collections import defaultdict
 
           has_errors = False
+          defined_styles = set()
+          xml_files_list = []
 
+          # Phase 1: Parse all XML resource files
           for root, dirs, files in os.walk("."):
               normalized_root = root.replace("\\", "/")
-              if "/src/main/res/values" in normalized_root:
-                  resources = defaultdict(list)
-                  
+              if "/src/main/res" in normalized_root:
                   for file in files:
                       if file.endswith(".xml"):
                           file_path = os.path.join(root, file)
+                          xml_files_list.append(file_path)
                           try:
                               tree = ET.parse(file_path)
                               xml_root = tree.getroot()
-                              for child in xml_root:
-                                  res_type = child.tag
-                                  res_name = child.attrib.get("name")
-                                  if res_name:
-                                      resources[(res_type, res_name)].append(file_path)
+                              
+                              # Check for duplicates if inside values directory
+                              if "/values" in normalized_root:
+                                  resources = defaultdict(list)
+                                  for child in xml_root:
+                                      res_type = child.tag
+                                      res_res_name = child.attrib.get("name")
+                                      if res_res_name:
+                                          resources[(res_type, res_res_name)].append(file_path)
+                                          
+                                      # Collect all style definitions for theme validation
+                                      if res_type == "style" and res_res_name:
+                                          defined_styles.add(res_res_name)
+
+                                  for (res_type, res_name), file_list in resources.items():
+                                      if len(file_list) > 1:
+                                          files_formatted = ", ".join(file_list)
+                                          print(f"::error::Duplicate <{res_type} name=\"{res_name}\"> found in: {files_formatted}")
+                                          has_errors = True
+
                           except Exception as e:
                               print(f"::error file={file_path}::XML Syntax Error: {e}")
                               has_errors = True
 
-                  for (res_type, res_name), file_list in resources.items():
-                      if len(file_list) > 1:
-                          files_formatted = ", ".join(file_list)
-                          print(f"::error::Duplicate <{res_type} name=\"{res_name}\"> found in: {files_formatted}")
-                          has_errors = True
+          # Phase 2: Validate Themes defined in Kotlin files (e.g. Theme.kt)
+          referenced_themes = set()
+          for root, dirs, files in os.walk("."):
+              for file in files:
+                  if file.endswith(".kt") or file.endswith(".java"):
+                      kt_path = os.path.join(root, file)
+                      try:
+                          with open(kt_path, "r", encoding="utf-8") as f:
+                              content = f.read()
+                              # Look for R.style.ThemeFoundationMD2_* or similar theme references
+                              found_styles = re.findall(r"R\.style\.([A-Za-z0-9_]+)", content)
+                              for style_name in found_styles:
+                                  if "Theme" in style_name:
+                                      referenced_themes.add((style_name, kt_path))
+                      except Exception:
+                          pass
+
+          # Check if referenced themes actually exist in XML styles
+          for style_name, kt_file in referenced_themes:
+              if style_name not in defined_styles:
+                  print(f"::error file={kt_file}::Theme style 'R.style.{style_name}' is referenced in code but missing in XML values definition!")
+                  has_errors = True
 
           if has_errors:
-              print("\n❌ Resource validation failed!")
+              print("\n❌ Resource & Theme validation failed!")
               sys.exit(1)
           else:
-              print("✅ All resource XML files validated successfully!")
+              print("✅ All resource XML files, duplicates, and Theme mappings validated successfully!")
           '
 
   # ==========================================
