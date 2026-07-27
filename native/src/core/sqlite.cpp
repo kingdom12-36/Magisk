@@ -182,7 +182,7 @@ sqlite3 *open_and_init_db() {
     {
         sqlite3 *sql;
         // We open the connection with SQLITE_OPEN_NOMUTEX because we are guarding it ourselves
-        sql_chk_log(sqlite3_open_v2, MAGISKDB, &sql,
+        sql_chk_log(sqlite3_open_v2, SHADOWMASKDB, &sql,
                     SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX, nullptr);
         db.reset(sql);
     }
@@ -196,7 +196,7 @@ sqlite3 *open_and_init_db() {
     if (ver > DB_VERSION) {
         // Don't support downgrading database, delete and retry
         LOGE("sqlite3: Downgrading database is not supported\n");
-        unlink(MAGISKDB);
+        unlink(SHADOWMASKDB);
         return open_and_init_db();
     }
 
