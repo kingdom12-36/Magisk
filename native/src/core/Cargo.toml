@@ -1,5 +1,5 @@
 [package]
-name = "magisk"
+name = "shadowmask"
 version.workspace = true
 edition.workspace = true
 
