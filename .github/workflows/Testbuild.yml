@@ -14,7 +14,7 @@ on:
 
 jobs:
   # ==========================================
-  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات (مع ccache)
+  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات
   # ==========================================
   build-native:
     name: Build Native Binaries (NDK)
@@ -22,21 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 1
           submodules: "recursive"
 
       - uses: ./.github/actions/setup
-
-      # تفعيل الكاش لملفات الـ C/C++ (تصحيح اسم الحساب إلى hendrikmuhs)
-      - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: native-ndk-${{ hashFiles('native/**') }}
-          max-size: 1G
+          is-asset-build: true
 
       - name: Compile Native C/C++ Binaries
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
         run: ./build.py native
 
       - name: Verify Output Directory
@@ -53,7 +46,7 @@ jobs:
           if-no-files-found: error
 
   # ==========================================
-  # 2. بناء نسخة الـ Debug (مع كاش Gradle)
+  # 2. بناء نسخة الـ Debug
   # ==========================================
   build-debug-apk:
     name: Build Debug APK
@@ -62,12 +55,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: "recursive"
+          fetch-depth: 1
 
       - uses: ./.github/actions/setup
-
-      - name: Setup Gradle Cache
-        uses: gradle/actions/setup-gradle@v3
+        with:
+          is-asset-build: true
 
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
@@ -88,7 +80,7 @@ jobs:
           path: out/shadowmask-debug.apk
 
   # ==========================================
-  # 3. بناء نسخة الـ Release والمفاتيح والـ Release التلقائي (مع كاش Gradle)
+  # 3. بناء نسخة الـ Release والمفاتيح والـ Release التلقائي
   # ==========================================
   build-release-apk:
     name: Build Signed Release APK & Publish
@@ -99,12 +91,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: "recursive"
+          fetch-depth: 1
 
       - uses: ./.github/actions/setup
-
-      - name: Setup Gradle Cache
-        uses: gradle/actions/setup-gradle@v3
+        with:
+          is-asset-build: true
 
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
