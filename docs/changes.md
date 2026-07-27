@@ -171,7 +171,7 @@
 - [Zygisk] Change binary hijack paths
 - [App] Fix incorrect recovery mode detection and installation
 - [MagiskInit] Fix config not properly exported in legacy SAR devices
-- [General] Enforce the Magisk app to always match or be newer than `magiskd`
+- [General] Enforce the ShadowMask app to always match or be newer than `magiskd`
 
 ### v25.0 (2022.6.7)
 
@@ -184,7 +184,7 @@
 - [App] [MagiskSU] Properly support apps using `sharedUserId`
 - [MagiskSU] Fix a possible crash in `magiskd`
 - [MagiskSU] Prune unused UIDs as soon as `system_server` restarts to prevent UID reuse attacks
-- [MagiskSU] Verify and enforce the installed Magisk app's certificate to match the distributor's signature
+- [MagiskSU] Verify and enforce the installed ShadowMask app's certificate to match the distributor's signature
 - [MagiskSU] [Zygisk] Proper package management and detection
 - [Zygisk] Fix function hooking on devices running Android 12 with old kernels
 - [Zygisk] Fix Zygisk's self code unloading implementation
@@ -280,9 +280,9 @@
 ### v22.0 (2021.2.23)
 
 - [General] Magisk and Magisk Manager is now merged into the same package!
-- [App] The term "Magisk Manager" is no longer used elsewhere. We refer it as the Magisk app.
-- [App] Support hiding the Magisk app with advanced technique (stub APK loading) on Android 5.0+ (it used to be 9.0+)
-- [App] Disallow re-packaging the Magisk app on devices lower than Android 5.0
+- [App] The term "Magisk Manager" is no longer used elsewhere. We refer it as the ShadowMask app.
+- [App] Support hiding the ShadowMask app with advanced technique (stub APK loading) on Android 5.0+ (it used to be 9.0+)
+- [App] Disallow re-packaging the ShadowMask app on devices lower than Android 5.0
 - [App] Detect and warn about multiple invalid states and provide instructions on how to resolve it
 - [MagiskHide] Fix a bug when stopping MagiskHide does not take effect
 - [MagiskBoot] Fix bug when unpacking `lz4_lg` compressed boot images
@@ -529,7 +529,7 @@
 - [Scripts] Fix custom recovery console output in addon.d
 - [Scripts] Fallback to parsing sysfs for detecting block devices
 - [Daemon] Check whether a valid Magisk Manager is installed on boot, if not, install stub APK embedded in magiskinit
-- [Daemon] Check whether Magisk Manager is repackaged (hidden), and prevent malware from hijacking com.topjohnwu.magisk
+- [Daemon] Check whether Magisk Manager is repackaged (hidden), and prevent malware from hijacking com.shadowmask
 - [Daemon] Introduce new daemon: magisklogd, a dedicated daemon to handle all logcat related monitoring
 - [Daemon] Replace old invincible mode with handshake between magiskd and magisklogd, one will respawn the other if disconnected
 - [Daemon] Support GSI adbd bind mounting
