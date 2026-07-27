@@ -19,7 +19,7 @@
 #####################################################################
 
 mount_tmpfs() {
-  # If a file name 'magisk' is in current directory, mount will fail
+  # If a file name 'shadowmask' is in current directory, mount will fail
   mv magisk magisk.tmp
   mount -t tmpfs -o 'mode=0755' magisk $1
   mv magisk.tmp magisk
@@ -144,17 +144,17 @@ ln -s ./magisk $MAGISKTMP/su
 ln -s ./magisk $MAGISKTMP/resetprop
 ln -s ./magiskpolicy $MAGISKTMP/supolicy
 
-mkdir -p $MAGISKTMP/.magisk/device
-mkdir -p $MAGISKTMP/.magisk/worker
-mount_tmpfs $MAGISKTMP/.magisk/worker
-mount --make-private $MAGISKTMP/.magisk/worker
-touch $MAGISKTMP/.magisk/config
+mkdir -p $MAGISKTMP/.shadowmask/device
+mkdir -p $MAGISKTMP/.shadowmask/worker
+mount_tmpfs $MAGISKTMP/.shadowmask/worker
+mount --make-private $MAGISKTMP/.shadowmask/worker
+touch $MAGISKTMP/.shadowmask/config
 
 export MAGISKTMP
 MAKEDEV=1 $MAGISKTMP/magisk --preinit-device 2>&1
 
 RULESCMD=""
-rule="$MAGISKTMP/.magisk/preinit/sepolicy.rule"
+rule="$MAGISKTMP/.shadowmask/preinit/sepolicy.rule"
 [ -f "$rule" ] && RULESCMD="--apply $rule"
 
 # SELinux stuffs
