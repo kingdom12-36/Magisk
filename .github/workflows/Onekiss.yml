@@ -24,7 +24,9 @@ jobs:
 
           has_errors = False
           defined_styles = set()
-          xml_files_list = []
+
+          # ستايلات النظام الأساسية في أندرويد التي يجب استثناؤها من الفحص المحلي
+          framework_style_prefixes = ("Theme_DeviceDefault", "Widget_DeviceDefault", "Animation_", "android_")
 
           # Phase 1: Parse all XML resource files
           for root, dirs, files in os.walk("."):
@@ -33,7 +35,6 @@ jobs:
                   for file in files:
                       if file.endswith(".xml"):
                           file_path = os.path.join(root, file)
-                          xml_files_list.append(file_path)
                           try:
                               tree = ET.parse(file_path)
                               xml_root = tree.getroot()
@@ -42,13 +43,13 @@ jobs:
                               if "/values" in normalized_root:
                                   resources = defaultdict(list)
                                   for child in xml_root:
-                                      res_type = child.tag
+                                      tag_name = child.tag.split("}")[-1]
                                       res_res_name = child.attrib.get("name")
                                       if res_res_name:
-                                          resources[(res_type, res_res_name)].append(file_path)
+                                          resources[(tag_name, res_res_name)].append(file_path)
                                           
                                       # Collect all style definitions for theme validation
-                                      if res_type == "style" and res_res_name:
+                                      if tag_name == "style" and res_res_name:
                                           defined_styles.add(res_res_name)
 
                                   for (res_type, res_name), file_list in resources.items():
@@ -61,7 +62,7 @@ jobs:
                               print(f"::error file={file_path}::XML Syntax Error: {e}")
                               has_errors = True
 
-          # Phase 2: Validate Themes defined in Kotlin files (e.g. Theme.kt)
+          # Phase 2: Validate Custom Themes defined in Kotlin files (e.g. Theme.kt)
           referenced_themes = set()
           for root, dirs, files in os.walk("."):
               for file in files:
@@ -70,18 +71,21 @@ jobs:
                       try:
                           with open(kt_path, "r", encoding="utf-8") as f:
                               content = f.read()
-                              # Look for R.style.ThemeFoundationMD2_* or similar theme references
+                              # Look for R.style.* references
                               found_styles = re.findall(r"R\.style\.([A-Za-z0-9_]+)", content)
                               for style_name in found_styles:
-                                  if "Theme" in style_name:
+                                  if "Theme" in style_name or "Foundation" in style_name:
+                                      # تجاهل ستايلات النظام الافتراضية
+                                      if any(style_name.startswith(p) for p in framework_style_prefixes):
+                                          continue
                                       referenced_themes.add((style_name, kt_path))
                       except Exception:
                           pass
 
-          # Check if referenced themes actually exist in XML styles
+          # Check if referenced custom themes actually exist in XML styles
           for style_name, kt_file in referenced_themes:
               if style_name not in defined_styles:
-                  print(f"::error file={kt_file}::Theme style 'R.style.{style_name}' is referenced in code but missing in XML values definition!")
+                  print(f"::error file={kt_file}::Theme style \x27R.style.{style_name}\x27 is referenced in code but missing in XML values definition!")
                   has_errors = True
 
           if has_errors:
@@ -135,7 +139,7 @@ jobs:
         run: python3 build.py app
 
   # ==========================================
-  # 3. فحص C/C++ (محدث بكل فلاتر التجاوز)
+  # 3. فحص C/C++
   # ==========================================
   check-c:
     runs-on: ubuntu-latest
