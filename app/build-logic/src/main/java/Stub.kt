@@ -213,7 +213,7 @@ private fun genStubClasses(outDir: File): Pair<String, String> {
         pkgDir.mkdirs()
         PrintStream(File(pkgDir, "$name.java")).use {
             it.println("package $pkg;")
-            it.println("public class $name extends com.topjohnwu.magisk.$type {}")
+            it.println("public class $name extends com.shadowmask.$type {}")
         }
         return clzName
     }
@@ -244,7 +244,7 @@ private fun genEncryptedResources(res: ByteArray, outDir: File) {
     }
 
     PrintStream(File(mainPkgDir, "Bytes.java")).use {
-        it.println("package com.topjohnwu.magisk;")
+        it.println("package com.shadowmask;")
         it.println("public final class Bytes {")
 
         it.byteField("key", key)
