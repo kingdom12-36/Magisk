@@ -1,4 +1,4 @@
-name: ShadowMask Build
+name: ShadowMask Ultra Modular Build
 
 on:
   push:
@@ -13,29 +13,89 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build ShadowMask artifacts
+  # ==========================================
+  # 1. بناء الـ Native على 4 أجهزة بالتوازي (Matrix - الخيار الثاني)
+  # ==========================================
+  build-native:
+    name: Build Native (${{ matrix.abi }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        abi: [arm64-v8a, armeabi-v7a, x86, x86_64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - uses: ./.github/actions/setup
+
+      - name: Compile Native Binary for ${{ matrix.abi }}
+        run: ./build.py native:${{ matrix.abi }}
+
+      - name: Upload Native Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.abi }}
+          path: out/
+          retention-days: 1
+
+  # ==========================================
+  # 2. بناء نسخة الـ Debug (الخيار الأول)
+  # ==========================================
+  build-debug-apk:
+    name: Build Debug APK
+    needs: build-native
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - uses: ./.github/actions/setup
+
+      - name: Download All Native Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: native-*
+          path: out/
+          merge-multiple: true
+
+      - name: Build Debug APK
+        run: ./build.py app
+
+      - name: Rename Debug APK
+        run: mv out/app-debug.apk out/shadowmask-debug.apk
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: shadowmask-debug
+          path: out/shadowmask-debug.apk
+
+  # ==========================================
+  # 3. بناء نسخة الـ Release (الخيار الأول)
+  # ==========================================
+  build-release-apk:
+    name: Build Signed Release APK & Publish
+    needs: build-native
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
 
-      - name: Setup Ccache for Native Build
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ runner.os }}-ccache-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-ccache-
+      - uses: ./.github/actions/setup
 
-      - name: Setup environment
-        uses: ./.github/actions/setup
+      - name: Download All Native Artifacts
+        uses: actions/download-artifact@v4
         with:
-          is-asset-build: true
+          pattern: native-*
+          path: out/
+          merge-multiple: true
 
-      - name: Configure reproducible release signing
+      - name: Configure Keystore & Signing
         if: github.event_name != 'pull_request'
         env:
           GH_PAT: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
@@ -46,11 +106,8 @@ jobs:
           SIGNING_ENV_FILE="$SIGNING_DIR/signing.env"
 
           if [ -f "$KEYSTORE_B64" ] && [ -f "$SIGNING_ENV_FILE" ]; then
-            echo "Using committed keystore..."
-            # shellcheck disable=SC1090
             source "$SIGNING_ENV_FILE"
           else
-            echo "No keystore found — generating a new one and committing it..."
             STORE_PASSWORD="shadowmask-$(openssl rand -hex 12)"
             KEY_PASSWORD="shadowmask-$(openssl rand -hex 12)"
             KEY_ALIAS="shadowmask"
@@ -80,15 +137,9 @@ jobs:
             git push origin HEAD:master
           fi
 
-          # Decode keystore to working directory
           openssl base64 -d -A -in "$KEYSTORE_B64" > shadowmask-release.jks
           chmod 600 shadowmask-release.jks
 
-          # Verify keystore integrity
-          keytool -list -storetype JKS -keystore shadowmask-release.jks \
-            -storepass "$STORE_PASSWORD" -alias "$KEY_ALIAS" >/dev/null
-
-          # Write config.prop for the build system
           cat > config.prop <<EOF
           keyStore=shadowmask-release.jks
           keyStorePass=$STORE_PASSWORD
@@ -96,30 +147,17 @@ jobs:
           keyPass=$KEY_PASSWORD
           EOF
 
-      - name: Build (native once + release & debug APKs)
-        run: ./build.py -v fast
+      - name: Build Release APK
+        run: ./build.py app
 
-      - name: Stop Gradle daemon
-        run: ./app/gradlew --stop
+      - name: Rename Release APK
+        run: mv out/app-release.apk out/shadowmask-release.apk
 
-      - name: Rename APKs
-        run: |
-          mv out/app-debug.apk   out/shadowmask-debug.apk
-          mv out/app-release.apk out/shadowmask-release.apk
-
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: shadowmask-debug
-          path: out/shadowmask-debug.apk
-          compression-level: 9
-
-      - name: Upload release APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
           name: shadowmask-release
           path: out/shadowmask-release.apk
-          compression-level: 9
 
       - name: Publish to GitHub Releases
         if: github.event_name != 'pull_request'
@@ -131,6 +169,5 @@ jobs:
           git push origin :refs/tags/latest 2>/dev/null || true
           gh release create latest \
             --title "ShadowMask Build (latest)" \
-            --notes "Automatically built from the master branch. Install shadowmask-release.apk to get the full ShadowMask app." \
+            --notes "Automatically built using ultra modular matrix strategy." \
             out/shadowmask-release.apk
-
