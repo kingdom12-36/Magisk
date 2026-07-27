@@ -42,7 +42,7 @@ class Paths:
                     "Please set Android SDK path to environment variable ANDROID_HOME"
                 )
 
-        self.ndk = self.sdk / "ndk" / "magisk"
+        self.ndk = self.sdk / "ndk" / "shadowmask"
         self.ndk_build = self.ndk / "ndk-build"
         self.rust_sysroot = self.ndk / "toolchains" / "rust"
         self.adb = self.sdk / "platform-tools" / "adb"
