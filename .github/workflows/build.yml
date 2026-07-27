@@ -44,6 +44,8 @@ jobs:
           test -n "$KEY_PASSWORD" || { echo "Missing SHADOWMASK_KEY_PASSWORD"; exit 1; }
           printf '%s' "$KEYSTORE_BASE64" | openssl base64 -d -A > shadowmask-release.jks
           chmod 600 shadowmask-release.jks
+          keytool -list -keystore shadowmask-release.jks \
+            -storepass "$STORE_PASSWORD" -alias "$KEY_ALIAS" >/dev/null
           cat > config.prop <<EOF
           keyStore=shadowmask-release.jks
           keyStorePass=$STORE_PASSWORD
