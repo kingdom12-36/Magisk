@@ -80,8 +80,18 @@ jobs:
       - name: Check for leftover Magisk package references
         run: |
           echo "Scanning for old Magisk packages and imports..."
-          if grep -rn --include=\*.{kt,java,aidl} "com.topjohnwu.magisk" app/; then
-            echo "::error::Found old Magisk references above! Please update them to com.shadowmask."
+          FOUND=0
+          
+          while IFS=: read -r file line content; do
+            if [ -n "$file" ]; then
+              FOUND=1
+              echo "🔗 https://github.com/${{ github.repository }}/blob/${{ github.sha }}/$file#L$line"
+              echo "::error file=$file,line=$line::Found old Magisk reference: $content"
+            fi
+          done < <(grep -rn --include=\*.{kt,java,aidl} "com\.topjohnwu\.magisk" app/)
+
+          if [ $FOUND -eq 1 ]; then
+            echo "❌ Please update the references above to com.shadowmask."
             exit 1
           else
             echo "✅ All imports and packages are clean!"
