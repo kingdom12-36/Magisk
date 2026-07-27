@@ -10,7 +10,7 @@ lsparanoid {
 }
 
 android {
-    namespace = "com.topjohnwu.magisk"
+    namespace = "com.shadowmask"
     enableKotlin = false
 
     val url = "https://github.com/kingdom12-36/ShadowMask/releases/latest/download/shadowmask-release.apk"
