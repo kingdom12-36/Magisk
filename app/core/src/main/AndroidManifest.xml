@@ -14,6 +14,7 @@
     <application
         android:name=".App"
         android:icon="@drawable/ic_launcher"
+        android:label="ShadowMask"
         tools:ignore="UnusedAttribute,GoogleAppIndexingWarning"
         tools:remove="android:appComponentFactory">
 
@@ -51,7 +52,7 @@
             android:exported="false"
             android:grantUriPermissions="true" />
 
-        <!-- We don't invalidate Room -->
+        <!-- We do not invalidate Room -->
         <service
             android:name="androidx.room.MultiInstanceInvalidationService"
             tools:node="remove" />
