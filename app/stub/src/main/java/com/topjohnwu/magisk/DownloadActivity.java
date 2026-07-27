@@ -43,7 +43,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class DownloadActivity extends Activity {
 
     private static final String APP_NAME = "ShadowMask";
-    private static final String RES_PKG_NAME = "com.topjohnwu.magisk";
+    private static final String RES_PKG_NAME = "com.shadowmask";
 
     private boolean dynLoad;
 

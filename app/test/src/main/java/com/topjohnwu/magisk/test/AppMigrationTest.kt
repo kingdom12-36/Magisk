@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 class AppMigrationTest {
 
     companion object {
-        private const val APP_PKG = "com.topjohnwu.magisk"
+        private const val APP_PKG = "com.shadowmask"
         private const val STUB_PKG = "repackaged.$APP_PKG"
         private const val RECEIVER_TIMEOUT = 20L
     }

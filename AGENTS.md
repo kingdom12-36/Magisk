@@ -1,4 +1,4 @@
-## AGENTS.md for Magisk
+## AGENTS.md for ShadowMask
 
 ### General
 
