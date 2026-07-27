@@ -26,9 +26,9 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      # تفعيل الكاش لملفات الـ C/C++
+      # تفعيل الكاش لملفات الـ C/C++ (تصحيح اسم الحساب إلى hendrikmuhs)
       - name: Setup ccache
-        uses: hendrikmi/ccache-action@v3
+        uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: native-ndk-${{ hashFiles('native/**') }}
           max-size: 1G
@@ -44,7 +44,6 @@ jobs:
           echo "Checking contents of native/out/ directory:"
           ls -R native/out/
 
-      # رفع الملفات من مسارها الصحيح native/out/
       - name: Upload Native Binaries Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -70,7 +69,6 @@ jobs:
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
 
-      # تحميل ملفات الـ Native إلى مسارها الصحيح native/out/
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
@@ -108,7 +106,6 @@ jobs:
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
 
-      # تحميل ملفات الـ Native إلى مسارها الصحيح native/out/
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
         with:
