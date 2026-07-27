@@ -62,7 +62,7 @@ getvar() {
   local VARNAME=$1
   local VALUE
   local PROPPATH='/data/.magisk /cache/.magisk'
-  [ ! -z $MAGISKTMP ] && PROPPATH="$MAGISKTMP/.magisk/config $PROPPATH"
+  [ ! -z $MAGISKTMP ] && PROPPATH="$MAGISKTMP/.shadowmask/config $PROPPATH"
   VALUE=$(grep_prop $VARNAME $PROPPATH)
   [ ! -z $VALUE ] && eval $VARNAME=\$VALUE
 }
@@ -427,7 +427,7 @@ flash_image() {
 }
 
 # Common installation script for flash_script.sh and addon.d.sh
-install_magisk() {
+install_shadowmask() {
   cd $MAGISKBIN
 
   # Source the boot patcher
@@ -533,11 +533,11 @@ check_data() {
     touch /data/.rw && rm /data/.rw && DATA=true
     # Test if data is decrypted
     $DATA && [ -d /data/adb ] && touch /data/adb/.rw && rm /data/adb/.rw && DATA_DE=true
-    $DATA_DE && [ -d /data/adb/magisk ] || mkdir /data/adb/magisk || DATA_DE=false
+    $DATA_DE && [ -d /data/adb/shadowmask ] || mkdir /data/adb/shadowmask || DATA_DE=false
   fi
-  MAGISKBIN="/data/magisk"
-  $DATA || MAGISKBIN="/cache/data_adb/magisk"
-  $DATA_DE && MAGISKBIN="/data/adb/magisk"
+  MAGISKBIN="/data/shadowmask"
+  $DATA || MAGISKBIN="/cache/data_adb/shadowmask"
+  $DATA_DE && MAGISKBIN="/data/adb/shadowmask"
 }
 
 run_migrations() {
@@ -555,8 +555,8 @@ run_migrations() {
     [ -f $gz ] || break
     SHA1=$(basename $gz | sed -e 's/stock_boot_//' -e 's/.img.gz//')
     [ -z $SHA1 ] && break
-    mkdir /data/magisk_backup_${SHA1} 2>/dev/null
-    mv $gz /data/magisk_backup_${SHA1}/boot.img.gz
+    mkdir /data/shadowmask_backup_${SHA1} 2>/dev/null
+    mv $gz /data/shadowmask_backup_${SHA1}/boot.img.gz
   done
 
   # Stock backups
@@ -566,10 +566,10 @@ run_migrations() {
     [ -f $BACKUP ] || continue
     if [ $name = 'boot' ]; then
       SHA1=$($MAGISKBIN/magiskboot sha1 $BACKUP)
-      mkdir /data/magisk_backup_${SHA1} 2>/dev/null
+      mkdir /data/shadowmask_backup_${SHA1} 2>/dev/null
     fi
     [ -z $SHA1 ] && break
-    TARGET=/data/magisk_backup_${SHA1}/${name}.img
+    TARGET=/data/shadowmask_backup_${SHA1}/${name}.img
     cp $BACKUP $TARGET
     rm -f $BACKUP
     gzip -9f $TARGET
@@ -579,7 +579,7 @@ run_migrations() {
 }
 
 copy_preinit_files() {
-  local PREINITDIR=$MAGISKTMP/.magisk/preinit
+  local PREINITDIR=$MAGISKTMP/.shadowmask/preinit
   if [ ! -d $PREINITDIR ]; then
     ui_print "- Unable to find preinit dir"
     return 1
@@ -760,4 +760,4 @@ install_module() {
 [ -z $BOOTMODE ] && BOOTMODE=false
 
 TMPDIR=/dev/tmp
-MAGISKBIN="/data/adb/magisk"
+MAGISKBIN="/data/adb/shadowmask"
