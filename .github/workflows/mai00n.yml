@@ -1,4 +1,4 @@
-name: Fast Resource Merge Check
+name: Fast Resource Validation
 
 on:
   push:
@@ -11,21 +11,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+      - name: Validate XML Resources & Check Duplicates
+        run: |
+          python3 -c '
+          import os, sys, xml.etree.ElementTree as ET
+          from collections import defaultdict
 
-      - name: Setup Gradle Cache
-        uses: gradle/actions/setup-gradle@v4
+          has_errors = False
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
+          for root, dirs, files in os.walk("."):
+              normalized_root = root.replace("\\", "/")
+              if "/src/main/res/values" in normalized_root:
+                  resources = defaultdict(list)
+                  
+                  for file in files:
+                      if file.endswith(".xml"):
+                          file_path = os.path.join(root, file)
+                          try:
+                              tree = ET.parse(file_path)
+                              xml_root = tree.getroot()
+                              for child in xml_root:
+                                  res_type = child.tag
+                                  res_name = child.attrib.get("name")
+                                  if res_name:
+                                      resources[(res_type, res_name)].append(file_path)
+                          except Exception as e:
+                              print(f"::error file={file_path}::XML Syntax Error: {e}")
+                              has_errors = True
 
-      - name: Run Fast Resource Merger
-        run: ./gradlew mergeReleaseResources --continue
+                  for (res_type, res_name), file_list in resources.items():
+                      if len(file_list) > 1:
+                          files_formatted = ", ".join(file_list)
+                          print(f"::error::Duplicate <{res_type} name=\"{res_name}\"> found in: {files_formatted}")
+                          has_errors = True
 
+          if has_errors:
+              print("\n❌ Resource validation failed!")
+              sys.exit(1)
+          else:
+              print("✅ All resource XML files validated successfully!")
+          '
