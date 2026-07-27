@@ -5,13 +5,13 @@
 
     <data>
 
-        <import type="com.topjohnwu.magisk.core.Info" />
+        <import type="com.shadowmask.core.Info" />
 
-        <import type="com.topjohnwu.magisk.ui.home.HomeViewModel.State" />
+        <import type="com.shadowmask.ui.home.HomeViewModel.State" />
 
         <variable
             name="viewModel"
-            type="com.topjohnwu.magisk.ui.home.HomeViewModel" />
+            type="com.shadowmask.ui.home.HomeViewModel" />
 
     </data>
 
