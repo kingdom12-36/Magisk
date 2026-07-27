@@ -38,7 +38,7 @@ using namespace std;
 //  2. File-access hiding — open/openat/access/faccessat/stat/lstat/fstatat/
 //                          stat64/lstat64 return ENOENT for su binaries, the
 //                          /data/adb secure directory, and any path containing
-//                          "magisk", "zygisk", or root-manager names.
+//                          "shadowmask", "zygisk", or root-manager names.
 //  3. /proc filtering    — /proc/self/maps, /proc/net/unix, /proc/mounts,
 //                          /proc/self/mountinfo — returned fds point to
 //                          in-memory copies with Magisk/Zygisk lines stripped.
@@ -149,7 +149,7 @@ static void new_prop_read_callback(
 // Any path whose string contains one of these fragments will be made
 // invisible to the target process (ENOENT returned).
 static const char *HIDDEN_PATH_FRAGS[] = {
-    "magisk",
+    "shadowmask",
     "zygisk",
     "/data/adb",       // secure root directory — any subpath leaks installer state
     "/sbin/su",
@@ -257,18 +257,18 @@ static int make_filtered_fd(int orig_fd,
 }
 
 static bool maps_drop_line(const char *line, size_t) {
-    return strstr(line, "magisk") || strstr(line, "zygisk");
+    return strstr(line, "shadowmask") || strstr(line, "zygisk");
 }
 
 static bool unix_drop_line(const char *line, size_t) {
-    return strstr(line, "magisk") != nullptr;
+    return strstr(line, "shadowmask") != nullptr;
 }
 
 // Drop mount entries that reference magisk/zygisk bind-mounts.
 // Both /proc/mounts and /proc/self/mountinfo use whitespace-delimited
-// fields where the mount-point or source may contain "magisk" or ".magisk".
+// fields where the mount-point or source may contain "shadowmask" or ".shadowmask".
 static bool mounts_drop_line(const char *line, size_t) {
-    return strstr(line, "magisk") || strstr(line, ".magisk") || strstr(line, "zygisk");
+    return strstr(line, "shadowmask") || strstr(line, ".shadowmask") || strstr(line, "zygisk");
 }
 
 // Return a memfd whose content is a clean SELinux process context so that
@@ -317,19 +317,19 @@ static lgetxattr_fn_t old_lgetxattr = nullptr;
 static fgetxattr_fn_t old_fgetxattr = nullptr;
 
 // Clean SELinux label substituted for any magisk_* context.
-// Length (25 chars + NUL) intentionally matches MAGISK_FILE_CON / MAGISK_LOG_FILE_CON
+// Length (25 chars + NUL) intentionally matches SHADOWMASK_FILE_CON / MAGISK_LOG_FILE_CON
 // so no buffer arithmetic is needed; we use memcpy for safety.
 static const char CLEAN_FILE_CTX[] = "u:object_r:system_file:s0";
 static constexpr size_t   CLEAN_FILE_CTX_LEN = sizeof(CLEAN_FILE_CTX) - 1; // excl. NUL
 
-// Replace the SELinux context in `value` if it mentions "magisk".
+// Replace the SELinux context in `value` if it mentions "shadowmask".
 // `buf_size` is the caller-provided buffer capacity (the `size` arg they passed).
 static void maybe_clean_selinux_xattr(const char *name, void *value,
                                       ssize_t ret, size_t buf_size) {
     if (ret <= 0 || !name || !value) return;
     if (strcmp(name, "security.selinux") != 0) return;
     char *ctx = static_cast<char *>(value);
-    if (!strstr(ctx, "magisk")) return;
+    if (!strstr(ctx, "shadowmask")) return;
     // Guard: only overwrite if our replacement fits in the caller's buffer.
     if (buf_size < CLEAN_FILE_CTX_LEN + 1) return;
     memcpy(ctx, CLEAN_FILE_CTX, CLEAN_FILE_CTX_LEN + 1); // includes NUL
