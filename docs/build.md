@@ -45,7 +45,7 @@ First, install [rustup](https://www.rust-lang.org/tools/install), the official R
 However, if you'd like to work on the Rust codebase, it'll be easier if you link ONDK's Rust toolchain in `rustup` and set it as default so several development tools and IDEs will work properly:
 
 ```bash
-# Link the ONDK toolchain with the name "magisk"
+# Link the ONDK toolchain with the name "shadowmask"
 rustup toolchain link magisk "$ANDROID_HOME/ndk/magisk/toolchains/rust"
 # Set magisk as default
 rustup default magisk
