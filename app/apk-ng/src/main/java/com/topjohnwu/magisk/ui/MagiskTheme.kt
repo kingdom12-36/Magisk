@@ -19,7 +19,7 @@ object ThemeState {
 }
 
 @Composable
-fun MagiskTheme(
+fun ShadowMaskTheme(
     content: @Composable () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
