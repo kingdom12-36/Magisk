@@ -548,7 +548,7 @@ impl Cpio {
             }
         }
         for file in [
-            ".backup/.magisk",
+            ".backup/.shadowmask",
             "init.magisk.rc",
             "overlay/init.magisk.rc",
         ] {
@@ -569,7 +569,7 @@ impl Cpio {
                     if let Ok(data) = str::from_utf8(&entry.data) {
                         rm_list.push_str(data);
                     }
-                } else if name != ".backup/.magisk" {
+                } else if name != ".backup/.shadowmask" {
                     let new_name = if name.ends_with(".xz") && entry.decompress() {
                         &name[8..name.len() - 3]
                     } else {
