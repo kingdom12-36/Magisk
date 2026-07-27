@@ -125,9 +125,9 @@
     <string name="settings_dark_mode_dark">Hamesha dark theme</string>
     <string name="settings_download_path_title">Download path</string>
     <string name="settings_download_path_message">Files yahan save hongi: %1$s</string>
-    <string name="settings_hide_app_title">Magisk app ko hide karo</string>
-    <string name="settings_hide_app_summary">Magisk app ka name aur package ID change kro</string>
-    <string name="settings_restore_app_title">Magisk app ko unhide karo</string>
+    <string name="settings_hide_app_title">ShadowMask app ko hide karo</string>
+    <string name="settings_hide_app_summary">ShadowMask app ka name aur package ID change kro</string>
+    <string name="settings_restore_app_title">ShadowMask app ko unhide karo</string>
     <string name="settings_restore_app_summary">App ko unhide karo aur original APK wapas lao</string>
     <string name="language">Language</string>
     <string name="system_default">(System ki default)</string>
@@ -217,7 +217,7 @@
     <string name="done">Ho gaya!</string>
     <string name="done_action">%1$s ka action complete ho gaya</string>
     <string name="failure">Fail ho gaya!</string>
-    <string name="hide_app_title">Magisk app ko chhupa rahe hain…</string>
+    <string name="hide_app_title">ShadowMask app ko chhupa rahe hain…</string>
     <string name="open_link_failed_toast">Link kholne ke liye koi app nahi mila</string>
     <string name="complete_uninstall">Sab kuch uninstall karo</string>
     <string name="restore_img">Images restore karo</string>
@@ -235,7 +235,7 @@
     <string name="unsupport_system_app_msg">App ko system app bana ke chalana supported nahi hai. Please app ko wapas user app bana do.</string>
     <string name="unsupport_other_su_msg">Pehle doosri root method hatao ya Magisk dobara install karo.</string>
     <string name="unsupport_external_storage_msg">Magisk external storage pe installed hai. App ko internal storage mein move karo.</string>
-    <string name="unsupport_nonroot_stub_msg">Hidden Magisk app ab kaam nahi karega kyunki root chala gaya hai. Please original APK restore karo.</string>
+    <string name="unsupport_nonroot_stub_msg">Hidden ShadowMask app ab kaam nahi karega kyunki root chala gaya hai. Please original APK restore karo.</string>
     <string name="unsupport_nonroot_stub_title">@string/settings_restore_app_title</string>
     <string name="external_rw_permission_denied">Iss feature ko enable karne ke liye storage permission allow karo</string>
     <string name="post_notifications_denied">Is feature ke liye notifications permission allow karo</string>
