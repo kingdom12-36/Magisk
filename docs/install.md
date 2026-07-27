@@ -1,6 +1,6 @@
 # Installation
 
-If you already have Magisk installed, it is **strongly recommended** to upgrade directly via the Magisk app using its "Direct Install" method. The following tutorial is only for the initial installation.
+If you already have Magisk installed, it is **strongly recommended** to upgrade directly via the ShadowMask app using its "Direct Install" method. The following tutorial is only for the initial installation.
 
 ## Getting Started
 
@@ -12,7 +12,7 @@ Before you start:
 
 ---
 
-Download and install the latest [Magisk app](https://github.com/topjohnwu/Magisk/releases/latest). In the home screen, you should see:
+Download and install the latest [ShadowMask app](https://github.com/topjohnwu/Magisk/releases/latest). In the home screen, you should see:
 
 <p align="center"><img src="images/device_info.png" width="500"/></p>
 
@@ -48,14 +48,14 @@ Let's continue to [Patching Images](#patching-images).
   `fastboot flash recovery /path/to/magisk_patched_[random_strings].img` <br>
 - (Optional) If your device has a separate `vbmeta` partition, you can patch the `vbmeta` partition with command:<br>
   `fastboot flash vbmeta --disable-verity --disable-verification vbmeta.img` (note that it may **wipe your data**)
-- Reboot and launch Magisk app (you will see a stub Magisk app if you have wiped your data; use it to bootstrap to a complete Magisk app), and you will see a prompt asking for environment fix; click and wait for the reboot
+- Reboot and launch ShadowMask app (you will see a stub ShadowMask app if you have wiped your data; use it to bootstrap to a complete ShadowMask app), and you will see a prompt asking for environment fix; click and wait for the reboot
 - Voila!
 
 > Warning: **NEVER** flash patched image shared by others or patch image on another device even if they have the same device model! You may need to do a full data wipe to recover your device. **ALWAYS** patch boot image **on the same device where you want to install Magisk**.
 
 ## Uninstallation
 
-The easiest way to uninstall Magisk is directly through the Magisk app. If you insist on using custom recoveries, rename the Magisk APK to `uninstall.zip` and flash it like any other ordinary flashable zip.
+The easiest way to uninstall Magisk is directly through the ShadowMask app. If you insist on using custom recoveries, rename the Magisk APK to `uninstall.zip` and flash it like any other ordinary flashable zip.
 
 ## Magisk in Recovery
 
@@ -129,7 +129,7 @@ Having KnoxGuard active will prevent you from installing/running Magisk regardle
 - Reboot to download mode. Open Odin on your PC, and flash `magisk_patched.tar` as `AP`, together with `BL`, `CP`, and `CSC` (**NOT** `HOME_CSC` because we want to **wipe data**) from the original firmware.
 - Your device should reboot automatically once Odin finished flashing. **Agree to do a factory reset if asked.**
 - If your device does **NOT** have boot ramdisk, reboot to recovery now to enable Magisk (reason stated in [Magisk in Recovery](#magisk-in-recovery)).
-- Install the Magisk app you've already downloaded and launch the app. It should show a dialog asking for additional setup.
+- Install the ShadowMask app you've already downloaded and launch the app. It should show a dialog asking for additional setup.
 - Let the app do its job and automatically reboot the device. Voila!
 
 ### Upgrading the OS
@@ -139,7 +139,7 @@ Once you have rooted your Samsung device, you can no longer upgrade your Android
 ### Important Notes
 
 - **Never, ever** try to restore either `boot`, `init_boot`, `recovery`, or `vbmeta` partitions back to stock! You can brick your device by doing so, and the only way to recover from this is to do a full Odin restore with data wipe.
-- To upgrade your device with a new firmware, **NEVER** directly use the stock `AP` tar file with reasons mentioned above. **Always** patch `AP` in the Magisk app and use that instead.
+- To upgrade your device with a new firmware, **NEVER** directly use the stock `AP` tar file with reasons mentioned above. **Always** patch `AP` in the ShadowMask app and use that instead.
 
 ## Custom Recovery
 
@@ -150,7 +150,7 @@ Installing using custom recoveries is only possible if your device has boot ramd
 - Download the Magisk APK
 - Rename the `.apk` file extension to `.zip`, for example: `Magisk-v24.0.apk` → `Magisk-v24.0.zip`. If you have trouble renaming the file extension (like on Windows), use a file manager on Android or the one included in the custom recovery to rename the file.
 - Flash the zip just like any other ordinary flashable zip.
-- Reboot and check whether the Magisk app is installed. If it isn't installed automatically, manually install the APK.
-- Launch the Magisk app; it will show a dialog asking for reinstallation. Do the reinstallation **directly within the app** and reboot (if you are using MTK devices that lock the boot partition after boot, please [patch the boot image](#patching-images) and flash it by custom recovery or fastboot).
+- Reboot and check whether the ShadowMask app is installed. If it isn't installed automatically, manually install the APK.
+- Launch the ShadowMask app; it will show a dialog asking for reinstallation. Do the reinstallation **directly within the app** and reboot (if you are using MTK devices that lock the boot partition after boot, please [patch the boot image](#patching-images) and flash it by custom recovery or fastboot).
 
 > Warning: the `sepolicy.rule` file of modules may be stored in the `cache` partition. DO NOT WIPE THE `CACHE` PARTITION.
