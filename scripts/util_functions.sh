@@ -1,5 +1,5 @@
 ############################################
-# Magisk General Utility Functions
+# ShadowMask General Utility Functions
 ############################################
 
 #MAGISK_VERSION_STUB
@@ -661,7 +661,7 @@ install_module() {
 
   # Extract prop file
   unzip -o "$ZIPFILE" module.prop -d $TMPDIR >&2
-  [ ! -f $TMPDIR/module.prop ] && abort "! This zip is not a Magisk module!"
+  [ ! -f $TMPDIR/module.prop ] && abort "! This zip is not a ShadowMask module!"
 
   local MODDIRNAME=modules
   $BOOTMODE && MODDIRNAME=modules_update
@@ -697,7 +697,7 @@ install_module() {
     set_permissions
   else
     print_title "$MODNAME" "by $MODAUTH"
-    print_title "Powered by Magisk"
+    print_title "Powered by ShadowMask"
 
     unzip -o "$ZIPFILE" customize.sh -d $MODPATH >&2
 
@@ -724,7 +724,7 @@ install_module() {
   done
 
   if $BOOTMODE; then
-    # Update info for Magisk app
+    # Update info for ShadowMask app
     mktouch /data/adb/modules/$MODID/update
     rm -rf /data/adb/modules/$MODID/remove 2>/dev/null
     rm -rf /data/adb/modules/$MODID/disable 2>/dev/null
