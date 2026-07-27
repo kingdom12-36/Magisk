@@ -281,7 +281,7 @@ private fun SuActionBadge(allowed: Boolean) {
 
 @Composable
 private fun MagiskLogTab(
-    entries: List<MagiskLogEntry>,
+    entries: List<ShadowMaskLogEntry>,
     nestedScrollConnection: NestedScrollConnection
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -320,7 +320,7 @@ private fun MagiskLogTab(
 }
 
 @Composable
-private fun MagiskLogCard(entry: MagiskLogEntry) {
+private fun MagiskLogCard(entry: ShadowMaskLogEntry) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
