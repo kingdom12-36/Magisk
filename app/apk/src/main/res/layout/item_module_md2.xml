@@ -5,15 +5,15 @@
 
     <data>
 
-        <import type="com.topjohnwu.magisk.R" />
+        <import type="com.shadowmask.R" />
 
         <variable
             name="item"
-            type="com.topjohnwu.magisk.ui.module.LocalModuleRvItem" />
+            type="com.shadowmask.ui.module.LocalModuleRvItem" />
 
         <variable
             name="viewModel"
-            type="com.topjohnwu.magisk.ui.module.ModuleViewModel" />
+            type="com.shadowmask.ui.module.ModuleViewModel" />
 
     </data>
 
