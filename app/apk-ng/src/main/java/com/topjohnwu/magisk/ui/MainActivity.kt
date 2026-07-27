@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity(), SplashScreenHost {
         val initialTab = getInitialTab(intent)
 
         setContent {
-            MagiskTheme {
+            ShadowMaskTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     val navigator = rememberNavigator(Route.Main)
                     CompositionLocalProvider(LocalNavigator provides navigator) {
