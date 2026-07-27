@@ -124,7 +124,7 @@ static bool patch_rc_scripts(const char *src_path, const char *tmp_path, bool wr
                 LOGD("Inject zygote restart\n");
                 fprintf(dest_rc.get(), "%s", line.c_str());
                 fprintf(dest_rc.get(),
-                        "    onrestart exec " MAGISK_PROC_CON " 0 0 -- %s/magisk --zygote-restart\n", tmp_path);
+                        "    onrestart exec " SHADOWMASK_PROC_CON " 0 0 -- %s/magisk --zygote-restart\n", tmp_path);
                 return true;
             }
             fprintf(dest_rc.get(), "%s", line.c_str());
@@ -239,7 +239,7 @@ static void extract_files(bool sbin) {
     if (access(magisk_xz, F_OK) == 0) {
         mmap_data magisk(magisk_xz);
         unlink(magisk_xz);
-        int fd = xopen("magisk", O_WRONLY | O_CREAT, 0755);
+        int fd = xopen("shadowmask", O_WRONLY | O_CREAT, 0755);
         unxz(fd, magisk);
         close(fd);
     }
