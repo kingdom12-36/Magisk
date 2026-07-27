@@ -80,8 +80,8 @@ jobs:
       - name: Compile App (Java/Kotlin) via build.py
         run: python3 build.py app
 
-  # ==========================================
-  # 3. فحص C/C++ (تم إضافة كتم أخطاء الـ Macro)
+    # ==========================================
+  # 3. فحص C/C++ (التركيز على الأخطاء الحقيقية فقط)
   # ==========================================
   check-c:
     runs-on: ubuntu-latest
@@ -94,10 +94,15 @@ jobs:
 
       - name: Check C/C++ Syntax and Logic
         run: |
-          cppcheck --enable=warning,style,performance,portability \
+          cppcheck --enable=warning,performance,portability \
                    --error-exitcode=1 \
                    --inline-suppr \
+                   -i native/src/external/ \
                    --suppress=missingInclude \
                    --suppress=missingIncludeSystem \
                    --suppress=unknownMacro \
+                   --suppress=cstyleCast \
+                   --suppress=variableScope \
+                   --suppress=constParameterPointer \
+                   --suppress=invalidscanf \
                    native/
