@@ -58,7 +58,7 @@ jobs:
           '
 
   # ==========================================
-  # 2. فحص كود Java و Kotlin (تم التحديث لـ Java 21)
+  # 2. فحص كود Java و Kotlin والاستيرادات
   # ==========================================
   check-java:
     runs-on: ubuntu-latest
@@ -77,10 +77,20 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Check for leftover Magisk package references
+        run: |
+          echo "Scanning for old Magisk packages and imports..."
+          if grep -rn --include=\*.{kt,java,aidl} "com.topjohnwu.magisk" app/; then
+            echo "::error::Found old Magisk references above! Please update them to com.shadowmask."
+            exit 1
+          else
+            echo "✅ All imports and packages are clean!"
+          fi
+
       - name: Compile App (Java/Kotlin) via build.py
         run: python3 build.py app
 
-     # ==========================================
+  # ==========================================
   # 3. فحص C/C++ (محدث بكل فلاتر التجاوز)
   # ==========================================
   check-c:
@@ -109,4 +119,3 @@ jobs:
                    --suppress=uninitDerivedMemberVar \
                    --suppress=invalidPrintfArgType_uint \
                    native/
-
