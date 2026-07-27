@@ -32,7 +32,7 @@ abi_alias = {
     "x64": "x86_64",
 }
 default_abis = support_abis.keys() - {"riscv64"}
-support_targets = {"magisk", "magiskinit", "magiskboot", "magiskpolicy", "resetprop"}
+support_targets = {"shadowmask", "magiskinit", "magiskboot", "magiskpolicy", "resetprop"}
 default_targets = support_targets - {"resetprop"}
 rust_targets = default_targets.copy()
 clean_targets = {"native", "cpp", "rust", "app"}
@@ -162,7 +162,7 @@ def build_cpp_src(targets: set[str]):
     cmds = []
     clean = False
 
-    if "magisk" in targets:
+    if "shadowmask" in targets:
         cmds.append("B_MAGISK=1")
         clean = True
 
@@ -202,7 +202,7 @@ def build_rust_src(targets: set[str]):
 
     targets = targets.copy()
     if "resetprop" in targets:
-        targets.add("magisk")
+        targets.add("shadowmask")
     targets = targets & rust_targets
     if not targets:
         return
@@ -332,7 +332,7 @@ def build_apk(module: str):
 
 
 def build_app():
-    header("* Building the Magisk app")
+    header("* Building the ShadowMask app")
     apk = build_apk(":apk")
 
     build_type = "release" if args.release else "debug"
@@ -351,7 +351,7 @@ def build_app():
 
 
 def build_app_ng():
-    header("* Building the next generation Magisk app")
+    header("* Building the next generation ShadowMask app")
     apk = build_apk(":apk-ng")
     header(f"Output: {apk}")
 
@@ -793,10 +793,10 @@ def parse_args():
         or empty for defaults ({', '.join(default_targets)})",
     )
 
-    app_parser = subparsers.add_parser("app", help="build the Magisk app")
+    app_parser = subparsers.add_parser("app", help="build the ShadowMask app")
 
     app_ng_parser = subparsers.add_parser(
-        "app-ng", help="build the next generation Magisk app"
+        "app-ng", help="build the next generation ShadowMask app"
     )
 
     stub_parser = subparsers.add_parser("stub", help="build the stub app")
