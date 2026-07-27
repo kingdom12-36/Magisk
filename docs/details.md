@@ -15,7 +15,7 @@ Magisk will mount a `tmpfs` directory to store some temporary data. For devices 
 MAGISKTMP=$(magisk --path)
 
 # Magisk internal stuffs
-INTERNALDIR=$MAGISKTMP/.magisk
+INTERNALDIR=$MAGISKTMP/.shadowmask
 
 # /data/adb/modules will be bind mounted here.
 # The original folder is not used due to nosuid mount flag.
@@ -59,16 +59,16 @@ $SECURE_DIR/modules
 
 # Magisk modules that are pending for upgrade
 # Module files are not safe to be modified when mounted
-# Modules installed through the Magisk app will be stored here
+# Modules installed through the ShadowMask app will be stored here
 # and will be merged into $SECURE_DIR/modules in the next reboot
 $SECURE_DIR/modules_update
 
 # Database storing settings and root permissions
-MAGISKDB=$SECURE_DIR/magisk.db
+SHADOWMASKDB=$SECURE_DIR/shadowmask.db
 
 # All magisk related binaries, including busybox,
 # scripts, and magisk binaries. Used in supporting
-# module installation, addon.d, the Magisk app etc.
+# module installation, addon.d, the ShadowMask app etc.
 DATABIN=$SECURE_DIR/magisk
 
 ```
