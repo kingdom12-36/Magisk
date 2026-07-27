@@ -1,6 +1,6 @@
 use crate::bootstages::BootState;
 use crate::consts::{
-    MAGISK_FILE_CON, MAGISK_FULL_VER, MAGISK_PROC_CON, MAGISK_VER_CODE, MAGISK_VERSION,
+    SHADOWMASK_FILE_CON, SHADOWMASK_FULL_VER, SHADOWMASK_PROC_CON, MAGISK_VER_CODE, MAGISK_VERSION,
     MAIN_CONFIG, MAIN_SOCKET, ROOTMNT, ROOTOVL,
 };
 use crate::db::Sqlite3;
@@ -303,13 +303,13 @@ fn daemon_entry() {
     if let Ok(mut current) =
         cstr!("/proc/self/attr/current").open(OFlag::O_WRONLY | OFlag::O_CLOEXEC)
     {
-        let con = cstr!(MAGISK_PROC_CON);
+        let con = cstr!(SHADOWMASK_PROC_CON);
         current.write_all(con.as_bytes_with_nul()).log_ok();
     }
 
     start_log_daemon();
     magisk_logging();
-    info!("Magisk {MAGISK_FULL_VER} daemon started");
+    info!("Magisk {SHADOWMASK_FULL_VER} daemon started");
 
     let is_emulator = get_prop(cstr!("ro.kernel.qemu")) == "1"
         || get_prop(cstr!("ro.boot.qemu")) == "1"
@@ -414,7 +414,7 @@ fn daemon_entry() {
     };
 
     sock_path.follow_link().chmod(0o666).log_ok();
-    sock_path.set_secontext(cstr!(MAGISK_FILE_CON)).log_ok();
+    sock_path.set_secontext(cstr!(SHADOWMASK_FILE_CON)).log_ok();
 
     // Loop forever to listen for requests
     let daemon = MagiskD::get();
