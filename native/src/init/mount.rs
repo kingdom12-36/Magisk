@@ -78,7 +78,7 @@ impl MagiskInit {
         debug!("Setup data tmp");
         cstr!("/data").mkdir(0o755).log_ok();
         nix::mount::mount(
-            Some(cstr!("magisk")),
+            Some(cstr!("shadowmask")),
             cstr!("/data"),
             Some(cstr!("tmpfs")),
             MsFlags::empty(),
