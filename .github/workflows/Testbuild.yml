@@ -14,7 +14,7 @@ on:
 
 jobs:
   # ==========================================
-  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات (مع تفعيل ccache للتسريع)
+  # 1. بناء ملفات الـ Native (C/C++) لكل المعماريات (مع ccache)
   # ==========================================
   build-native:
     name: Build Native Binaries (NDK)
@@ -26,7 +26,7 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      # تفعيل الكاش لتسريع بناء الـ C/C++ وتخطي الملفات غير المُعدلة
+      # تفعيل الكاش لملفات الـ C/C++ (يتخطى الملفات الثابتة ويعيد بناء المُعدل فقط)
       - name: Setup ccache
         uses: hendrikmi/ccache-action@v3
         with:
@@ -47,7 +47,7 @@ jobs:
           retention-days: 1
 
   # ==========================================
-  # 2. بناء نسخة الـ Debug (بالتوازي مع الـ Release)
+  # 2. بناء نسخة الـ Debug (مع كاش Gradle)
   # ==========================================
   build-debug-apk:
     name: Build Debug APK
@@ -59,6 +59,10 @@ jobs:
           submodules: "recursive"
 
       - uses: ./.github/actions/setup
+
+      # تفعيل كاش Gradle الذكي لبناء الجافا/كتلن (Incremental Compilation & Dependencies Cache)
+      - name: Setup Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
@@ -79,7 +83,7 @@ jobs:
           path: out/shadowmask-debug.apk
 
   # ==========================================
-  # 3. بناء نسخة الـ Release والمفاتيح والـ Release التلقائي
+  # 3. بناء نسخة الـ Release والمفاتيح والـ Release التلقائي (مع كاش Gradle)
   # ==========================================
   build-release-apk:
     name: Build Signed Release APK & Publish
@@ -93,6 +97,10 @@ jobs:
           submodules: "recursive"
 
       - uses: ./.github/actions/setup
+
+      # تفعيل كاش Gradle الذكي لنسخة الـ Release
+      - name: Setup Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Download Native Binaries
         uses: actions/download-artifact@v4
