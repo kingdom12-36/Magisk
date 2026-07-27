@@ -1,4 +1,4 @@
-use crate::consts::{DATABIN, LOG_PIPE, MAGISK_LOG_CON, MAGISKDB, MODULEROOT, SECURE_DIR};
+use crate::consts::{DATABIN, LOG_PIPE, SHADOWMASK_LOG_CON, SHADOWMASKDB, MODULEROOT, SECURE_DIR};
 use crate::ffi::get_magisk_tmp;
 use base::{Directory, FsPathBuilder, LoggedResult, ResultExt, Utf8CStr, Utf8CStrBuf, cstr, libc};
 use nix::fcntl::OFlag;
@@ -69,7 +69,7 @@ pub(crate) fn restorecon() {
     path.clear();
     path.push_str(DATABIN);
     restore_syscon(&mut path).log_ok();
-    unsafe { libc::chmod(cstr!(MAGISKDB).as_ptr(), 0o000) };
+    unsafe { libc::chmod(cstr!(SHADOWMASKDB).as_ptr(), 0o000) };
 }
 
 pub(crate) fn restore_tmpcon() -> LoggedResult<()> {
@@ -91,7 +91,7 @@ pub(crate) fn restore_tmpcon() -> LoggedResult<()> {
 
     path.clear();
     path.append_path(tmp).append_path(LOG_PIPE);
-    path.set_secontext(cstr!(MAGISK_LOG_CON))?;
+    path.set_secontext(cstr!(SHADOWMASK_LOG_CON))?;
 
     Ok(())
 }
