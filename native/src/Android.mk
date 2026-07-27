@@ -7,12 +7,12 @@ LOCAL_PATH := $(call my-dir)
 ifdef B_MAGISK
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := magisk
+LOCAL_MODULE := shadowmask
 LOCAL_STATIC_LIBRARIES := \
     libbase \
     libsystemproperties \
     liblsplt \
-    libmagisk-rs
+    libshadowmask-rs
 
 LOCAL_SRC_FILES := \
     core/applets.cpp \
@@ -117,7 +117,7 @@ LOCAL_MODULE := resetprop
 LOCAL_STATIC_LIBRARIES := \
     libbase \
     libsystemproperties \
-    libmagisk-rs
+    libshadowmask-rs
 
 LOCAL_SRC_FILES := \
     core/applet_stub.cpp \

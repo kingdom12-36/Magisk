@@ -128,8 +128,8 @@ def clean_elf():
     elif args.verbose > 1:
         cmds.append("--verbose")
     cmds.append("--")
-    cmds.extend(glob.glob("native/out/*/magisk"))
-    cmds.extend(glob.glob("native/out/*/magiskpolicy"))
+    cmds.extend(glob.glob("native/out/*/shadowmask"))
+    cmds.extend(glob.glob("native/out/*/shadowmaskpolicy"))
     execv(cmds)
 
 
