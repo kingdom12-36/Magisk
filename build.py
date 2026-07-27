@@ -314,6 +314,8 @@ def build_apk(module: str):
             paths().gradlew,
             f"{module}:assemble{build_type}",
             f"-PconfigPath={config_path}",
+            "--info",
+            "--stacktrace",
         ],
     )
     os.chdir("..")
