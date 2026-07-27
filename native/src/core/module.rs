@@ -445,9 +445,9 @@ fn inject_magisk_bins(system: &mut FsNode, is_emulator: bool) {
         // Inject binaries
 
         let len = path.len();
-        path.append_path("magisk");
+        path.append_path("shadowmask");
         children.insert(
-            "magisk".to_string(),
+            "shadowmask".to_string(),
             FsNode::File {
                 src: path.to_owned(),
             },
@@ -582,7 +582,7 @@ fn inject_zygisk_bins(name: &str, system: &mut FsNode) {
             bin_path.append_path("magisk32");
 
             #[cfg(target_pointer_width = "32")]
-            bin_path.append_path("magisk");
+            bin_path.append_path("shadowmask");
 
             // There are some devices that announce ABI as 64 bit only, but ship with linker
             // because they make use of a special 32 bit to 64 bit translator (such as tango).
@@ -608,7 +608,7 @@ fn inject_zygisk_bins(name: &str, system: &mut FsNode) {
         if let Some(FsNode::Directory { children }) = lib64 {
             let bin_path = cstr::buf::default()
                 .join_path(get_magisk_tmp())
-                .join_path("magisk");
+                .join_path("shadowmask");
 
             children.insert(
                 name.to_string(),
