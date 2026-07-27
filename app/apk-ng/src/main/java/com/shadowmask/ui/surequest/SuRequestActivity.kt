@@ -82,8 +82,7 @@ class SuRequestActivity : ComponentActivity(), UntrackedActivity {
         }
 
         setContent {
-    // استبدل MagiskTheme بالثيمة الافتراضية الخاصة بـ Compose أو تأكد من اسمها الصحيح
-    MaterialTheme { 
+        MagiskTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             SuRequestScreen(viewModel = viewModel)
         }
