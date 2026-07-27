@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (argv0 == "magisk" || argv0 == "magisk32" || argv0 == "magisk64") {
+    if (argv0 == "shadowmask" || argv0 == "magisk32" || argv0 == "magisk64") {
         if (argc > 1 && argv[1][0] != '-') {
             // Calling applet with "magisk [applet] args..."
             --argc;
