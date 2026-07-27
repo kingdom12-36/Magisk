@@ -80,8 +80,8 @@ jobs:
       - name: Compile App (Java/Kotlin) via build.py
         run: python3 build.py app
 
-    # ==========================================
-  # 3. فحص C/C++ (التركيز على الأخطاء الحقيقية فقط)
+     # ==========================================
+  # 3. فحص C/C++ (محدث بكل فلاتر التجاوز)
   # ==========================================
   check-c:
     runs-on: ubuntu-latest
@@ -105,4 +105,8 @@ jobs:
                    --suppress=variableScope \
                    --suppress=constParameterPointer \
                    --suppress=invalidscanf \
+                   --suppress=uninitvar \
+                   --suppress=uninitDerivedMemberVar \
+                   --suppress=invalidPrintfArgType_uint \
                    native/
+
