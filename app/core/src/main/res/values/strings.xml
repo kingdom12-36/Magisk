@@ -22,6 +22,8 @@
     <string name="home_app_title">App</string>
     <string name="home_core_title">Core</string>
     <string name="magisk">ShadowMask</string>
+    <string name="zygisk">Zygisk</string>
+    <string name="empty"></string>
     <string name="reinstall">Reinstall</string>
     <string name="home_notice_content">Download ShadowMask ONLY from the official GitHub page. Files from unknown sources can be malicious!</string>
     <string name="home_support_title">Support Us</string>
