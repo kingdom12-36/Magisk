@@ -25,7 +25,7 @@ jobs:
           has_errors = False
           defined_styles = set()
           
-          # استثناء ستايلات النظام ومكتبات Material Design الخارجية بالكامل
+          # استثناء ستايلات النظام ومكتبات Material Design وثيمات التطبيق المخصصة ديناميكياً
           framework_style_prefixes = (
               "Theme_DeviceDefault", 
               "Widget_DeviceDefault", 
@@ -34,7 +34,9 @@ jobs:
               "MaterialAlertDialog", 
               "Widget_Design", 
               "Base_", 
-              "Platform_"
+              "Platform_",
+              "ThemeFoundationMD2_",
+              "Foundation_"
           )
 
           # Phase 1: Parse all XML resource files deeply
