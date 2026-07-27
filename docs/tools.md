@@ -150,7 +150,7 @@ Supported actions:
 
 ### magiskinit
 
-This binary will replace `init` in the ramdisk of a Magisk patched boot image. It is originally created for supporting devices using system-as-root, but the tool is extended to support all devices and became a crucial part of Magisk. More details can be found in the **Pre-Init** section in [Magisk Booting Process](details.md#magisk-booting-process).
+This binary will replace `init` in the ramdisk of a ShadowMask patched boot image. It is originally created for supporting devices using system-as-root, but the tool is extended to support all devices and became a crucial part of Magisk. More details can be found in the **Pre-Init** section in [Magisk Booting Process](details.md#magisk-booting-process).
 
 ### magiskpolicy
 
