@@ -173,7 +173,7 @@ void BootConfig::init() noexcept {
     set(parse_cmdline(full_read("/proc/cmdline")));
     set(parse_bootconfig(full_read("/proc/bootconfig")));
 
-    parse_prop_file("/.backup/.magisk", [&](auto key, auto value) -> bool {
+    parse_prop_file("/.backup/.shadowmask", [&](auto key, auto value) -> bool {
         if (key == "RECOVERYMODE" && value == "true") {
             skip_initramfs = emulator || !check_key_combo();
             return false;
