@@ -6,7 +6,7 @@ use base::{
     BytesExt, LibcReturn, LoggedResult, MappedFile, ResultExt, Utf8CStr, cstr, debug, error, info,
     libc, raw_cstr,
 };
-use magiskpolicy::ffi::SePolicy;
+use shadowmaskpolicy::ffi::SePolicy;
 use std::io::{Read, Write};
 use std::ptr;
 use std::thread::sleep;

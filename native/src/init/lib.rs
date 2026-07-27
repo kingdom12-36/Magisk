@@ -2,7 +2,7 @@
 
 use logging::setup_klog;
 // Has to be pub so all symbols in that crate is included
-pub use magiskpolicy;
+pub use shadowmaskpolicy;
 use mount::{is_device_mounted, switch_root};
 use rootdir::{OverlayAttr, inject_magisk_rc};
 
