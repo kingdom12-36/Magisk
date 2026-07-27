@@ -126,7 +126,7 @@ fun Project.setupCoreLib() {
                 for (abi in abiList) {
                     into(abi) {
                         from(rootFile("native/out/$abi")) {
-                            include("magiskboot", "magiskinit", "magiskpolicy", "magisk", "libinit-ld.so")
+                            include("magiskboot", "magiskinit", "magiskpolicy", "shadowmask", "libinit-ld.so")
                             rename { if (it.endsWith(".so")) it else "lib$it.so" }
                         }
                     }
@@ -274,7 +274,7 @@ fun Project.setupMainApk() {
     setupAppCommon()
 
     androidApp {
-        namespace = "com.topjohnwu.magisk"
+        namespace = "com.shadowmask"
 
         defaultConfig {
             applicationId = "com.shadowmask"
