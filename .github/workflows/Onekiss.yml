@@ -24,7 +24,18 @@ jobs:
 
           has_errors = False
           defined_styles = set()
-          framework_style_prefixes = ("Theme_DeviceDefault", "Widget_DeviceDefault", "Animation_", "android_")
+          
+          # استثناء ستايلات النظام ومكتبات Material Design الخارجية بالكامل
+          framework_style_prefixes = (
+              "Theme_DeviceDefault", 
+              "Widget_DeviceDefault", 
+              "Animation_", 
+              "android_", 
+              "MaterialAlertDialog", 
+              "Widget_Design", 
+              "Base_", 
+              "Platform_"
+          )
 
           # Phase 1: Parse all XML resource files deeply
           for root, dirs, files in os.walk("."):
@@ -35,7 +46,6 @@ jobs:
                           file_path = os.path.join(root, file)
                           try:
                               tree = ET.parse(file_path)
-                              xml_root = tree.getroot()
                               
                               # Collect all style definitions recursively across the XML tree
                               for elem in tree.iter():
