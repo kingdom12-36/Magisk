@@ -1,6 +1,6 @@
 #MAGISK
 ############################################
-# Magisk Flash Script (updater-script)
+# ShadowMask Flash Script (updater-script)
 ############################################
 
 ##############
@@ -71,7 +71,7 @@ rm -rf $MAGISKBIN 2>/dev/null
 mkdir -p $MAGISKBIN 2>/dev/null
 cp -af $BINDIR/. $COMMONDIR/. $BBBIN $MAGISKBIN
 
-# Remove files only used by the Magisk app
+# Remove files only used by the ShadowMask app
 rm -f $MAGISKBIN/bootctl $MAGISKBIN/main.jar \
   $MAGISKBIN/module_installer.sh $MAGISKBIN/uninstaller.sh
 
@@ -82,7 +82,7 @@ if [ -d /system/addon.d ]; then
   ui_print "- Adding addon.d survival script"
   blockdev --setrw /dev/block/mapper/system$SLOT 2>/dev/null
   mount -o rw,remount /system || mount -o rw,remount /
-  ADDOND=/system/addon.d/99-magisk.sh
+  ADDOND=/system/addon.d/99-shadowmask.sh
   cp -af $COMMONDIR/addon.d.sh $ADDOND
   chmod 755 $ADDOND
 fi
@@ -91,7 +91,7 @@ fi
 # Image Patching
 ##################
 
-install_magisk
+install_shadowmask
 
 # Cleanups
 $BOOTMODE || recovery_cleanup
