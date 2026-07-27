@@ -17,7 +17,7 @@ wire {
 }
 
 android {
-    namespace = "com.topjohnwu.magisk.core"
+    namespace = "com.shadowmask.core"
 
     defaultConfig {
         buildConfigField("String", "APP_PACKAGE_NAME", "\"com.shadowmask\"")
