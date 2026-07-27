@@ -43,7 +43,7 @@ trampoline() {
 }
 
 # Always use the script in /data
-MAGISKBIN=/data/adb/magisk
+MAGISKBIN=/data/adb/shadowmask
 [ "$0" = $MAGISKBIN/addon.d.sh ] || trampoline "$@"
 
 V1_FUNCS=/tmp/backuptool.functions
@@ -115,7 +115,7 @@ main() {
   ui_print "- Device platform: $ABI"
 
   remove_system_su
-  install_magisk
+  install_shadowmask
 
   # Cleanups
   cd /
@@ -142,7 +142,7 @@ case "$1" in
       get_flags
       find_boot_image
       $MAGISKBIN/magiskboot unpack "$BOOTIMAGE"
-      $MAGISKBIN/magiskboot cpio ramdisk.cpio "extract .backup/.magisk config.orig"
+      $MAGISKBIN/magiskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
       $MAGISKBIN/magiskboot cleanup
     fi
   ;;
