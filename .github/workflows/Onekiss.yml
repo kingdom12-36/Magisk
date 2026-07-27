@@ -1,0 +1,103 @@
+name: Fast Project Validation (Res, Java, C)
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  # ==========================================
+  # 1. فحص الموارد والأخطاء والتكرار (XML Resources)
+  # ==========================================
+  check-resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate XML Resources & Check Duplicates
+        run: |
+          python3 -c '
+          import os, sys, xml.etree.ElementTree as ET
+          from collections import defaultdict
+
+          has_errors = False
+
+          for root, dirs, files in os.walk("."):
+              normalized_root = root.replace("\\", "/")
+              if "/src/main/res/values" in normalized_root:
+                  resources = defaultdict(list)
+                  
+                  for file in files:
+                      if file.endswith(".xml"):
+                          file_path = os.path.join(root, file)
+                          try:
+                              tree = ET.parse(file_path)
+                              xml_root = tree.getroot()
+                              for child in xml_root:
+                                  res_type = child.tag
+                                  res_name = child.attrib.get("name")
+                                  if res_name:
+                                      resources[(res_type, res_name)].append(file_path)
+                          except Exception as e:
+                              print(f"::error file={file_path}::XML Syntax Error: {e}")
+                              has_errors = True
+
+                  for (res_type, res_name), file_list in resources.items():
+                      if len(file_list) > 1:
+                          files_formatted = ", ".join(file_list)
+                          print(f"::error::Duplicate <{res_type} name=\"{res_name}\"> found in: {files_formatted}")
+                          has_errors = True
+
+          if has_errors:
+              print("\n❌ Resource validation failed!")
+              sys.exit(1)
+          else:
+              print("✅ All resource XML files validated successfully!")
+          '
+
+  # ==========================================
+  # 2. فحص كود Java و Kotlin عبر build.py
+  # ==========================================
+  check-java:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Compile App (Java/Kotlin) via build.py
+        run: python3 build.py app
+
+  # ==========================================
+  # 3. فحص كود C/C++ السريع بـ Cppcheck
+  # ==========================================
+  check-c:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+
+      - name: Check C/C++ Syntax and Logic
+        run: |
+          cppcheck --enable=warning,style,performance,portability \
+                   --error-exitcode=1 \
+                   --inline-suppr \
+                   --suppress=missingInclude \
+                   --suppress=missingIncludeSystem \
+                   native/
+
