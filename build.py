@@ -426,26 +426,11 @@ def build_all():
 
 
 def build_fast():
-    """Build native once (release) then both APK variants in a single Gradle call.
-
-    Compared to running './build.py -vr all' + './build.py -v all':
-    - Native is compiled only once instead of twice.
-    - Gradle is invoked once, resolving/configuring the project a single time
-      and keeping the daemon alive across all four assemble tasks.
-    - The test APK is skipped (not needed for device flashing/sideloading).
-    """
     header("* Fast build: native (release) + release & debug APKs in one pass")
 
-    # ---- 1. Native: release mode only ----------------------------------------
-    # Release-optimised binaries are smaller and what you'll actually flash.
-    # sccache handles per-TU caching; the linker step is fast.
     args.release = True
     build_native()
 
-    # ---- 2. Single Gradle invocation with all four assemble tasks ------------
-    # Gradle resolves dependencies and configures the project once, then runs
-    # assembleRelease and assembleDebug for :apk and :apk-ng in parallel
-    # (org.gradle.parallel=true is already set in gradle.properties).
     ensure_jdk()
     dump_flags_app()
     config_path = args.config.resolve()
@@ -457,29 +442,27 @@ def build_fast():
         ":apk-ng:assembleRelease",
         ":apk-ng:assembleDebug",
         f"-PconfigPath={config_path}",
+        "--info",
+        "--stacktrace",
     ])
     os.chdir("..")
     if proc.returncode != 0:
         error("Fast build: Gradle step failed")
 
-    # ---- 3. Copy / rename outputs for both variants -------------------------
     for build_type in ("release", "debug"):
-        # :apk → app-{type}.apk
         apk_src = Path("app", "apk", "build", "outputs", "apk",
                        build_type, f"apk-{build_type}.apk")
         apk_dst = config["outdir"] / f"app-{build_type}.apk"
         mv(apk_src, apk_dst)
         header(f"Output: {apk_dst}")
 
-        # stub is embedded into :apk's build; copy it out
         stub_src = Path("app", "core", "src", build_type, "assets", "stub.apk")
         stub_dst = config["outdir"] / f"stub-{build_type}.apk"
         cp(stub_src, stub_dst)
 
-        # :apk-ng → apk-ng-{type}.apk
         ng_src = Path("app", "apk-ng", "build", "outputs", "apk",
                       build_type, f"apk-ng-{build_type}.apk")
-        ng_dst = config["outdir"] / f"apk-ng-{build_type}.apk"
+        ng_dst = config["outdir"] / f"app-ng-{build_type}.apk"
         mv(ng_src, ng_dst)
         header(f"Output: {ng_dst}")
 
