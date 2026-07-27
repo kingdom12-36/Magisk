@@ -224,7 +224,6 @@ private fun genStubClasses(outDir: File): Pair<String, String> {
 }
 
 private fun genEncryptedResources(res: ByteArray, outDir: File) {
-    // ⬇️ تم تعديل المسار هنا ليطابق الباكيج الجديد
     val mainPkgDir = File(outDir, "com/shadowmask")
     mainPkgDir.mkdirs()
 
@@ -243,19 +242,6 @@ private fun genEncryptedResources(res: ByteArray, outDir: File) {
             it.transferTo(os)
         }
     }
-
-    PrintStream(File(mainPkgDir, "Bytes.java")).use {
-        it.println("package com.shadowmask;")
-        it.println("public final class Bytes {")
-
-        it.byteField("key", key)
-        it.byteField("iv", iv)
-        it.byteField("res", bos.toByteArray())
-
-        it.println("}")
-    }
-}
-
 
     PrintStream(File(mainPkgDir, "Bytes.java")).use {
         it.println("package com.shadowmask;")
