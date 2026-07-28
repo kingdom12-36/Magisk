@@ -70,7 +70,7 @@ export KEEPFORCEENCRYPT=true
 
 echo "KEEPVERITY=$KEEPVERITY" > config
 echo "KEEPFORCEENCRYPT=$KEEPFORCEENCRYPT" >> config
-echo "PREINITDEVICE=$(./magisk --preinit-device)" >> config
+echo "PREINITDEVICE=$(./shadowmask --preinit-device)" >> config
 # For API 28, we also manually disable SystemAsRoot
 # Explicitly override skip_initramfs by setting RECOVERYMODE=true
 [ $API = "28" ] && echo 'RECOVERYMODE=true' >> config

@@ -72,7 +72,7 @@ if $IS64BIT && [ -e "/system/bin/linker" ]; then
 fi
 
 # Stop zygote (and previous setup if exists)
-magisk --stop 2>/dev/null
+shadowmask --stop 2>/dev/null
 stop
 if [ -d /debug_ramdisk ]; then
   umount -l /debug_ramdisk 2>/dev/null
