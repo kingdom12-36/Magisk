@@ -83,7 +83,7 @@ pub unsafe extern "C" fn main(
         let cmds = CmdArgs::new(argc, argv);
         let cmds = cmds.as_slice();
         if argc < 2 {
-            print_usage(cmds.first().unwrap_or(&"magiskpolicy"));
+            print_usage(cmds.first().unwrap_or(&"shadowmaskpolicy"));
             return log_err!();
         }
         let cli = Cli::from_args(&[cmds[0]], &cmds[1..]).on_early_exit(|| print_usage(cmds[0]));

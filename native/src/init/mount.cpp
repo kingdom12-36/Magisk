@@ -225,7 +225,7 @@ void MagiskInit::setup_tmp(const char *path) noexcept {
     // Create applet symlinks
     for (int i = 0; applet_names[i]; ++i)
         xsymlink("./shadowmask", applet_names[i]);
-    xsymlink("./magiskpolicy", "supolicy");
+    xsymlink("./shadowmaskpolicy", "supolicy");
 
     xmount(".", path, nullptr, MS_BIND, nullptr);
 

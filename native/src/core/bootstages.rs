@@ -88,19 +88,19 @@ impl MagiskD {
             .status()
             .log_ok();
 
-        // magisk32 and magiskpolicy are not installed into ramdisk and has to be copied
-        // from data to magisk tmp
-        let magisk32 = cstr!(concatcp!(DATABIN, "/magisk32"));
-        if magisk32.exists() {
-            let tmp = buf.append_path(get_magisk_tmp()).append_path("magisk32");
-            magisk32.copy_to(tmp).log_ok();
+        // shadowmask32 and shadowmaskpolicy are not installed into ramdisk and has to be copied
+        // from data to shadowmask tmp
+        let shadowmask32 = cstr!(concatcp!(DATABIN, "/shadowmask32"));
+        if shadowmask32.exists() {
+            let tmp = buf.append_path(get_magisk_tmp()).append_path("shadowmask32");
+            shadowmask32.copy_to(tmp).log_ok();
         }
-        let magiskpolicy = cstr!(concatcp!(DATABIN, "/magiskpolicy"));
-        if magiskpolicy.exists() {
+        let shadowmaskpolicy = cstr!(concatcp!(DATABIN, "/shadowmaskpolicy"));
+        if shadowmaskpolicy.exists() {
             let tmp = buf
                 .append_path(get_magisk_tmp())
-                .append_path("magiskpolicy");
-            magiskpolicy.copy_to(tmp).log_ok();
+                .append_path("shadowmaskpolicy");
+            shadowmaskpolicy.copy_to(tmp).log_ok();
         }
 
         true

@@ -20,9 +20,9 @@
 
 mount_tmpfs() {
   # If a file name 'shadowmask' is in current directory, mount will fail
-  mv magisk magisk.tmp
-  mount -t tmpfs -o 'mode=0755' magisk $1
-  mv magisk.tmp magisk
+  mv shadowmask shadowmask.tmp
+  mount -t tmpfs -o 'mode=0755' shadowmask $1
+  mv shadowmask.tmp shadowmask
 }
 
 mount_sbin() {
@@ -66,9 +66,9 @@ for file in lib*.so; do
 done
 
 if $IS64BIT && [ -e "/system/bin/linker" ]; then
-  unzip -oj magisk.apk "lib/$ABI32/libmagisk.so"
-  mv libmagisk.so magisk32
-  chmod 755 magisk32
+  unzip -oj magisk.apk "lib/$ABI32/libshadowmask.so"
+  mv libshadowmask.so shadowmask32
+  chmod 755 shadowmask32
 fi
 
 # Stop zygote (and previous setup if exists)
@@ -131,7 +131,7 @@ mkdir /data/adb/modules 2>/dev/null
 mkdir /data/adb/post-fs-data.d 2>/dev/null
 mkdir /data/adb/service.d 2>/dev/null
 
-for file in magisk magisk32 magiskpolicy stub.apk; do
+for file in shadowmask shadowmask32 shadowmaskpolicy stub.apk; do
   chmod 755 ./$file
   cp -af ./$file $MAGISKTMP/$file
   cp -af ./$file $MAGISKBIN/$file
@@ -140,9 +140,9 @@ cp -af ./magiskboot $MAGISKBIN/magiskboot
 cp -af ./magiskinit $MAGISKBIN/magiskinit
 cp -af ./busybox $MAGISKBIN/busybox
 
-ln -s ./magisk $MAGISKTMP/su
-ln -s ./magisk $MAGISKTMP/resetprop
-ln -s ./magiskpolicy $MAGISKTMP/supolicy
+ln -s ./shadowmask $MAGISKTMP/su
+ln -s ./shadowmask $MAGISKTMP/resetprop
+ln -s ./shadowmaskpolicy $MAGISKTMP/supolicy
 
 mkdir -p $MAGISKTMP/.shadowmask/device
 mkdir -p $MAGISKTMP/.shadowmask/worker
@@ -151,7 +151,7 @@ mount --make-private $MAGISKTMP/.shadowmask/worker
 touch $MAGISKTMP/.shadowmask/config
 
 export MAGISKTMP
-MAKEDEV=1 $MAGISKTMP/magisk --preinit-device 2>&1
+MAKEDEV=1 $MAGISKTMP/shadowmask --preinit-device 2>&1
 
 RULESCMD=""
 rule="$MAGISKTMP/.shadowmask/preinit/sepolicy.rule"
@@ -160,18 +160,18 @@ rule="$MAGISKTMP/.shadowmask/preinit/sepolicy.rule"
 # SELinux stuffs
 if [ -d /sys/fs/selinux ]; then
   if [ -f /vendor/etc/selinux/precompiled_sepolicy ]; then
-    ./magiskpolicy --load /vendor/etc/selinux/precompiled_sepolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --load /vendor/etc/selinux/precompiled_sepolicy --live --magisk $RULESCMD 2>&1
   elif [ -f /sepolicy ]; then
-    ./magiskpolicy --load /sepolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --load /sepolicy --live --magisk $RULESCMD 2>&1
   else
-    ./magiskpolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --live --magisk $RULESCMD 2>&1
   fi
 fi
 
 # Boot up
-$MAGISKTMP/magisk --post-fs-data
+$MAGISKTMP/shadowmask --post-fs-data
 start
-$MAGISKTMP/magisk --service
+$MAGISKTMP/shadowmask --service
 # Make sure reset nb prop after zygote starts
 sleep 2
-$MAGISKTMP/magisk --boot-complete
+$MAGISKTMP/shadowmask --boot-complete

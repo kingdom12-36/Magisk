@@ -11,7 +11,7 @@ using namespace std;
     fprintf(stderr,
 R"EOF(DenyList Config CLI
 
-Usage: magisk --denylist [action [arguments...] ]
+Usage: shadowmask --denylist [action [arguments...] ]
 Actions:
    status          Return the enforcement status
    enable          Enable denylist enforcement

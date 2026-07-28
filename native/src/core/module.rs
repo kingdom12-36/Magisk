@@ -417,8 +417,8 @@ impl FsNode {
                 if let Some(name) = path.real().file_name()
                     && name == "supolicy"
                 {
-                    module_log!("mklink", path.worker(), "./magiskpolicy");
-                    path.worker().create_symlink_to(cstr!("./magiskpolicy"))?;
+                    module_log!("mklink", path.worker(), "./shadowmaskpolicy");
+                    path.worker().create_symlink_to(cstr!("./shadowmaskpolicy"))?;
                 } else {
                     module_log!("mklink", path.worker(), "./shadowmask");
                     path.worker().create_symlink_to(cstr!("./shadowmask"))?;
@@ -454,9 +454,9 @@ fn inject_magisk_bins(system: &mut FsNode, is_emulator: bool) {
         );
 
         path.truncate(len);
-        path.append_path("magiskpolicy");
+        path.append_path("shadowmaskpolicy");
         children.insert(
-            "magiskpolicy".to_string(),
+            "shadowmaskpolicy".to_string(),
             FsNode::File {
                 src: path.to_owned(),
             },

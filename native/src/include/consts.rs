@@ -19,7 +19,7 @@ pub const LOGFILE: &str = "/cache/shadowmask.log";
 pub const SECURE_DIR: &str = "/data/adb";
 pub const MODULEROOT: &str = concatcp!(SECURE_DIR, "/modules");
 pub const MODULEUPGRADE: &str = concatcp!(SECURE_DIR, "/modules_update");
-pub const DATABIN: &str = concatcp!(SECURE_DIR, "/magisk");
+pub const DATABIN: &str = concatcp!(SECURE_DIR, "/shadowmask");
 pub const SHADOWMASKDB: &str = concatcp!(SECURE_DIR, "/shadowmask.db");
 
 // tmpfs paths
