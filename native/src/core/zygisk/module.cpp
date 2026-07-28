@@ -874,7 +874,7 @@ void ZygiskContext::app_specialize_pre() {
     // its own FIFO path (".shadowmask/su_request_<pid>") is matched by
     // path_is_hidden() → canWrite() returns false → SuRequestActivity bails
     // before showing the permission dialog → no grant, no superuser list entry.
-    if (process && strstr(process, JAVA_PACKAGE_NAME)) {
+    if (process && strstr(process, "com.shadowmask")) {
         info_flags |= +ZygiskStateFlags::ProcessIsMagiskApp;
     }
     // ───────────────────────────────────────────────────────────────────────
