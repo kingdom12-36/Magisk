@@ -44,7 +44,7 @@ class SettingsViewModel : BaseViewModel() {
     fun toggleDenyList(enabled: Boolean) {
         _denyListEnabled.value = enabled
         val cmd = if (enabled) "enable" else "disable"
-        Shell.cmd("magisk --denylist $cmd").submit { result ->
+        Shell.cmd("shadowmask --denylist $cmd").submit { result ->
             if (result.isSuccess) {
                 Config.denyList = enabled
             } else {

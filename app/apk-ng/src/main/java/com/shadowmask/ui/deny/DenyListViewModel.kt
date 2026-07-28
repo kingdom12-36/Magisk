@@ -93,7 +93,7 @@ class DenyListViewModel : AsyncLoadViewModel() {
         _loading.value = true
         val apps = withContext(Dispatchers.Default) {
             val pm = AppContext.packageManager
-            val denyList = Shell.cmd("magisk --denylist ls").exec().out
+            val denyList = Shell.cmd("shadowmask --denylist ls").exec().out
                 .map { CmdlineListItem(it) }
             val apps = pm.getInstalledApplications(MATCH_UNINSTALLED_PACKAGES).run {
                 asFlow()
@@ -124,7 +124,7 @@ class DenyAppState(val info: AppProcessInfo) : Comparable<DenyAppState> {
 
     fun toggleAll() {
         if (isChecked) {
-            Shell.cmd("magisk --denylist rm ${info.packageName}").submit()
+            Shell.cmd("shadowmask --denylist rm ${info.packageName}").submit()
             processes.filter { it.isEnabled }.forEach { proc ->
                 if (proc.process.isIsolated) {
                     proc.toggle()
@@ -157,6 +157,6 @@ class DenyProcessState(val process: ProcessInfo) {
         isEnabled = !isEnabled
         val arg = if (isEnabled) "add" else "rm"
         val (name, pkg) = process
-        Shell.cmd("magisk --denylist $arg $pkg \'$name\'").submit()
+        Shell.cmd("shadowmask --denylist $arg $pkg \'$name\'").submit()
     }
 }

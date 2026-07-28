@@ -47,7 +47,7 @@ class Environment : BaseTest {
 
         // It is possible that there are no suitable preinit partition to use
         fun preinit(): Boolean {
-            return Shell.cmd("magisk --preinit-device").exec().isSuccess
+            return Shell.cmd("shadowmask --preinit-device").exec().isSuccess
         }
 
         fun lsposed(): Boolean {

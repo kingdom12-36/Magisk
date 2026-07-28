@@ -86,12 +86,12 @@ object Info {
 
     fun init(shell: Shell) {
         if (shell.isRoot) {
-            val v = fastCmd(shell, "magisk -v").split(":")
+            val v = fastCmd(shell, "shadowmask -v").split(":")
             env = Env(
                 v[0], v.size >= 3 && v[2] == "D",
-                runCatching { fastCmd("magisk -V").toInt() }.getOrDefault(-1)
+                runCatching { fastCmd("shadowmask -V").toInt() }.getOrDefault(-1)
             )
-            Config.denyList = fastCmdResult(shell, "magisk --denylist status")
+            Config.denyList = fastCmdResult(shell, "shadowmask --denylist status")
         }
 
         val map = mutableMapOf<String, String>()
