@@ -41,7 +41,7 @@ class ShellInit : Shell.Initializer() {
             }
 
             if (shell.isRoot) {
-                add("export MAGISKTMP=\$(magisk --path)")
+                add("export MAGISKTMP=\$(shadowmask --path)")
                 // Test if we can properly execute stuff in /data
                 Info.noDataExec = !shell.newJob()
                     .add("$localBB sh -c '$localBB true'").exec().isSuccess
