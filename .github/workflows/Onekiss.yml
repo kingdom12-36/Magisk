@@ -1,119 +1,256 @@
-name: Fast Project Validation (Res, Java, C, Themes)
+name: Fast Project Validation
+
+# Runs on every push/PR as a cheap, sub-2-minute gate.
+# Full compilation lives in build.yml / Testbuild.yml.
+# This workflow only does static analysis — no NDK, no Gradle, no Android SDK.
 
 on:
   push:
     branches: [ "master", "main" ]
   pull_request:
     branches: [ "master", "main" ]
+  workflow_dispatch:
+
+# Cancel any in-progress run for the same branch so stale checks don't block merges.
+concurrency:
+  group: fast-validate-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  # ==========================================
-  # 1. فحص الموارد (XML Resources) والـ Themes
-  # ==========================================
-  check-resources:
+  # ══════════════════════════════════════════════════════════════════
+  # 1. NATIVE BINARY RENAME GUARD
+  #    Catches any place the old "magisk" binary name was left behind
+  #    in the native layer — the exact class of bug fixed 2025-07-28.
+  #    Runs first so devs get the error within seconds.
+  # ══════════════════════════════════════════════════════════════════
+  check-native-renames:
+    name: Native rename guard (magisk → shadowmask)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Validate XML Resources, Duplicates & Themes Consistency
+      - name: Scan for hardcoded magisk binary references in native/
         run: |
-          python3 -c '
+          python3 - <<'EOF'
+          import subprocess, sys, re, os
+
+          # Patterns that should NOT exist in native/ after the rename.
+          # Each entry: (regex, description, allowed_suffixes_that_are_OK)
+          # allowed_suffixes: if the match is one of these tool names it is fine.
+          TOOL_NAMES = {"magiskpolicy", "magiskinit", "magiskboot", "magisk32", "magisk64"}
+
+          patterns = [
+              # Bare "./magisk" symlink target in C++ or Rust
+              (r'"\.\/magisk"',
+               'bare "./magisk" symlink — should be "./shadowmask"'),
+              # Binary invocation in injected rc scripts (Rust string literals)
+              (r'/magisk\s+--',
+               'binary invocation /magisk -- in rc script — should be /shadowmask --'),
+              # Old SELinux exec domain
+              (r'u:r:magisk:s0',
+               'hardcoded SELinux domain u:r:magisk:s0 — should be u:r:shadowmask:s0'),
+              # xsymlink("./magisk" in C++ setup_tmp
+              (r'xsymlink\s*\(\s*"\.\/magisk"',
+               'xsymlink to "./magisk" — should be "./shadowmask"'),
+          ]
+
+          extensions = {'.rs', '.cpp', '.c', '.cc', '.cxx', '.h', '.hpp'}
+          skip_dirs  = {'external', 'target', '.git'}
+
+          found = False
+          for root, dirs, files in os.walk('native'):
+              dirs[:] = [d for d in dirs if d not in skip_dirs]
+              for fname in files:
+                  if os.path.splitext(fname)[1] not in extensions:
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      content = open(fpath, encoding='utf-8', errors='replace').read()
+                  except Exception:
+                      continue
+                  for lineno, line in enumerate(content.splitlines(), 1):
+                      for pat, desc in patterns:
+                          m = re.search(pat, line)
+                          if not m:
+                              continue
+                          # Allow known tool-name suffixes (magiskpolicy, magiskinit…)
+                          hit = m.group(0)
+                          if any(tool in hit for tool in TOOL_NAMES):
+                              continue
+                          rel = os.path.relpath(fpath)
+                          repo = os.environ.get('GITHUB_REPOSITORY', '')
+                          sha  = os.environ.get('GITHUB_SHA', 'HEAD')
+                          link = f"https://github.com/{repo}/blob/{sha}/{rel}#L{lineno}"
+                          print(f"::error file={rel},line={lineno}::{desc}")
+                          print(f"  🔗 {link}")
+                          print(f"  Line {lineno}: {line.strip()}")
+                          found = True
+
+          if found:
+              print()
+              print("❌ Old 'magisk' binary references found in native layer.")
+              print("   The binary is named 'shadowmask'. Update all symlink targets,")
+              print("   rc script invocations, and SELinux domains accordingly.")
+              sys.exit(1)
+          else:
+              print("✅ No stale magisk binary references found in native/")
+          EOF
+
+      - name: Scan for hardcoded magisk binary references in app/
+        run: |
+          python3 - <<'EOF'
+          import os, re, sys
+
+          # In app/ Kotlin/Java the concern is old package names and any
+          # string literals that directly name the magisk binary.
+          patterns = [
+              (r'com\.topjohnwu\.magisk',
+               'old Magisk package name — should be com.shadowmask'),
+              (r'["\x27]/magisk["\x27\s]',
+               'hardcoded /magisk path string — should be /shadowmask'),
+          ]
+
+          extensions = {'.kt', '.java', '.aidl', '.xml'}
+          skip_dirs  = {'build', '.gradle', '.git'}
+
+          found = False
+          for root, dirs, files in os.walk('app'):
+              dirs[:] = [d for d in dirs if d not in skip_dirs]
+              for fname in files:
+                  if os.path.splitext(fname)[1] not in extensions:
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      content = open(fpath, encoding='utf-8', errors='replace').read()
+                  except Exception:
+                      continue
+                  for lineno, line in enumerate(content.splitlines(), 1):
+                      for pat, desc in patterns:
+                          if re.search(pat, line):
+                              rel  = os.path.relpath(fpath)
+                              repo = os.environ.get('GITHUB_REPOSITORY', '')
+                              sha  = os.environ.get('GITHUB_SHA', 'HEAD')
+                              link = f"https://github.com/{repo}/blob/{sha}/{rel}#L{lineno}"
+                              print(f"::error file={rel},line={lineno}::{desc}")
+                              print(f"  🔗 {link}")
+                              print(f"  Line {lineno}: {line.strip()}")
+                              found = True
+
+          if found:
+              print()
+              print("❌ Old Magisk references found in app layer.")
+              sys.exit(1)
+          else:
+              print("✅ No stale Magisk references found in app/")
+          EOF
+
+  # ══════════════════════════════════════════════════════════════════
+  # 2. XML RESOURCES & THEMES
+  # ══════════════════════════════════════════════════════════════════
+  check-resources:
+    name: XML resources & theme consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate XML, duplicates & theme references
+        run: |
+          python3 - <<'EOF'
           import os, sys, re, xml.etree.ElementTree as ET
           from collections import defaultdict
 
           has_errors = False
           defined_styles = set()
-          
-          # استثناء ستايلات النظام ومكتبات Material Design وثيمات التطبيق المخصصة ديناميكياً
-          framework_style_prefixes = (
-              "Theme_DeviceDefault", 
-              "Widget_DeviceDefault", 
-              "Animation_", 
-              "android_", 
-              "MaterialAlertDialog", 
-              "Widget_Design", 
-              "Base_", 
+
+          # Framework / library style prefixes that are always valid even if
+          # not defined locally in the project's res/ folders.
+          FRAMEWORK_PREFIXES = (
+              "Theme_DeviceDefault",
+              "Widget_DeviceDefault",
+              "Animation_",
+              "android_",
+              "MaterialAlertDialog",
+              "Widget_Design",
+              "Base_",
               "Platform_",
               "ThemeFoundationMD2_",
-              "Foundation_"
+              "Foundation_",
           )
 
-          # Phase 1: Parse all XML resource files deeply
+          SKIP_DIRS = {"build", ".gradle", ".git"}
+
+          # ── Phase 1: collect every defined style & check for duplicates ──
           for root, dirs, files in os.walk("."):
-              normalized_root = root.replace("\\", "/")
-              if "/res" in normalized_root:
-                  for file in files:
-                      if file.endswith(".xml"):
-                          file_path = os.path.join(root, file)
-                          try:
-                              tree = ET.parse(file_path)
-                              
-                              # Collect all style definitions recursively across the XML tree
-                              for elem in tree.iter():
-                                  tag_name = elem.tag.split("}")[-1]
-                                  res_name = elem.attrib.get("name")
-                                  
-                                  if tag_name == "style" and res_name:
-                                      defined_styles.add(res_name)
+              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+              norm = root.replace("\\", "/")
+              if "/res" not in norm:
+                  continue
+              for fname in files:
+                  if not fname.endswith(".xml"):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      tree = ET.parse(fpath)
+                  except Exception as e:
+                      print(f"::error file={fpath}::XML syntax error: {e}")
+                      has_errors = True
+                      continue
 
-                              # Check for duplicates if inside values directory
-                              if "/values" in normalized_root:
-                                  resources = defaultdict(list)
-                                  for elem in tree.iter():
-                                      tag_name = elem.tag.split("}")[-1]
-                                      res_name = elem.attrib.get("name")
-                                      if res_name and tag_name in ["string", "color", "style", "array", "dimen", "integer"]:
-                                          resources[(tag_name, res_name)].append(file_path)
+                  for elem in tree.iter():
+                      tag = elem.tag.split("}")[-1]
+                      name = elem.attrib.get("name")
+                      if tag == "style" and name:
+                          defined_styles.add(name)
 
-                                  for (res_type, res_name), file_list in resources.items():
-                                      if len(file_list) > 1:
-                                          files_formatted = ", ".join(file_list)
-                                          print(f"::error::Duplicate <{res_type} name=\"{res_name}\"> found in: {files_formatted}")
-                                          has_errors = True
-
-                          except Exception as e:
-                              print(f"::error file={file_path}::XML Syntax Error: {e}")
+                  if "/values" in norm:
+                      resources = defaultdict(list)
+                      for elem in tree.iter():
+                          tag  = elem.tag.split("}")[-1]
+                          name = elem.attrib.get("name")
+                          if name and tag in {"string", "color", "style", "array", "dimen", "integer"}:
+                              resources[(tag, name)].append(fpath)
+                      for (rtype, rname), paths in resources.items():
+                          if len(paths) > 1:
+                              print(f"::error::Duplicate <{rtype} name=\"{rname}\"> in: {', '.join(paths)}")
                               has_errors = True
 
-          # Phase 2: Validate Custom Themes defined in Kotlin/Java files
-          referenced_themes = set()
+          # ── Phase 2: verify R.style.* calls resolve to defined styles ──
           for root, dirs, files in os.walk("."):
-              for file in files:
-                  if file.endswith(".kt") or file.endswith(".java"):
-                      kt_path = os.path.join(root, file)
-                      try:
-                          with open(kt_path, "r", encoding="utf-8") as f:
-                              content = f.read()
-                              found_styles = re.findall(r"R\.style\.([A-Za-z0-9_]+)", content)
-                              for style_name in found_styles:
-                                  if any(style_name.startswith(p) for p in framework_style_prefixes):
-                                      continue
-                                  referenced_themes.add((style_name, kt_path))
-                      except Exception:
-                          pass
-
-          # Check if referenced custom themes actually exist in XML styles
-          for style_name, kt_file in referenced_themes:
-              if style_name not in defined_styles:
-                  print(f"::error file={kt_file}::Theme style \x27R.style.{style_name}\x27 is referenced in code but missing in XML values definition!")
-                  has_errors = True
+              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+              for fname in files:
+                  if not (fname.endswith(".kt") or fname.endswith(".java")):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      content = open(fpath, encoding="utf-8", errors="replace").read()
+                  except Exception:
+                      continue
+                  for style_name in re.findall(r"R\.style\.([A-Za-z0-9_]+)", content):
+                      if any(style_name.startswith(p) for p in FRAMEWORK_PREFIXES):
+                          continue
+                      if style_name not in defined_styles:
+                          print(f"::error file={fpath}::R.style.{style_name} referenced but missing in XML values")
+                          has_errors = True
 
           if has_errors:
-              print("\n❌ Resource & Theme validation failed!")
+              print("\n❌ Resource / theme validation failed.")
               sys.exit(1)
           else:
-              print("✅ All resource XML files, duplicates, and Theme mappings validated successfully!")
-          '
+              print("✅ XML resources, duplicates, and theme references all valid.")
+          EOF
 
-  # ==========================================
-  # 2. فحص كود Java و Kotlin والاستيرادات
-  # ==========================================
-  check-java:
+  # ══════════════════════════════════════════════════════════════════
+  # 3. JAVA / KOTLIN STATIC ANALYSIS
+  #    ⚠️  No full compilation here — build.yml / Testbuild.yml own that.
+  #    Running build.py app without the setup action (NDK, Gradle cache)
+  #    always fails and gives no useful signal. This job does fast,
+  #    no-SDK static checks instead.
+  # ══════════════════════════════════════════════════════════════════
+  check-java-kotlin:
+    name: Java & Kotlin static analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -121,60 +258,157 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Check for leftover Magisk package references
+      - name: Install ktlint
         run: |
-          echo "Scanning for old Magisk packages and imports..."
-          FOUND=0
-          
-          while IFS=: read -r file line content; do
-            if [ -n "$file" ]; then
-              FOUND=1
-              echo "🔗 https://github.com/${{ github.repository }}/blob/${{ github.sha }}/$file#L$line"
-              echo "::error file=$file,line=$line::Found old Magisk reference: $content"
-            fi
-          done < <(grep -rn --include=\*.{kt,java,aidl} "com\.topjohnwu\.magisk" app/)
+          KTLINT_VERSION="1.3.1"
+          curl -sSLO "https://github.com/pinterest/ktlint/releases/download/${KTLINT_VERSION}/ktlint"
+          chmod +x ktlint
+          sudo mv ktlint /usr/local/bin/ktlint
+          ktlint --version
 
-          if [ $FOUND -eq 1 ]; then
-            echo "❌ Please update the references above to com.shadowmask."
-            exit 1
+      - name: Check Kotlin style & syntax (ktlint)
+        # editorconfig rules only; no full compilation needed
+        run: |
+          find app -name "*.kt" | sort > /tmp/kt_files.txt
+          FILE_COUNT=$(wc -l < /tmp/kt_files.txt)
+          echo "Checking ${FILE_COUNT} Kotlin files…"
+          if [ "$FILE_COUNT" -gt 0 ]; then
+            # --reporter=plain shows file:line:col::message format
+            ktlint --reporter=plain --reporter=checkstyle,output=/tmp/ktlint-report.xml \
+              $(cat /tmp/kt_files.txt | tr '\n' ' ') || {
+              echo "::group::ktlint errors"
+              # Emit individual GitHub annotations
+              while IFS= read -r line; do
+                # ktlint plain format: path:line:col: message (rule)
+                if [[ "$line" =~ ^(.+):([0-9]+):([0-9]+):[[:space:]]+(.+)$ ]]; then
+                  FILE="${BASH_REMATCH[1]}"
+                  LINENO="${BASH_REMATCH[2]}"
+                  MSG="${BASH_REMATCH[4]}"
+                  echo "::error file=${FILE},line=${LINENO}::${MSG}"
+                else
+                  echo "$line"
+                fi
+              done < <(ktlint --reporter=plain $(cat /tmp/kt_files.txt | tr '\n' ' ') 2>&1 || true)
+              echo "::endgroup::"
+              echo "❌ ktlint found style/syntax issues."
+              exit 1
+            }
+            echo "✅ All Kotlin files pass ktlint."
           else
-            echo "✅ All imports and packages are clean!"
+            echo "ℹ️  No Kotlin files found — skipping."
           fi
 
-      - name: Compile App (Java/Kotlin) via build.py
-        run: python3 build.py app
+      - name: Check Java style (basic structural checks)
+        run: |
+          python3 - <<'EOF'
+          import os, re, sys
+          SKIP_DIRS = {"build", ".gradle", ".git"}
+          issues = []
 
-  # ==========================================
-  # 3. فحص C/C++
-  # ==========================================
+          for root, dirs, files in os.walk("app"):
+              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+              for fname in files:
+                  if not fname.endswith(".java"):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      lines = open(fpath, encoding="utf-8", errors="replace").readlines()
+                  except Exception:
+                      continue
+
+                  # Rule: package declaration must match file path
+                  pkg_line = next((l.strip() for l in lines if l.strip().startswith("package ")), None)
+                  if pkg_line:
+                      declared = re.sub(r'^package\s+|;$', '', pkg_line).strip()
+                      expected_pkg = (
+                          os.path.relpath(os.path.dirname(fpath), "app")
+                          .replace(os.sep, "/")
+                      )
+                      # Only enforce for files under a java/ source set
+                      if "/java/" in expected_pkg:
+                          java_part = expected_pkg.split("/java/", 1)[-1].replace("/", ".")
+                          if java_part and declared != java_part:
+                              issues.append(
+                                  f"::error file={fpath}::Package '{declared}' "
+                                  f"doesn't match directory '{java_part}'"
+                              )
+
+                  # Rule: no wildcard imports
+                  for lineno, line in enumerate(lines, 1):
+                      if re.match(r'\s*import\s+[\w.]+\.\*\s*;', line):
+                          issues.append(
+                              f"::error file={fpath},line={lineno}::"
+                              f"Wildcard import: {line.strip()}"
+                          )
+
+          for msg in issues:
+              print(msg)
+          if issues:
+              print(f"\n❌ {len(issues)} Java structural issue(s) found.")
+              sys.exit(1)
+          else:
+              print("✅ Java structural checks passed.")
+          EOF
+
+      - name: Verify no com.topjohnwu.magisk references remain
+        run: |
+          echo "Scanning for old Magisk package imports…"
+          FOUND=0
+          while IFS=: read -r file lineno content; do
+            [ -z "$file" ] && continue
+            FOUND=1
+            LINK="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/${file}#L${lineno}"
+            echo "::error file=${file},line=${lineno}::Found old Magisk reference: ${content}"
+            echo "  🔗 ${LINK}"
+          done < <(grep -rn --include="*.kt" --include="*.java" --include="*.aidl" \
+                       "com\.topjohnwu\.magisk" app/ 2>/dev/null)
+          if [ "$FOUND" -eq 1 ]; then
+            echo "❌ Update the references above to com.shadowmask"
+            exit 1
+          fi
+          echo "✅ No old Magisk package references found."
+
+  # ══════════════════════════════════════════════════════════════════
+  # 4. C / C++ STATIC ANALYSIS
+  # ══════════════════════════════════════════════════════════════════
   check-c:
+    name: C/C++ static analysis (cppcheck)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Cppcheck
-        run: sudo apt-get update && sudo apt-get install -y cppcheck
+      - name: Install cppcheck
+        run: sudo apt-get update -q && sudo apt-get install -y -q cppcheck
 
-      - name: Check C/C++ Syntax and Logic
+      - name: Run cppcheck
         run: |
-          cppcheck --enable=warning,performance,portability \
-                   --error-exitcode=1 \
-                   --inline-suppr \
-                   -i native/src/external/ \
-                   --suppress=missingInclude \
-                   --suppress=missingIncludeSystem \
-                   --suppress=unknownMacro \
-                   --suppress=cstyleCast \
-                   --suppress=variableScope \
-                   --suppress=constParameterPointer \
-                   --suppress=invalidscanf \
-                   --suppress=uninitvar \
-                   --suppress=uninitDerivedMemberVar \
-                   --suppress=invalidPrintfArgType_uint \
-                   native/
+          cppcheck \
+            --enable=warning,performance,portability \
+            --error-exitcode=1 \
+            --inline-suppr \
+            -i native/src/external/ \
+            --suppress=missingInclude \
+            --suppress=missingIncludeSystem \
+            --suppress=unknownMacro \
+            --suppress=cstyleCast \
+            --suppress=variableScope \
+            --suppress=constParameterPointer \
+            --suppress=invalidscanf \
+            --suppress=uninitvar \
+            --suppress=uninitDerivedMemberVar \
+            --suppress=invalidPrintfArgType_uint \
+            native/ 2>&1 | tee /tmp/cppcheck.txt
+
+          # Surface cppcheck errors as GitHub annotations
+          python3 - <<'EOF'
+          import re, os
+
+          with open("/tmp/cppcheck.txt") as f:
+              for line in f:
+                  # cppcheck format: file:line:col: severity: message [id]
+                  m = re.match(r'^(.+?):(\d+):(\d+):\s*(error|warning|performance|portability):\s*(.+)', line)
+                  if m:
+                      fpath, lineno, _, severity, msg = m.groups()
+                      level = "error" if severity == "error" else "warning"
+                      print(f"::{level} file={fpath},line={lineno}::{msg.strip()}")
+          EOF
