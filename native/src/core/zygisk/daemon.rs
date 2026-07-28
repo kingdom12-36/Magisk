@@ -34,7 +34,7 @@ fn exec_zygiskd(is_64_bit: bool, remote: UnixStream) {
     // Start building the exec arguments
 
     #[cfg(target_pointer_width = "64")]
-    let magisk = if is_64_bit { "shadowmask" } else { "magisk32" };
+    let magisk = if is_64_bit { "shadowmask" } else { "shadowmask32" };
 
     #[cfg(target_pointer_width = "32")]
     let magisk = "shadowmask";
