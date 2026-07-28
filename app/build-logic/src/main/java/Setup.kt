@@ -131,8 +131,9 @@ fun Project.setupCoreLib() {
                         }
                     }
                 }
-                from(zipTree(downloadFile(BUSYBOX_DOWNLOAD_URL, BUSYBOX_ZIP_CHECKSUM)))
-                include(abiList.map { "$it/libbusybox.so" })
+                from(zipTree(downloadFile(BUSYBOX_DOWNLOAD_URL, BUSYBOX_ZIP_CHECKSUM))) {
+                    include(abiList.map { "$it/libbusybox.so" })
+                }
                 doFirst {
                     val actual = inputs.sourceFiles.files.size
                     val expected = abiList.size * 6
