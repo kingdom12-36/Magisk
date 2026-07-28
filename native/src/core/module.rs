@@ -420,8 +420,8 @@ impl FsNode {
                     module_log!("mklink", path.worker(), "./magiskpolicy");
                     path.worker().create_symlink_to(cstr!("./magiskpolicy"))?;
                 } else {
-                    module_log!("mklink", path.worker(), "./magisk");
-                    path.worker().create_symlink_to(cstr!("./magisk"))?;
+                    module_log!("mklink", path.worker(), "./shadowmask");
+                    path.worker().create_symlink_to(cstr!("./shadowmask"))?;
                 }
             }
             FsNode::Whiteout => {
