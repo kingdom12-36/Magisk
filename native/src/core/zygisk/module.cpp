@@ -865,6 +865,20 @@ void ZygiskContext::run_modules_post() {
 void ZygiskContext::app_specialize_pre() {
     flags |= APP_SPECIALIZE;
 
+    // ── Option D safety net ─────────────────────────────────────────────────
+    // Always exempt the ShadowMask manager from spoof hooks by name, regardless
+    // of whether the daemon has resolved its UID yet (first boot, randomised-
+    // package-name scenarios, or any get_manager_uid() race).
+    //
+    // Without this guard the manager process receives install_spoof_hooks() and
+    // its own FIFO path (".shadowmask/su_request_<pid>") is matched by
+    // path_is_hidden() → canWrite() returns false → SuRequestActivity bails
+    // before showing the permission dialog → no grant, no superuser list entry.
+    if (process && strstr(process, JAVA_PACKAGE_NAME)) {
+        info_flags |= +ZygiskStateFlags::ProcessIsMagiskApp;
+    }
+    // ───────────────────────────────────────────────────────────────────────
+
     rust::Vec<int> module_fds;
     owned_fd fd = get_module_info(args.app->uid, module_fds);
     if ((info_flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
