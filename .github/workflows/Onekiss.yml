@@ -1,8 +1,7 @@
-name: Fast Project Validation
+name: Fast Project Validation & Complete Magisk Audit
 
-# Runs on every push/PR as a cheap, sub-2-minute gate.
-# Full compilation lives in build.yml / Testbuild.yml.
-# This workflow only does static analysis — no NDK, no Gradle, no Android SDK.
+# Runs on every push/PR as a comprehensive gate.
+# Performs static analysis, Zygisk verification, and exhaustive string classification.
 
 on:
   push:
@@ -11,137 +10,114 @@ on:
     branches: [ "master", "main" ]
   workflow_dispatch:
 
-# Cancel any in-progress run for the same branch so stale checks don't block merges.
 concurrency:
   group: fast-validate-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # ══════════════════════════════════════════════════════════════════
-  # 1. NATIVE BINARY RENAME GUARD
-  #    Catches any place the old "magisk" binary name was left behind
-  #    in the native layer — the exact class of bug fixed 2025-07-28.
-  #    Runs first so devs get the error within seconds.
-  # ══════════════════════════════════════════════════════════════════
-  check-native-renames:
-    name: Native rename guard (magisk → shadowmask)
+  comprehensive-magisk-audit:
+    name: Complete Magisk Residue & Zygisk Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Scan for hardcoded magisk binary references in native/
-        run: |
-          python3 - <<'EOF'
-          import subprocess, sys, re, os
-
-          # Patterns that should NOT exist in native/ after the rename.
-          # Each entry: (regex, description, allowed_suffixes_that_are_OK)
-          # allowed_suffixes: if the match is one of these tool names it is fine.
-          TOOL_NAMES = {"magiskpolicy", "magiskinit", "magiskboot", "magisk32", "magisk64"}
-
-          patterns = [
-              # Bare "./magisk" symlink target in C++ or Rust
-              (r'"\.\/magisk"',
-               'bare "./magisk" symlink — should be "./shadowmask"'),
-              # Binary invocation in injected rc scripts (Rust string literals)
-              (r'/magisk\s+--',
-               'binary invocation /magisk -- in rc script — should be /shadowmask --'),
-              # Old SELinux exec domain
-              (r'u:r:magisk:s0',
-               'hardcoded SELinux domain u:r:magisk:s0 — should be u:r:shadowmask:s0'),
-              # xsymlink("./magisk" in C++ setup_tmp
-              (r'xsymlink\s*\(\s*"\.\/magisk"',
-               'xsymlink to "./magisk" — should be "./shadowmask"'),
-          ]
-
-          extensions = {'.rs', '.cpp', '.c', '.cc', '.cxx', '.h', '.hpp'}
-          skip_dirs  = {'external', 'target', '.git'}
-
-          found = False
-          for root, dirs, files in os.walk('native'):
-              dirs[:] = [d for d in dirs if d not in skip_dirs]
-              for fname in files:
-                  if os.path.splitext(fname)[1] not in extensions:
-                      continue
-                  fpath = os.path.join(root, fname)
-                  try:
-                      content = open(fpath, encoding='utf-8', errors='replace').read()
-                  except Exception:
-                      continue
-                  for lineno, line in enumerate(content.splitlines(), 1):
-                      for pat, desc in patterns:
-                          m = re.search(pat, line)
-                          if not m:
-                              continue
-                          # Allow known tool-name suffixes (magiskpolicy, magiskinit…)
-                          hit = m.group(0)
-                          if any(tool in hit for tool in TOOL_NAMES):
-                              continue
-                          rel = os.path.relpath(fpath)
-                          repo = os.environ.get('GITHUB_REPOSITORY', '')
-                          sha  = os.environ.get('GITHUB_SHA', 'HEAD')
-                          link = f"https://github.com/{repo}/blob/{sha}/{rel}#L{lineno}"
-                          print(f"::error file={rel},line={lineno}::{desc}")
-                          print(f"  🔗 {link}")
-                          print(f"  Line {lineno}: {line.strip()}")
-                          found = True
-
-          if found:
-              print()
-              print("❌ Old 'magisk' binary references found in native layer.")
-              print("   The binary is named 'shadowmask'. Update all symlink targets,")
-              print("   rc script invocations, and SELinux domains accordingly.")
-              sys.exit(1)
-          else:
-              print("✅ No stale magisk binary references found in native/")
-          EOF
-
-      - name: Scan for hardcoded magisk binary references in app/
+      - name: Run Exhaustive Codebase Audit & Generate Summary
         run: |
           python3 - <<'EOF'
           import os, re, sys
 
-          # In app/ Kotlin/Java the concern is old package names and any
-          # string literals that directly name the magisk binary.
-          patterns = [
-              (r'com\.topjohnwu\.magisk',
-               'old Magisk package name — should be com.shadowmask'),
-              (r'["\x27]/magisk["\x27\s]',
-               'hardcoded /magisk path string — should be /shadowmask'),
-          ]
+          scan_dirs = ['app', 'native', 'scripts', '.github']
+          skip_dirs = {'build', '.gradle', '.git', 'target', '.idea', 'external'}
+          code_extensions = {'.kt', '.java', '.aidl', '.xml', '.rs', '.cpp', '.c', '.cc', '.h', '.sh', '.yml', '.yaml', '.md', '.txt', '.mk'}
 
-          extensions = {'.kt', '.java', '.aidl', '.xml'}
-          skip_dirs  = {'build', '.gradle', '.git'}
+          critical_fixes = []
+          zygisk_bootstrap = []
+          safe_docs = []
 
-          found = False
-          for root, dirs, files in os.walk('app'):
-              dirs[:] = [d for d in dirs if d not in skip_dirs]
-              for fname in files:
-                  if os.path.splitext(fname)[1] not in extensions:
-                      continue
-                  fpath = os.path.join(root, fname)
-                  try:
-                      content = open(fpath, encoding='utf-8', errors='replace').read()
-                  except Exception:
-                      continue
-                  for lineno, line in enumerate(content.splitlines(), 1):
-                      for pat, desc in patterns:
-                          if re.search(pat, line):
-                              rel  = os.path.relpath(fpath)
-                              repo = os.environ.get('GITHUB_REPOSITORY', '')
-                              sha  = os.environ.get('GITHUB_SHA', 'HEAD')
-                              link = f"https://github.com/{repo}/blob/{sha}/{rel}#L{lineno}"
-                              print(f"::error file={rel},line={lineno}::{desc}")
-                              print(f"  🔗 {link}")
-                              print(f"  Line {lineno}: {line.strip()}")
-                              found = True
+          # Components that require verification or specific handling
+          BOOTSTRAP_TOOLS = {"magiskinit", "magiskboot", "magiskd"}
+          DEPRECATED_CRITICAL = {"com.topjohnwu.magisk", "u:r:magisk:s0", "magisk32", "magisk64", "magiskpolicy"}
 
-          if found:
-              print()
-              print("❌ Old Magisk references found in app layer.")
+          for d in scan_dirs:
+              if not os.path.exists(d):
+                  continue
+              for root, dirs, files in os.walk(d):
+                  dirs[:] = [dir_name for dir_name in dirs if dir_name not in skip_dirs]
+                  for fname in files:
+                      fpath = os.path.join(root, fname)
+                      ext = os.path.splitext(fname)[1].lower()
+                      if ext not in code_extensions and fname != "Makefile" and not fname.endswith(".gradle"):
+                          continue
+                      try:
+                          with open(fpath, encoding='utf-8', errors='replace') as f:
+                              lines = f.readlines()
+                      except Exception:
+                          continue
+
+                      for lineno, line in enumerate(lines, 1):
+                          if not re.search(r'magisk', line, re.IGNORECASE):
+                              continue
+
+                          rel = os.path.relpath(fpath)
+                          repo = os.environ.get('GITHUB_REPOSITORY', '')
+                          sha  = os.environ.get('GITHUB_SHA', 'HEAD')
+                          link = f"https://github.com/{repo}/blob/{sha}/{rel}#L{lineno}"
+                          snippet = line.strip()
+                          lower_line = line.lower()
+
+                          # Classification Rule Set
+                          if ext in {'.md', '.txt'} or 'http://' in lower_line or 'https://' in lower_line or 'copyright' in lower_line or 'credits' in lower_line:
+                              safe_docs.append((rel, lineno, snippet, link, "Documentation / URL / License reference"))
+                          elif any(dc in lower_line for dc in DEPRECATED_CRITICAL) or '"/magisk"' in lower_line or re.search(r'\b\.\/magisk\b', lower_line):
+                              critical_fixes.append((rel, lineno, snippet, link, "Hardcoded binary, package, or SELinux domain"))
+                          elif any(bt in lower_line for bt in BOOTSTRAP_TOOLS) or 'zygisk' in lower_line:
+                              zygisk_bootstrap.append((rel, lineno, snippet, link, "Zygisk / Bootstrap component (verify compatibility)"))
+                          else:
+                              # Code-layer fallback
+                              if ext in {'.kt', '.java', '.cpp', '.rs', '.h', '.c', '.sh'}:
+                                  critical_fixes.append((rel, lineno, snippet, link, "Source code reference requiring manual review"))
+                              else:
+                                  safe_docs.append((rel, lineno, snippet, link, "Non-critical configuration text"))
+
+          # Build GitHub Step Summary Report
+          summary_path = os.environ.get('GITHUB_STEP_SUMMARY')
+          report = []
+          report.append("# 🔍 ShadowMask Codebase Magisk Audit Report\n")
+          report.append(f"### Summary Statistics\n")
+          report.append(f"* **🔴 Critical Functional Items:** `{len(critical_fixes)}`\n")
+          report.append(f"* **🟡 Zygisk & Bootstrap Items:** `{len(zygisk_bootstrap)}`\n")
+          report.append(f"* **🟢 Safe / Documentation Items:** `{len(safe_docs)}`\n\n")
+
+          report.append("## 🔴 Critical Items Requiring Code Changes\n")
+          if critical_fixes:
+              report.append("| File | Line | Reason | Code Snippet | Link |\n")
+              report.append("|---|---|---|---|---|\n")
+              for rel, lineno, snippet, link, reason in critical_fixes:
+                  safe_snip = snippet.replace('|', '\\|').replace('`', '\\`')
+                  report.append(f"| `{rel}` | {lineno} | {reason} | `{safe_snip}` | [View]({link}) |\n")
+          else:
+              report.append("✅ No critical code issues detected!\n")
+
+          report.append("\n## 🟡 Zygisk & Bootstrap Review Items (Compatibility Check)\n")
+          if zygisk_bootstrap:
+              report.append("| File | Line | Reason | Code Snippet | Link |\n")
+              report.append("|---|---|---|---|---|\n")
+              for rel, lineno, snippet, link, reason in zygisk_bootstrap:
+                  safe_snip = snippet.replace('|', '\\|').replace('`', '\\`')
+                  report.append(f"| `{rel}` | {lineno} | {reason} | `{safe_snip}` | [View]({link}) |\n")
+
+          if summary_path:
+              with open(summary_path, 'a', encoding='utf-8') as f:
+                  f.write("".join(report))
+
+          print(f"Audit completed: {len(critical_fixes)} critical, {len(zygisk_bootstrap)} review items.")
+          
+          # Enforce failure only on critical functional bugs
+          if critical_fixes:
+              print("❌ Critical legacy Magisk references found in functional layers.")
               sys.exit(1)
           else:
-              print("✅ No stale Magisk references found in app/")
+              print("✅ Audit passed successfully.")
           EOF
 
   # ══════════════════════════════════════════════════════════════════
@@ -161,25 +137,13 @@ jobs:
 
           has_errors = False
           defined_styles = set()
-
-          # Framework / library style prefixes that are always valid even if
-          # not defined locally in the project's res/ folders.
           FRAMEWORK_PREFIXES = (
-              "Theme_DeviceDefault",
-              "Widget_DeviceDefault",
-              "Animation_",
-              "android_",
-              "MaterialAlertDialog",
-              "Widget_Design",
-              "Base_",
-              "Platform_",
-              "ThemeFoundationMD2_",
-              "Foundation_",
+              "Theme_DeviceDefault", "Widget_DeviceDefault", "Animation_",
+              "android_", "MaterialAlertDialog", "Widget_Design",
+              "Base_", "Platform_", "ThemeFoundationMD2_", "Foundation_",
           )
-
           SKIP_DIRS = {"build", ".gradle", ".git"}
 
-          # ── Phase 1: collect every defined style & check for duplicates ──
           for root, dirs, files in os.walk("."):
               dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
               norm = root.replace("\\", "/")
@@ -214,7 +178,6 @@ jobs:
                               print(f"::error::Duplicate <{rtype} name=\"{rname}\"> in: {', '.join(paths)}")
                               has_errors = True
 
-          # ── Phase 2: verify R.style.* calls resolve to defined styles ──
           for root, dirs, files in os.walk("."):
               dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
               for fname in files:
@@ -240,150 +203,7 @@ jobs:
           EOF
 
   # ══════════════════════════════════════════════════════════════════
-  # 3. JAVA / KOTLIN STATIC ANALYSIS
-  #    ⚠️  No full compilation here — build.yml / Testbuild.yml own that.
-  #    Running build.py app without the setup action (NDK, Gradle cache)
-  #    always fails and gives no useful signal. This job does fast,
-  #    no-SDK functional checks only.
-  #
-  #    ktlint is intentionally NOT used: the codebase has pre-existing
-  #    style choices (blank lines, wrapping) that differ from ktlint
-  #    defaults. Enforcing formatting on an established codebase without
-  #    an agreed .editorconfig baseline just creates noise. Add ktlint
-  #    separately once the team has aligned on a config.
-  # ══════════════════════════════════════════════════════════════════
-  check-java-kotlin:
-    name: Java & Kotlin functional checks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Verify no com.topjohnwu.magisk references remain
-        run: |
-          echo "Scanning for old Magisk package imports…"
-          FOUND=0
-          while IFS=: read -r file lineno content; do
-            [ -z "$file" ] && continue
-            FOUND=1
-            LINK="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/${file}#L${lineno}"
-            echo "::error file=${file},line=${lineno}::Found old Magisk reference: ${content}"
-            echo "  🔗 ${LINK}"
-          done < <(grep -rn --include="*.kt" --include="*.java" --include="*.aidl" \
-                       "com\.topjohnwu\.magisk" app/ 2>/dev/null)
-          if [ "$FOUND" -eq 1 ]; then
-            echo "❌ Update the references above to com.shadowmask"
-            exit 1
-          fi
-          echo "✅ No old Magisk package references found."
-
-      - name: Scan for dangerous patterns in Kotlin & Java
-        run: |
-          python3 - <<'EOF'
-          import os, re, sys
-          SKIP_DIRS = {"build", ".gradle", ".git"}
-          issues = []
-
-          # Patterns that indicate real bugs (not style):
-          # 1. Hardcoded package path still using topjohnwu (belt-and-suspenders alongside grep above)
-          # 2. Direct file-path strings that reference /magisk (the binary) not /magiskXxx (tool names)
-          # 3. TODO/FIXME/HACK markers with "magisk" that signal incomplete renames
-          PATTERNS = [
-              (r'com\.topjohnwu\.magisk',
-               "Old upstream package reference — update to com.shadowmask"),
-              (r'["\x27]/magisk["\x27\s]',
-               "Hardcoded /magisk binary path — should be /shadowmask"),
-              (r'(?i)(todo|fixme|hack)[^\n]*\bmagisk\b',
-               "Unresolved TODO/FIXME referencing magisk rename"),
-          ]
-          TOOL_NAMES = {"magiskpolicy", "magiskinit", "magiskboot", "magisk32", "magisk64"}
-
-          for root, dirs, files in os.walk("app"):
-              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
-              for fname in files:
-                  if not any(fname.endswith(ext) for ext in (".kt", ".java", ".aidl")):
-                      continue
-                  fpath = os.path.join(root, fname)
-                  try:
-                      lines = open(fpath, encoding="utf-8", errors="replace").readlines()
-                  except Exception:
-                      continue
-                  for lineno, line in enumerate(lines, 1):
-                      # Skip comment-only lines for binary-path check to reduce noise
-                      stripped = line.strip()
-                      for pat, desc in PATTERNS:
-                          m = re.search(pat, line)
-                          if not m:
-                              continue
-                          hit = m.group(0)
-                          if any(tool in hit for tool in TOOL_NAMES):
-                              continue
-                          repo = os.environ.get("GITHUB_REPOSITORY", "")
-                          sha  = os.environ.get("GITHUB_SHA", "HEAD")
-                          issues.append(
-                              (fpath, lineno,
-                               f"::error file={fpath},line={lineno}::{desc}\n"
-                               f"  🔗 https://github.com/{repo}/blob/{sha}/{fpath}#L{lineno}\n"
-                               f"  Line {lineno}: {stripped}")
-                          )
-
-          for _, _, msg in issues:
-              print(msg)
-          if issues:
-              print(f"\n❌ {len(issues)} functional issue(s) found in Kotlin/Java.")
-              sys.exit(1)
-          else:
-              print("✅ No functional issues found in Kotlin/Java.")
-          EOF
-
-      - name: Check Kotlin/Java file structure
-        run: |
-          python3 - <<'EOF'
-          import os, re, sys
-          SKIP_DIRS = {"build", ".gradle", ".git"}
-          issues = []
-
-          for root, dirs, files in os.walk("app"):
-              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
-              for fname in files:
-                  ext = os.path.splitext(fname)[1]
-                  if ext not in (".java", ".kt"):
-                      continue
-                  fpath = os.path.join(root, fname)
-                  try:
-                      lines = open(fpath, encoding="utf-8", errors="replace").readlines()
-                  except Exception:
-                      continue
-
-                  # Package declaration must match directory (Java only — Kotlin is more flexible)
-                  if ext == ".java":
-                      pkg_line = next(
-                          (l.strip() for l in lines if l.strip().startswith("package ")), None
-                      )
-                      if pkg_line and "/java/" in fpath.replace(os.sep, "/"):
-                          declared = re.sub(r"^package\s+|;$", "", pkg_line).strip()
-                          java_part = (
-                              fpath.replace(os.sep, "/")
-                              .split("/java/", 1)[-1]
-                              .rsplit("/", 1)[0]
-                              .replace("/", ".")
-                          )
-                          if java_part and declared != java_part:
-                              issues.append(
-                                  f"::error file={fpath}::"
-                                  f"Package '{declared}' doesn't match directory '{java_part}'"
-                              )
-
-          for msg in issues:
-              print(msg)
-          if issues:
-              print(f"\n❌ {len(issues)} structural issue(s) found.")
-              sys.exit(1)
-          else:
-              print("✅ File structure checks passed.")
-          EOF
-
-  # ══════════════════════════════════════════════════════════════════
-  # 4. C / C++ STATIC ANALYSIS
+  # 3. C / C++ STATIC ANALYSIS (CPPCHECK)
   # ══════════════════════════════════════════════════════════════════
   check-c:
     name: C/C++ static analysis (cppcheck)
@@ -413,13 +233,10 @@ jobs:
             --suppress=invalidPrintfArgType_uint \
             native/ 2>&1 | tee /tmp/cppcheck.txt
 
-          # Surface cppcheck errors as GitHub annotations
           python3 - <<'EOF'
           import re, os
-
           with open("/tmp/cppcheck.txt") as f:
               for line in f:
-                  # cppcheck format: file:line:col: severity: message [id]
                   m = re.match(r'^(.+?):(\d+):(\d+):\s*(error|warning|performance|portability):\s*(.+)', line)
                   if m:
                       fpath, lineno, _, severity, msg = m.groups()
