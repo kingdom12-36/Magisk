@@ -143,7 +143,7 @@ esac
 
 if $BOOTMODE; then
   ui_print "- Removing modules"
-  magisk --remove-modules -n
+  shadowmask --remove-modules -n
 fi
 
 ui_print "- Removing ShadowMask files"

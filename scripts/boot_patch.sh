@@ -172,7 +172,7 @@ fi
 
 ui_print "- Patching ramdisk"
 
-$BOOTMODE && [ -z "$PREINITDEVICE" ] && PREINITDEVICE=$(./magisk --preinit-device)
+$BOOTMODE && [ -z "$PREINITDEVICE" ] && PREINITDEVICE=$(./shadowmask --preinit-device)
 
 # Verify init-ld binary is present before attempting to compress
 [ -f init-ld ] || abort "! init-ld binary is missing for ${ABI:-unknown} - rebuild the app"
