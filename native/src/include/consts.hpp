@@ -3,7 +3,7 @@
 #define JAVA_PACKAGE_NAME "com.shadowmask"
 #define SECURE_DIR      "/data/adb"
 #define MODULEROOT      SECURE_DIR "/modules"
-#define DATABIN         SECURE_DIR "/magisk"
+#define DATABIN         SECURE_DIR "/shadowmask"
 #define SHADOWMASKDB        SECURE_DIR "/shadowmask.db"
 
 // tmpfs paths
