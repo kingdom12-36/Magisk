@@ -178,8 +178,8 @@ $BOOTMODE && [ -z "$PREINITDEVICE" ] && PREINITDEVICE=$(./magisk --preinit-devic
 [ -f init-ld ] || abort "! init-ld binary is missing for ${ABI:-unknown} - rebuild the app"
 
 # Compress to save precious ramdisk space
-./magiskboot compress=xz magisk magisk.xz
-./magiskboot compress=xz stub.apk stub.xz
+./magiskboot compress=xz shadowmask magisk.xz || abort "! Unable to compress shadowmask"
+./magiskboot compress=xz stub.apk stub.xz || abort "! Unable to compress stub.apk"
 ./magiskboot compress=xz init-ld init-ld.xz || abort "! Unable to compress init-ld"
 
 echo "KEEPVERITY=$KEEPVERITY" > config
