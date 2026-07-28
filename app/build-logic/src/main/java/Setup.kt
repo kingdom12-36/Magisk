@@ -46,7 +46,7 @@ fun Project.setupCommon() {
             version = release(37)
         }
         buildToolsVersion = "37.0.0"
-        ndkPath = "${androidComponents.sdkComponents.sdkDirectory.get().asFile}/ndk/magisk"
+        ndkPath = "${androidComponents.sdkComponents.sdkDirectory.get().asFile}/ndk/shadowmask"
         ndkVersion = "30.0.14904198"
 
         defaultConfig.apply {
@@ -133,68 +133,16 @@ fun Project.setupCoreLib() {
                 }
                 from(zipTree(downloadFile(BUSYBOX_DOWNLOAD_URL, BUSYBOX_ZIP_CHECKSUM)))
                 include(abiList.map { "$it/libbusybox.so" })
-                onlyIf {
-                    if (inputs.sourceFiles.files.size != abiList.size * 6)
-                        return@onlyIf false
-                    true
-                }
-            }
-            variant.sources.jniLibs
-                ?.addGeneratedSourceDirectory(syncLibs, SyncWithDir::outputFolder)
-
-            val syncResources = tasks.register("sync${variantCapped}Resources", SyncWithDir::class) {
-                outputFolder.set(layout.buildDirectory.dir("$variantName/resources"))
-                into(outputFolder)
-
-                into("META-INF/com/google/android") {
-                    from(rootFile("scripts/update_binary.sh")) {
-                        rename { "update-binary" }
-                    }
-                    from(rootFile("scripts/flash_script.sh")) {
-                        rename { "updater-script" }
+                doFirst {
+                    val actual = inputs.sourceFiles.files.size
+                    val expected = abiList.size * 6
+                    check(actual == expected) {
+                        "Native library count mismatch: expected $expected files " +
+                        "(${abiList.size} ABIs \u00d7 6 = magiskboot, magiskinit, shadowmaskpolicy, " +
+                        "shadowmask, libinit-ld.so, libbusybox.so), but found $actual.\n" +
+                        "Run: python3 build.py native before building the app."
                     }
                 }
-            }
-            variant.sources.resources
-                ?.addGeneratedSourceDirectory(syncResources, SyncWithDir::outputFolder)
-
-            val stubTask = tasks.getByPath(":stub:transform${variantCapped}Apk")
-            val syncAssets = tasks.register("sync${variantCapped}Assets", SyncWithDir::class) {
-                outputFolder.set(layout.buildDirectory.dir("$variantName/assets"))
-                into(outputFolder)
-
-                inputs.property("version", Config.version)
-                inputs.property("versionCode", Config.versionCode)
-                from(rootFile("scripts")) {
-                    include("util_functions.sh", "boot_patch.sh", "addon.d.sh",
-                        "app_functions.sh", "uninstaller.sh", "module_installer.sh")
-                }
-                from(rootFile("tools/bootctl"))
-                into("chromeos") {
-                    from(rootFile("tools/futility"))
-                    from(rootFile("tools/keys")) {
-                        include("kernel_data_key.vbprivk", "kernel.keyblock")
-                    }
-                }
-                from(stubTask) {
-                    include { it.name.endsWith(".apk") }
-                    rename { "stub.apk" }
-                }
-                filesMatching("**/util_functions.sh") {
-                    filter {
-                        it.replace(
-                            "#MAGISK_VERSION_STUB",
-                            "MAGISK_VER='${Config.version}'\nMAGISK_VER_CODE=${Config.versionCode}"
-                        )
-                    }
-                    filter<FixCrLfFilter>("eol" to FixCrLfFilter.CrLf.newInstance("lf"))
-                }
-            }
-            variant.sources.assets
-                ?.addGeneratedSourceDirectory(syncAssets, SyncWithDir::outputFolder)
-        }
-    }
-}
 
 fun Project.setupAppCommon() {
     setupCommon()
