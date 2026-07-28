@@ -174,10 +174,13 @@ ui_print "- Patching ramdisk"
 
 $BOOTMODE && [ -z "$PREINITDEVICE" ] && PREINITDEVICE=$(./magisk --preinit-device)
 
+# Verify init-ld binary is present before attempting to compress
+[ -f init-ld ] || abort "! init-ld binary is missing for ${ABI:-unknown} - rebuild the app"
+
 # Compress to save precious ramdisk space
 ./magiskboot compress=xz magisk magisk.xz
 ./magiskboot compress=xz stub.apk stub.xz
-./magiskboot compress=xz init-ld init-ld.xz
+./magiskboot compress=xz init-ld init-ld.xz || abort "! Unable to compress init-ld"
 
 echo "KEEPVERITY=$KEEPVERITY" > config
 echo "KEEPFORCEENCRYPT=$KEEPFORCEENCRYPT" >> config
