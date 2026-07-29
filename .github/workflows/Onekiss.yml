@@ -243,3 +243,58 @@ jobs:
                       level = "error" if severity == "error" else "warning"
                       print(f"::{level} file={fpath},line={lineno}::{msg.strip()}")
           EOF
+
+  # ══════════════════════════════════════════════════════════════════
+  # 4. KOTLIN / JAVA FAST COMPILE CHECK
+  # ══════════════════════════════════════════════════════════════════
+  check-kotlin-java:
+    name: Kotlin/Java fast compile check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required SDK packages
+        run: sdkmanager --install "platforms;android-37" "build-tools;37.0.0"
+
+      - name: Compile all Kotlin/Java sources (no native build, no packaging, no signing)
+        working-directory: app
+        run: |
+          set -o pipefail
+          ./gradlew compileDebugKotlin compileDebugJavaWithJavac \
+            --parallel --build-cache --continue 2>&1 | tee /tmp/compile.log
+
+      - name: Annotate compiler errors/warnings
+        if: always()
+        run: |
+          python3 - <<'EOF'
+          import os, re
+
+          kotlinc_re = re.compile(r'^([ew]):\s+file://(?P<file>[^:]+):(?P<line>\d+):(?P<col>\d+)\s+(?P<msg>.+)$')
+          javac_re = re.compile(r'^(?P<file>.+\.java):(?P<line>\d+):\s*(?P<level>error|warning):\s*(?P<msg>.+)$')
+
+          with open('/tmp/compile.log', encoding='utf-8', errors='replace') as f:
+              for raw in f:
+                  line = raw.rstrip('\n')
+
+                  m = kotlinc_re.match(line)
+                  if m:
+                      level = 'error' if line.startswith('e:') else 'warning'
+                      fpath = os.path.relpath(m.group('file'), start=os.getcwd())
+                      print(f"::{level} file={fpath},line={m.group('line')}::{m.group('msg').strip()}")
+                      continue
+
+                  m = javac_re.match(line)
+                  if m:
+                      fpath = os.path.relpath(m.group('file'), start=os.getcwd())
+                      print(f"::{m.group('level')} file={fpath},line={m.group('line')}::{m.group('msg').strip()}")
+          EOF
