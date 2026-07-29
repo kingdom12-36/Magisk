@@ -199,7 +199,7 @@
     <string name="updated_channel">Жаңарту аяқталды</string>
     <string name="download_complete">Жүктеу аяқталды</string>
     <string name="download_file_error">Файлды жүктеп алу қатесі</string>
-    <string name="magisk_update_title">Magisk жаңартуы қолжетімді!</string>
+    <string name="shadowmask_update_title">Magisk жаңартуы қолжетімді!</string>
     <string name="updated_title">Magisk жаңартылды</string>
     <string name="updated_text">Қолданбасын ашу үшін басыңыз</string>
 

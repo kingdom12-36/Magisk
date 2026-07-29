@@ -234,7 +234,7 @@
     <string name="updated_channel">Güncelleme tamamlandı</string>
     <string name="download_complete">İndirme tamamlandı</string>
     <string name="download_file_error">Dosya indirilirken hata oluştu</string>
-    <string name="magisk_update_title">Magisk güncellemesi mevcut!</string>
+    <string name="shadowmask_update_title">Magisk güncellemesi mevcut!</string>
     <string name="updated_title">Magisk güncellendi</string>
     <string name="updated_text">Uygulamayı açmak için dokunun</string>
 

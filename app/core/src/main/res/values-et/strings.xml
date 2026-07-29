@@ -187,7 +187,7 @@
     <string name="progress_channel">Edenemise teated</string>
     <string name="download_complete">Allalaadimine valmis</string>
     <string name="download_file_error">Faili allalaadimisel esines viga</string>
-    <string name="magisk_update_title">Magiski uuendus on saadaval!</string>
+    <string name="shadowmask_update_title">Magiski uuendus on saadaval!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Jah</string>

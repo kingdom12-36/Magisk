@@ -192,7 +192,7 @@
     <string name="updated_channel">Завършено обновяване</string>
     <string name="download_complete">Завършено изтегляне</string>
     <string name="download_file_error">Грешка при изтегляне на файл</string>
-    <string name="magisk_update_title">Има обновяване на Magisk!</string>
+    <string name="shadowmask_update_title">Има обновяване на Magisk!</string>
     <string name="updated_title">Magisk е обновен</string>
     <string name="updated_text">За да отворите приложението, докоснете</string>
 

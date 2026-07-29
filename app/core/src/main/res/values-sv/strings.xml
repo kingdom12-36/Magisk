@@ -178,7 +178,7 @@
     <string name="progress_channel">Statusmeddelanden</string>
     <string name="download_complete">Nedladdning slutförd</string>
     <string name="download_file_error">Fel vid nedladdning utav fil</string>
-    <string name="magisk_update_title">En uppdatering för Magisk finns tillgänglig!</string>
+    <string name="shadowmask_update_title">En uppdatering för Magisk finns tillgänglig!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Ja</string>

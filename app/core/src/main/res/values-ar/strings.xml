@@ -165,7 +165,7 @@
     <string name="progress_channel">إشعارات التقدم</string>
     <string name="download_complete">اكتمل التنزيل</string>
     <string name="download_file_error">فشل تنزيل الملف</string>
-    <string name="magisk_update_title">تحديث ماجيسك متوفر!</string>
+    <string name="shadowmask_update_title">تحديث ماجيسك متوفر!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">نعم</string>

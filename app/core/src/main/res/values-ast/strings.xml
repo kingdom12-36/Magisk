@@ -189,7 +189,7 @@
     <string name="updated_channel">Anovamientu completáu</string>
     <string name="download_complete">Completóse la descarga</string>
     <string name="download_file_error">Hebo un fallu al baxar el ficheru</string>
-    <string name="magisk_update_title">¡Hai un anovamientu pa Magisk!</string>
+    <string name="shadowmask_update_title">¡Hai un anovamientu pa Magisk!</string>
     <string name="updated_title">Magisk anovóse</string>
     <string name="updated_text">Toca equí p\'abrir l\'aplicación</string>
     <!--Toasts, Dialogs-->

@@ -178,7 +178,7 @@
     <string name="progress_channel">Framdriftsmerknader</string>
     <string name="download_complete">Nedlasting fullført</string>
     <string name="download_file_error">Kunne ikke laste ned fil</string>
-    <string name="magisk_update_title">Ny versjon av Magisk tilgjengelig.</string>
+    <string name="shadowmask_update_title">Ny versjon av Magisk tilgjengelig.</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Ja</string>

@@ -178,7 +178,7 @@
     <string name="progress_channel">முன்னேற்ற அறிவிப்புகள்</string>
     <string name="download_complete">பதிவிறக்கம் முடிந்தது</string>
     <string name="download_file_error">கோப்பை பதிவிறக்குவதில் பிழை</string>
-    <string name="magisk_update_title">மேஜிஸ்க் புதுப்பிப்பு கிடைக்கிறது!</string>
+    <string name="shadowmask_update_title">மேஜிஸ்க் புதுப்பிப்பு கிடைக்கிறது!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">ஆம்</string>

@@ -200,7 +200,7 @@
     <string name="updated_channel">Update ho gaya</string>
     <string name="download_complete">Download ho gaya</string>
     <string name="download_file_error">File download karne mein error aaya</string>
-    <string name="magisk_update_title">Magisk ka naya update available hai!</string>
+    <string name="shadowmask_update_title">Magisk ka naya update available hai!</string>
     <string name="updated_title">Magisk update ho gaya</string>
     <string name="updated_text">App open karne ke liye tap karo</string>
 

@@ -193,7 +193,7 @@
     <string name="updated_channel">更新完了</string>
     <string name="download_complete">ダウンロード完了</string>
     <string name="download_file_error">ダウンロード中にエラーが発生しました</string>
-    <string name="magisk_update_title">Magisk の更新があります！</string>
+    <string name="shadowmask_update_title">Magisk の更新があります！</string>
     <string name="updated_title">Magisk を更新しました</string>
     <string name="updated_text">タップでアプリを開きます</string>
 

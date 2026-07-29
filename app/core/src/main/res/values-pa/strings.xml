@@ -169,7 +169,7 @@
     <string name="progress_channel">ਤਰੱਕੀ ਦੀਆਂ ਸੂਚਨਾਵਾਂ</string>
     <string name="download_complete">ਡਾਊਨਲੋਡ ਪੂਰਾ</string>
     <string name="download_file_error">ਫਾਈਲ ਡਾਊਨਲੋਡ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ</string>
-    <string name="magisk_update_title">ਮੈਜਿਸਕ ਅਪਡੇਟ ਉਪਲੱਬਧ!</string>
+    <string name="shadowmask_update_title">ਮੈਜਿਸਕ ਅਪਡੇਟ ਉਪਲੱਬਧ!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">ਹਾਂ</string>

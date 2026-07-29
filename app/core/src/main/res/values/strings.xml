@@ -242,7 +242,7 @@
     <string name="updated_channel">Update complete</string>
     <string name="download_complete">Download complete</string>
     <string name="download_file_error">Error downloading file</string>
-    <string name="magisk_update_title">ShadowMask update available!</string>
+    <string name="shadowmask_update_title">ShadowMask update available!</string>
     <string name="updated_title">ShadowMask updated</string>
     <string name="updated_text">Tap to open app</string>
 

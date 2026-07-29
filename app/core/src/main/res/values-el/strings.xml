@@ -190,7 +190,7 @@
     <string name="updated_channel">Η Αναβάθμηση Ολοκληρώθηκε</string>
     <string name="download_complete">Η λήψη ολοκληρώθηκε</string>
     <string name="download_file_error">Σφάλμα στη λήψη του αρχείου</string>
-    <string name="magisk_update_title">Νέα Ενημέρωση Magisk Διαθέσιμη!</string>
+    <string name="shadowmask_update_title">Νέα Ενημέρωση Magisk Διαθέσιμη!</string>
     <string name="updated_title">Το Magisk Ενημερώθηκε</string>
     <string name="updated_text">Πατήστε για άνοιγμα εφαρμογής</string>
 

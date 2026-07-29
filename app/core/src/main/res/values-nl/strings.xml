@@ -164,7 +164,7 @@
     <string name="progress_channel">Voortgangsmeldingen</string>
     <string name="download_complete">Downloaden voltooid</string>
     <string name="download_file_error">Het bestand kan niet worden gedownload</string>
-    <string name="magisk_update_title">Er is een Magisk-update beschikbaar!</string>
+    <string name="shadowmask_update_title">Er is een Magisk-update beschikbaar!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Ja</string>

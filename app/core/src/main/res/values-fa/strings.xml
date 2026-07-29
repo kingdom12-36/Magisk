@@ -200,7 +200,7 @@
     <string name="updated_channel">به‌روزرسانی کامل شد</string>
     <string name="download_complete">دانلود کامل شد</string>
     <string name="download_file_error">خطا در دانلود فایل</string>
-    <string name="magisk_update_title">بروزرسانی Magisk در دسترس است!</string>
+    <string name="shadowmask_update_title">بروزرسانی Magisk در دسترس است!</string>
     <string name="updated_title">Magisk به‌روزرسانی شد</string>
     <string name="updated_text">برای باز کردن برنامه لمس کنید</string>
 

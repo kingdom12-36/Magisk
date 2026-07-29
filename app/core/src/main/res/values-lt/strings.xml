@@ -192,7 +192,7 @@
     <string name="updated_channel">Naujinimas baigtas</string>
     <string name="download_complete">Atsisiuntimas baigtas</string>
     <string name="download_file_error">Klaida atsisiunčiant failą</string>
-    <string name="magisk_update_title">Prieinamas Magisk naujinimas!</string>
+    <string name="shadowmask_update_title">Prieinamas Magisk naujinimas!</string>
     <string name="updated_title">Magisk atnaujintas</string>
     <string name="updated_text">Bakstelėkite, kad atidarytumėte programėlę</string>
 

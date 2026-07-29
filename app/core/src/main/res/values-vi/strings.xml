@@ -190,7 +190,7 @@
     <string name="updated_channel">Cập nhật hoàn tất</string>
     <string name="download_complete">Tải về hoàn tất</string>
     <string name="download_file_error">Lỗi khi tải xuống tệp</string>
-    <string name="magisk_update_title">Cập nhật Magisk có sẵn!</string>
+    <string name="shadowmask_update_title">Cập nhật Magisk có sẵn!</string>
     <string name="updated_title">Đã cập nhật Magisk</string>
     <string name="updated_text">Chạm để mở ứng dụng</string>
 

@@ -194,7 +194,7 @@
     <string name="updated_channel">Actualización finalizada</string>
     <string name="download_complete">Descarga finalizada</string>
     <string name="download_file_error">Ocurrió un error en la descarga</string>
-    <string name="magisk_update_title">¡Actualización de Magisk disponible!</string>
+    <string name="shadowmask_update_title">¡Actualización de Magisk disponible!</string>
     <string name="updated_title">Se actualizó Magisk</string>
     <string name="updated_text">Pulsa para abrir la app</string>
 

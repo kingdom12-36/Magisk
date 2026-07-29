@@ -178,7 +178,7 @@
     <string name="progress_channel">Notificacions de progrés</string>
     <string name="download_complete">Baixada completada</string>
     <string name="download_file_error">Error en baixar l\'arxiu</string>
-    <string name="magisk_update_title">Actualització de Magisk disponible!</string>
+    <string name="shadowmask_update_title">Actualització de Magisk disponible!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Sí</string>

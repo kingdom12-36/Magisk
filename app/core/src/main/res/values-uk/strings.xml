@@ -184,7 +184,7 @@
     <string name="progress_channel">Сповіщення прогресу</string>
     <string name="download_complete">Завантаження завершено</string>
     <string name="download_file_error">Помилка завантаження файлу</string>
-    <string name="magisk_update_title">Доступне оновлення Magisk!</string>
+    <string name="shadowmask_update_title">Доступне оновлення Magisk!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">Так</string>

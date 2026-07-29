@@ -188,7 +188,7 @@
     <string name="updated_channel">Update Complete</string>
     <string name="download_complete">Download complete</string>
     <string name="download_file_error">Error downloading file</string>
-    <string name="magisk_update_title">Magisk Update Available!</string>
+    <string name="shadowmask_update_title">Magisk Update Available!</string>
     <string name="updated_title">Magisk Updated</string>
     <string name="updated_text">Tap to open app</string>
 

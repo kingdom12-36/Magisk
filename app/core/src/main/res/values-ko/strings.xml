@@ -188,7 +188,7 @@
     <string name="updated_channel">업데이트 완료</string>
     <string name="download_complete">다운로드 완료</string>
     <string name="download_file_error">파일 다운로드 실패</string>
-    <string name="magisk_update_title">새 버전의 Magisk를 사용할 수 있습니다!</string>
+    <string name="shadowmask_update_title">새 버전의 Magisk를 사용할 수 있습니다!</string>
     <string name="updated_title">Magisk가 업데이트 되었습니다!</string>
     <string name="updated_text">터치하여 앱 열기</string>
 

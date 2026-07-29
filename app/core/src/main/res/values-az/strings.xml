@@ -194,7 +194,7 @@
     <string name="updated_channel">Yeniləmə Bitdi</string>
     <string name="download_complete">Endirmə Bitdi</string>
     <string name="download_file_error">Faylı endirmək münkün olmadı</string>
-    <string name="magisk_update_title">Magisk Yeniləməsi Var!</string>
+    <string name="shadowmask_update_title">Magisk Yeniləməsi Var!</string>
     <string name="updated_title">Magisk Yeniləndi</string>
     <string name="updated_text">Tətbiqi açmaq üçün toxun</string>
 

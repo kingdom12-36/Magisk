@@ -201,7 +201,7 @@
     <string name="updated_channel">Aktualizácia dokončená</string>
     <string name="download_complete">Sťahovanie ukončené</string>
     <string name="download_file_error">Chyba sťahovania súboru</string>
-    <string name="magisk_update_title">Je dostupná aktualizácia Magisku!</string>
+    <string name="shadowmask_update_title">Je dostupná aktualizácia Magisku!</string>
     <string name="updated_title">Magisk aktualizovaný</string>
     <string name="updated_text">Ťuknutím otvoríte apku</string>
 

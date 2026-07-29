@@ -203,7 +203,7 @@
     <string name="updated_channel">更新完成</string>
     <string name="download_complete">下载完成</string>
     <string name="download_file_error">下载失败</string>
-    <string name="magisk_update_title">Magisk 已发布新版本！</string>
+    <string name="shadowmask_update_title">Magisk 已发布新版本！</string>
     <string name="updated_title">Magisk 已完成更新</string>
     <string name="updated_text">点按即可打开应用</string>
 

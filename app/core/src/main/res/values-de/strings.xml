@@ -198,7 +198,7 @@
     <string name="updated_channel">Update abgeschlossen</string>
     <string name="download_complete">Download abgeschlossen</string>
     <string name="download_file_error">Fehler beim Herunterladen der Datei</string>
-    <string name="magisk_update_title">Magisk Update verfügbar!</string>
+    <string name="shadowmask_update_title">Magisk Update verfügbar!</string>
     <string name="updated_title">Magisk aktualisiert</string>
     <string name="updated_text">Tippen, um die App zu öffnen</string>
 

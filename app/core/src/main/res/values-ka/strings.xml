@@ -178,7 +178,7 @@
     <string name="progress_channel">პროგრესის შეტყობინებები</string>
     <string name="download_complete">გადმოწერა დასრულებულია</string>
     <string name="download_file_error">შეცდომა გადმოწერის დროს</string>
-    <string name="magisk_update_title">ხელმისაწვდომია Magisk-ის განახლება!</string>
+    <string name="shadowmask_update_title">ხელმისაწვდომია Magisk-ის განახლება!</string>
 
     <!--Toasts, Dialogs-->
     <string name="yes">დიახ</string>

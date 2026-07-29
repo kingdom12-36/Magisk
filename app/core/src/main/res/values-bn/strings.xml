@@ -189,7 +189,7 @@
     <string name="updated_channel">আপডেট সম্পূর্ণ</string>
     <string name="download_complete">ডাউনলোড শেষ</string>
     <string name="download_file_error">ফাইল ডাউনলোড করার সময় ত্রুটি</string>
-    <string name="magisk_update_title">ম্যাজিস্ক আপডেট উপলব্ধ!</string>
+    <string name="shadowmask_update_title">ম্যাজিস্ক আপডেট উপলব্ধ!</string>
     <string name="updated_title">ম্যাজিস্ক আপডেট</string>
     <string name="updated_text">অ্যাপ খুলতে আলতো চাপুন</string>
 

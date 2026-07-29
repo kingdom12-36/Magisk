@@ -198,7 +198,7 @@
     <string name="updated_channel">העדכון הושלם</string>
     <string name="download_complete">ההורדה הושלמה</string>
     <string name="download_file_error">שגיאה בהורדת קובץ</string>
-    <string name="magisk_update_title">עדכון Magisk זמין!</string>
+    <string name="shadowmask_update_title">עדכון Magisk זמין!</string>
     <string name="updated_title">עדכון Magisk</string>
     <string name="updated_text">הקשה כדי לפתוח יישום</string>
 

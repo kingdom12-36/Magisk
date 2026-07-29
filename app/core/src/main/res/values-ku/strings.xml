@@ -202,7 +202,7 @@
     <string name="updated_channel">نوێکردنەوە سەرکەوتووبوو</string>
     <string name="download_complete">داگرتن سەرکەوتووبوو</string>
     <string name="download_file_error">هەڵەیەک رووی دا لەکاتی داگرتنی فایلەکە</string>
-    <string name="magisk_update_title">وەشانی نوێی ماجیسک ئامادەیە!</string>
+    <string name="shadowmask_update_title">وەشانی نوێی ماجیسک ئامادەیە!</string>
     <string name="updated_title">ماجیسک نوێکراوە!</string>
     <string name="updated_text">کرتە بکە بۆ کردنەوەی ئەپ</string>
 
