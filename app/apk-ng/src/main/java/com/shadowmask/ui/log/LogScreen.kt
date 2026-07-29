@@ -63,6 +63,7 @@ import com.shadowmask.core.ktx.timeDateFormat
 import com.shadowmask.core.ktx.toTime
 import com.shadowmask.core.model.su.SuLog
 import com.shadowmask.core.R as CoreR
+import com.shadowmask.ui.component.rememberExternalStoragePermissionLauncher
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +75,9 @@ fun LogScreen(viewModel: LogViewModel) {
         stringResource(CoreR.string.shadowmask)
     )
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val saveShadowMaskLog = rememberExternalStoragePermissionLauncher {
+        viewModel.saveShadowMaskLog()
+    }
 
     Scaffold(
         topBar = {
@@ -81,10 +85,10 @@ fun LogScreen(viewModel: LogViewModel) {
                 title = { Text(stringResource(CoreR.string.logs)) },
                 actions = {
                     if (selectedTab == 1) {
-                        IconButton(onClick = { viewModel.saveShadowMaskLog() }) {
+                        IconButton(onClick = saveShadowMaskLog) {
                             Icon(
                                 imageVector = Icons.Default.Download,
-                                contentDescription = stringResource(CoreR.string.save_log),
+                                contentDescription = stringResource(CoreR.string.menuSaveLog),
                             )
                         }
                     }

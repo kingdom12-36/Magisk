@@ -32,6 +32,7 @@ import com.shadowmask.R
 import com.shadowmask.core.Const
 import com.shadowmask.ui.terminal.TerminalScreen
 import com.shadowmask.core.R as CoreR
+import com.shadowmask.ui.component.rememberExternalStoragePermissionLauncher
 
 @OptIn(ExperimentalMaterial3Api::class)
 
@@ -41,6 +42,9 @@ fun FlashScreen(viewModel: FlashViewModel, action: String, onBack: () -> Unit) {
     val showReboot by viewModel.showReboot.collectAsState()
     val finished = flashState != FlashViewModel.State.FLASHING
     val useTerminal = action == Const.Value.FLASH_ZIP
+    val saveLog = rememberExternalStoragePermissionLauncher {
+        viewModel.saveLog()
+    }
 
     val statusText = when (flashState) {
         FlashViewModel.State.FLASHING -> stringResource(CoreR.string.flashing)
@@ -69,7 +73,7 @@ fun FlashScreen(viewModel: FlashViewModel, action: String, onBack: () -> Unit) {
                     if (finished) {
                         IconButton(
                             modifier = Modifier.padding(end = 4.dp),
-                            onClick = { viewModel.saveLog() }
+                            onClick = saveLog
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_save),

@@ -59,7 +59,7 @@ class ExtractImage(
         }
 
         channel.slice(payload.dataOffset, payload.size).use { payloadChannel ->
-            Payload(payloadChannel).extract(outFile, { console.add(it) }, { logs.add(it) })
+            Payload(payloadChannel).extract(outFile, console, logs)
         }
     }
 

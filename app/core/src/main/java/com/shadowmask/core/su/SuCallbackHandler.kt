@@ -71,15 +71,14 @@ object SuCallbackHandler {
             }
         }.getOrNull() ?: createSuLog(fromUid, toUid, pid, command, policy, target, seContext, gids)
 
-        runBlocking { ServiceLocator.logRepo.insert(log) }
-
         // Suppress toast/notification when the manager app itself is the caller.
         // The manager opens a root shell on every launch; notifying for that is noise.
         val isManagerSelf = fromUid == context.applicationInfo.uid
-        if (!isManagerSelf && (notify || Config.suNotification == Config.Value.NOTIFICATION_STATUS_BAR))
+        if (!isManagerSelf && notify)
             notify(context, log.action >= SuPolicy.ALLOW, log.appName)
+
+        runBlocking { ServiceLocator.logRepo.insert(log) }
         SuEvents.notifyLogUpdated()
-        SuEvents.notifyPolicyChanged()
     }
 
     private fun handleNotify(context: Context, data: Bundle) {
@@ -98,7 +97,6 @@ object SuCallbackHandler {
         if (!isManagerSelf) {
             notify(context, policy >= SuPolicy.ALLOW, appName)
         }
-        SuEvents.notifyPolicyChanged()
     }
 
     fun notify(granted: Boolean, appName: String) {
