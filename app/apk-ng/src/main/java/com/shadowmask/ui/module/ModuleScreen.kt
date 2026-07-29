@@ -28,6 +28,7 @@ import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -319,6 +320,30 @@ private fun ModuleCard(item: ModuleItem, viewModel: ModuleViewModel, onUpdateCli
                                 )
                                 Text(
                                     text = stringResource(CoreR.string.module_action),
+                                    color = actionIconTint,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                            }
+                        }
+                    }
+                    if (item.showWebUi) {
+                        Button(
+                            colors = ButtonDefaults.buttonColors(containerColor = actionBg),
+                            contentPadding = PaddingValues(horizontal = 10.dp),
+                            onClick = { viewModel.openWebUi(context, item.module.id, item.module.name) },
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(20.dp),
+                                    imageVector = Icons.Default.OpenInBrowser,
+                                    tint = actionIconTint,
+                                    contentDescription = stringResource(CoreR.string.module_webui_open)
+                                )
+                                Text(
+                                    text = stringResource(CoreR.string.module_webui_open),
                                     color = actionIconTint,
                                     style = MaterialTheme.typography.bodyMedium,
                                 )

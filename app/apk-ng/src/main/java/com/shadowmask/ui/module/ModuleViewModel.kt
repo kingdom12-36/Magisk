@@ -1,6 +1,7 @@
 package com.shadowmask.ui.module
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,7 @@ import kotlinx.parcelize.Parcelize
 class ModuleItem(val module: LocalModule) {
     val showNotice: Boolean
     val showAction: Boolean
+    val showWebUi: Boolean
     val noticeText: TextHolder
 
     init {
@@ -39,6 +41,7 @@ class ModuleItem(val module: LocalModule) {
             (Info.isZygiskEnabled && isRiru) ||
             (!Info.isZygiskEnabled && isZygisk)
         showAction = module.hasAction && !showNotice
+        showWebUi = module.hasWebUi && !showNotice
         noticeText =
             when {
                 zygiskUnloaded -> CoreR.string.zygisk_module_unloaded.asText()
@@ -115,6 +118,14 @@ class ModuleViewModel : AsyncLoadViewModel() {
 
     fun runAction(id: String, name: String) {
         navigateTo(Route.Action(id, name))
+    }
+
+    fun openWebUi(context: Context, id: String, name: String) {
+        val intent = Intent(context, com.shadowmask.ui.webui.WebUIActivity::class.java).apply {
+            putExtra("id", id)
+            putExtra("name", name)
+        }
+        context.startActivity(intent)
     }
 
     fun toggleEnabled(item: ModuleItem) {
