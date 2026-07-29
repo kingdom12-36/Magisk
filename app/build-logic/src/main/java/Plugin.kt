@@ -22,7 +22,10 @@ object Config {
     fun contains(key: String) = get(key) != null
 
     val version: String get() = get("version")!!
-    val versionCode: Int get() = get("shadowmask.versionCode")!!.toInt()
+    // Prefer the fresh value build.py computes into flags.prop; fall back to the
+    // static default in gradle.properties so plain `./gradlew` invocations
+    // (without running build.py first) still configure successfully.
+    val versionCode: Int get() = (get("versionCode") ?: get("shadowmask.versionCode"))!!.toInt()
     val stubVersion: String get() = get("shadowmask.stubVersion")!!
     val abiList: List<String> get() = get("abiList")!!.split(",")
 }

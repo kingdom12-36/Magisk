@@ -728,8 +728,8 @@ def load_config():
 
     gradle_props = Path("app", "gradle.properties")
     for key, value in parse_props(gradle_props).items():
-        if key.startswith("magisk."):
-            config[key[7:]] = value
+        if key.startswith("shadowmask."):
+            config[key[len("shadowmask."):]] = value
 
     try:
         config["versionCode"] = int(config["versionCode"])
