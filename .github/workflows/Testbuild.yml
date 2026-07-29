@@ -148,14 +148,9 @@ jobs:
           openssl base64 -d -A -in "$KEYSTORE_B64" > shadowmask-release.jks
           chmod 600 shadowmask-release.jks
 
-          # Write config.prop with absolute keystore path so Gradle
-          # finds it regardless of working directory during the build
-          cat > config.prop <<EOF
-keyStore=$(pwd)/shadowmask-release.jks
-keyStorePass=$STORE_PASSWORD
-keyAlias=$KEY_ALIAS
-keyPass=$KEY_PASSWORD
-EOF
+          printf 'keyStore=%s\nkeyStorePass=%s\nkeyAlias=%s\nkeyPass=%s\n' \
+            "$(pwd)/shadowmask-release.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" \
+            > config.prop
 
       - name: Build Release APK
         run: ./build.py -r app
