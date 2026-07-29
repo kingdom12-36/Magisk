@@ -242,6 +242,7 @@ fun ModuleScreen(viewModel: ModuleViewModel) {
 
 @Composable
 private fun ModuleCard(item: ModuleItem, viewModel: ModuleViewModel, onUpdateClick: (OnlineModule?) -> Unit) {
+    val context = LocalContext.current
     val infoAlpha = if (!item.isRemoved && item.isEnabled && !item.showNotice) 1f else 0.5f
     val strikeThrough = if (item.isRemoved) TextDecoration.LineThrough else TextDecoration.None
     val colorScheme = MaterialTheme.colorScheme

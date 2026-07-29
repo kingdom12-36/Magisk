@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import kotlinx.parcelize.Parcelize
 
 class ModuleItem(val module: LocalModule) {
     val showNotice: Boolean
