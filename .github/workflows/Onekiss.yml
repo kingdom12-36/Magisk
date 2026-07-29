@@ -285,7 +285,7 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew compileDebugKotlin compileDebugJavaWithJavac \
-            --parallel --build-cache --continue 2>&1 | tee /tmp/compile.log
+            --parallel --build-cache --continue --stacktrace 2>&1 | tee /tmp/compile.log
 
       - name: Annotate compiler errors/warnings
         if: always()
