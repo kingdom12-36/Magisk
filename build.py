@@ -748,29 +748,40 @@ def load_config():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Magisk build script")
-    parser.set_defaults(func=lambda x: None)
-    parser.add_argument(
+    # Parent parser containing global flags shared across all subparsers
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    parent_parser.add_argument(
         "-r", "--release", action="store_true", help="compile in release mode"
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "-v", "--verbose", action="count", default=0, help="verbose output"
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "-c",
         "--config",
         default="config.prop",
         help="custom config file (default: config.prop)",
     )
+
+    parser = argparse.ArgumentParser(
+        description="Magisk build script", parents=[parent_parser]
+    )
+    parser.set_defaults(func=lambda x: None)
     subparsers = parser.add_subparsers(title="actions")
 
-    all_parser = subparsers.add_parser("all", help="build everything")
-
-    fast_parser = subparsers.add_parser(
-        "fast", help="build native once (release) + both APK variants in one Gradle call"
+    all_parser = subparsers.add_parser(
+        "all", parents=[parent_parser], help="build everything"
     )
 
-    native_parser = subparsers.add_parser("native", help="build native binaries")
+    fast_parser = subparsers.add_parser(
+        "fast",
+        parents=[parent_parser],
+        help="build native once (release) + both APK variants in one Gradle call",
+    )
+
+    native_parser = subparsers.add_parser(
+        "native", parents=[parent_parser], help="build native binaries"
+    )
     native_parser.add_argument(
         "targets",
         nargs="*",
@@ -778,31 +789,43 @@ def parse_args():
         or empty for defaults ({', '.join(default_targets)})",
     )
 
-    app_parser = subparsers.add_parser("app", help="build the ShadowMask app")
-
-    app_ng_parser = subparsers.add_parser(
-        "app-ng", help="build the next generation ShadowMask app"
+    app_parser = subparsers.add_parser(
+        "app", parents=[parent_parser], help="build the ShadowMask app"
     )
 
-    stub_parser = subparsers.add_parser("stub", help="build the stub app")
+    app_ng_parser = subparsers.add_parser(
+        "app-ng", parents=[parent_parser], help="build the next generation ShadowMask app"
+    )
 
-    test_parser = subparsers.add_parser("test", help="build the test app")
+    stub_parser = subparsers.add_parser(
+        "stub", parents=[parent_parser], help="build the stub app"
+    )
 
-    clean_parser = subparsers.add_parser("clean", help="cleanup")
+    test_parser = subparsers.add_parser(
+        "test", parents=[parent_parser], help="build the test app"
+    )
+
+    clean_parser = subparsers.add_parser(
+        "clean", parents=[parent_parser], help="cleanup"
+    )
     clean_parser.add_argument(
         "targets", nargs="*", help="native, cpp, rust, java, or empty to clean all"
     )
 
-    ndk_parser = subparsers.add_parser("ndk", help="setup Magisk NDK")
+    ndk_parser = subparsers.add_parser(
+        "ndk", parents=[parent_parser], help="setup Magisk NDK"
+    )
 
-    emu_parser = subparsers.add_parser("emulator", help="setup AVD for development")
+    emu_parser = subparsers.add_parser(
+        "emulator", parents=[parent_parser], help="setup AVD for development"
+    )
     emu_parser.add_argument("apk", help="a Magisk APK to use", nargs="?")
     emu_parser.add_argument(
         "-b", "--build", action="store_true", help="build before patching"
     )
 
     avd_patch_parser = subparsers.add_parser(
-        "avd_patch", help="patch AVD ramdisk.img or init_boot.img"
+        "avd_patch", parents=[parent_parser], help="patch AVD ramdisk.img or init_boot.img"
     )
     avd_patch_parser.add_argument("image", help="path to ramdisk.img or init_boot.img")
     avd_patch_parser.add_argument("output", help="output file name")
@@ -812,27 +835,30 @@ def parse_args():
     )
 
     cargo_parser = subparsers.add_parser(
-        "cargo", help="call 'cargo' commands against the project"
+        "cargo", parents=[parent_parser], help="call 'cargo' commands against the project"
     )
     cargo_parser.add_argument("commands", nargs=argparse.REMAINDER)
 
-    clippy_parser = subparsers.add_parser("clippy", help="run clippy on Rust sources")
-    clippy_parser.add_argument(
-        "--abi", action="append", help="target ABI(s) to run clippy"
+    clippy_parser = subparsers.add_parser(
+        "clippy", parents=[parent_parser], help="run clippy on Rust sources"
     )
     clippy_parser.add_argument(
-        "-r", "--release", action="store_true", help="run clippy as release"
+        "--abi", action="append", help="target ABI(s) to run clippy"
     )
     clippy_parser.add_argument(
         "-d", "--debug", action="store_true", help="run clippy as debug"
     )
 
-    rustup_parser = subparsers.add_parser("rustup", help="setup rustup wrapper")
+    rustup_parser = subparsers.add_parser(
+        "rustup", parents=[parent_parser], help="setup rustup wrapper"
+    )
     rustup_parser.add_argument(
         "wrapper_dir", help="path to setup rustup wrapper binaries"
     )
 
-    gen_parser = subparsers.add_parser("gen", help="generate files for IDE")
+    gen_parser = subparsers.add_parser(
+        "gen", parents=[parent_parser], help="generate files for IDE"
+    )
     gen_parser.add_argument("--abi", help="target ABI to generate")
 
     # Set callbacks
