@@ -28,8 +28,8 @@
     <string name="home_installed_version">Текущая версия</string>
     <string name="home_latest_version">Последняя версия</string>
     <string name="invalid_update_channel">Некорректный канал обновлений</string>
-    <string name="uninstall_magisk_title">Удаление Magisk</string>
-    <string name="uninstall_magisk_msg">Все модули будут отключены либо удалены!\nRoot-доступ будет недоступен!\nБудет активировано шифрование /data (если отключалось при установке)!</string>
+    <string name="uninstall_shadowmask_title">Удаление Magisk</string>
+    <string name="uninstall_shadowmask_msg">Все модули будут отключены либо удалены!\nRoot-доступ будет недоступен!\nБудет активировано шифрование /data (если отключалось при установке)!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Не отключать шифрование /data</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Логи отсутствуют</string>
-    <string name="log_data_magisk_none">Логи отсутствуют</string>
+    <string name="log_data_shadowmask_none">Логи отсутствуют</string>
     <string name="menuSaveLog">Сохранить логи</string>
     <string name="menuClearLog">Очистить логи</string>
     <string name="logs_cleared">Логи успешно очищены</string>
@@ -226,8 +226,8 @@
     <string name="env_fix_msg">Требуется расширенная установка Magisk для корректной работы. Продолжить и выполнить перезагрузку?</string>
     <string name="env_full_fix_msg">Необходимо переустановить Magisk для корректной работы на вашем устройстве. Пожалуйста, переустановите Magisk в самом приложении (не из recovery).</string>
     <string name="setup_msg">Настройка рабочей среды…</string>
-    <string name="unsupport_magisk_title">Неподдерживаемая версия Magisk</string>
-    <string name="unsupport_magisk_msg">Эта версия приложения Magisk не поддерживает версию Magisk ниже %1$s.\n\nПриложение будет работать так, словно Magisk не установлен, пожалуйста, обновите Magisk как можно скорее.</string>
+    <string name="unsupport_shadowmask_title">Неподдерживаемая версия Magisk</string>
+    <string name="unsupport_shadowmask_msg">Эта версия приложения Magisk не поддерживает версию Magisk ниже %1$s.\n\nПриложение будет работать так, словно Magisk не установлен, пожалуйста, обновите Magisk как можно скорее.</string>
     <string name="unsupport_general_title">Неподдерживаемые условия</string>
     <string name="unsupport_system_app_msg">Запуск приложения в качестве системного невозможен. Пожалуйста, переустановите его как пользовательское.</string>
     <string name="unsupport_other_su_msg">Обнаружен неподдерживаемый бинарный файл \"su\". Пожалуйста, удалите сторонний провайдер Root-прав и/или переустановите Magisk.</string>

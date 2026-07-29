@@ -28,8 +28,8 @@
     <string name="home_installed_version">Nainstalováno</string>
     <string name="home_latest_version">Poslední</string>
     <string name="invalid_update_channel">Neplatný kanál aktualizace</string>
-    <string name="uninstall_magisk_title">Odinstalovat Magisk</string>
-    <string name="uninstall_magisk_msg">Všechny moduly budou zakázány/odstraněny!\nROOT bude odstraněn!\nPokud jsou data dešifrována, můžou být zašifrována!</string>
+    <string name="uninstall_shadowmask_title">Odinstalovat Magisk</string>
+    <string name="uninstall_shadowmask_msg">Všechny moduly budou zakázány/odstraněny!\nROOT bude odstraněn!\nPokud jsou data dešifrována, můžou být zašifrována!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Ponechat Force Encryption</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nemáte žádné protokoly. Vyzkoušejte nějakou aplikaci vyžadující oprávnění SuperUser</string>
-    <string name="log_data_magisk_none">Protokoly Magisk jsou prázdné. To je zvláštní</string>
+    <string name="log_data_shadowmask_none">Protokoly Magisk jsou prázdné. To je zvláštní</string>
     <string name="menuSaveLog">Uložit protokol</string>
     <string name="menuClearLog">Smazat protokol</string>
     <string name="logs_cleared">Protokol byl smazán</string>
@@ -221,8 +221,8 @@
     <string name="env_fix_msg">Aby mohl Magisk správně fungovat, je třeba zařízení dodatečně nastavit. Chcete pokračovat a restartovat zařízení?</string>
     <string name="env_full_fix_msg">Aby vaše zařízení správně fungovalo, potřebuje se Magisk znovu flashnout. Nainstalujte znovu Magisk v aplikaci, režim Recovery nemůže získat správné informace o zařízení.</string>
     <string name="setup_msg">Probíhá nastavení prostředí…</string>
-    <string name="unsupport_magisk_title">Nepodporovaná verze Magisk</string>
-    <string name="unsupport_magisk_msg">Tato verze aplikace nepodporuje Magisk ve verzi nižší než %1$s.\n\nAplikace se bude chovat, jako by žádný Magisk nebyl nainstalován. Aktualizujte prosím Magisk co nejdříve.</string>
+    <string name="unsupport_shadowmask_title">Nepodporovaná verze Magisk</string>
+    <string name="unsupport_shadowmask_msg">Tato verze aplikace nepodporuje Magisk ve verzi nižší než %1$s.\n\nAplikace se bude chovat, jako by žádný Magisk nebyl nainstalován. Aktualizujte prosím Magisk co nejdříve.</string>
     <string name="unsupport_general_title">Abnormální stav</string>
     <string name="unsupport_system_app_msg">Spuštění této aplikace jako systémové, není podporováno. Změňte prosím aplikaci zpět na uživatelskou.</string>
     <string name="unsupport_other_su_msg">Byl detekován binární soubor \"su\", který nepochází z Magisk. Odeberte jakékoli konkurenční ROOT řešení a/nebo přeinstalujte Magisk.</string>

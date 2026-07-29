@@ -28,8 +28,8 @@
     <string name="home_installed_version">ইনস্টল করা হয়েছে</string>
     <string name="home_latest_version">সর্বশেষ</string>
     <string name="invalid_update_channel">অবৈধ আপডেট চ্যানেল</string>
-    <string name="uninstall_magisk_title">ম্যাজিস্ক আনইনস্টল করুন</string>
-    <string name="uninstall_magisk_msg">সমস্ত মডিউল নিষ্ক্রিয়/মুছে ফেলা হবে!\nরুট সরানো হবে!\nম্যাজিস্ক ব্যবহারের মাধ্যমে এনক্রিপ্ট করা যে কোনও অভ্যন্তরীণ স্টোরেজ পুনরায় এনক্রিপ্ট করা হবে!</string>
+    <string name="uninstall_shadowmask_title">ম্যাজিস্ক আনইনস্টল করুন</string>
+    <string name="uninstall_shadowmask_msg">সমস্ত মডিউল নিষ্ক্রিয়/মুছে ফেলা হবে!\nরুট সরানো হবে!\nম্যাজিস্ক ব্যবহারের মাধ্যমে এনক্রিপ্ট করা যে কোনও অভ্যন্তরীণ স্টোরেজ পুনরায় এনক্রিপ্ট করা হবে!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">এনক্রিপশন সংরক্ষণ করুন</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">আপনি লগ-মুক্ত, আপনার রুট অ্যাপগুলি আরও ব্যবহার করার চেষ্টা করুন৷</string>
-    <string name="log_data_magisk_none">ম্যাজিস্ক লগগুলি খালি, এটি অদ্ভুত</string>
+    <string name="log_data_shadowmask_none">ম্যাজিস্ক লগগুলি খালি, এটি অদ্ভুত</string>
     <string name="menuSaveLog">লগ সংরক্ষণ</string>
     <string name="menuClearLog">এখন লগ সাফ করুন</string>
     <string name="logs_cleared">লগ সফলভাবে সাফ করা হয়েছে৷</string>
@@ -214,8 +214,8 @@
     <string name="env_fix_title">অতিরিক্ত সেটআপ প্রয়োজন</string>
     <string name="env_fix_msg">ম্যাজিস্ক সঠিকভাবে কাজ করার জন্য আপনার ডিভাইসের অতিরিক্ত সেটআপ প্রয়োজন। আপনি কি এগিয়ে যেতে এবং রিবুট করতে চান?</string>
     <string name="setup_msg">চলমান পরিবেশ সেটআপ…</string>
-    <string name="unsupport_magisk_title">অসমর্থিত ম্যাজিস্ক সংস্করণ</string>
-    <string name="unsupport_magisk_msg">অ্যাপটির এই সংস্করণটি %1$s-এর চেয়ে কম ম্যাগিস্ক সংস্করণগুলিকে সমর্থন করে না৷\n\nঅ্যাপটি এমন আচরণ করবে যেন কোনও ম্যাজিস্ক ইনস্টল করা নেই, দয়া করে যত তাড়াতাড়ি সম্ভব ম্যাজিস্ক আপগ্রেড করুন।</string>
+    <string name="unsupport_shadowmask_title">অসমর্থিত ম্যাজিস্ক সংস্করণ</string>
+    <string name="unsupport_shadowmask_msg">অ্যাপটির এই সংস্করণটি %1$s-এর চেয়ে কম ম্যাগিস্ক সংস্করণগুলিকে সমর্থন করে না৷\n\nঅ্যাপটি এমন আচরণ করবে যেন কোনও ম্যাজিস্ক ইনস্টল করা নেই, দয়া করে যত তাড়াতাড়ি সম্ভব ম্যাজিস্ক আপগ্রেড করুন।</string>
     <string name="unsupport_general_title">অস্বাভাবিক অবস্থা</string>
     <string name="unsupport_system_app_msg">এই অ্যাপটিকে একটি সিস্টেম অ্যাপ হিসেবে চালানো সমর্থিত নয়। অনুগ্রহ করে অ্যাপটিকে একটি ব্যবহারকারী অ্যাপে ফিরিয়ে দিন।</string>
     <string name="unsupport_other_su_msg">ম্যাজিস্ক থেকে নয় একটি \"su\" বাইনারি সনাক্ত করা হয়েছে। অনুগ্রহ করে কোনো প্রতিযোগী রুট সমাধান সরান এবং/অথবা ম্যাজিস্ক পুনরায় ইনস্টল করুন।</string>

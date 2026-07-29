@@ -28,8 +28,8 @@
     <string name="home_installed_version">Nainštalované</string>
     <string name="home_latest_version">Posledná</string>
     <string name="invalid_update_channel">Neplatný aktualizačný kanál</string>
-    <string name="uninstall_magisk_title">Odinštalovať Magisk</string>
-    <string name="uninstall_magisk_msg">Všetky moduly budú zakázané/odstránené!\nRoot bude odstránený!\nAkékoľvek interné úložisko nešifrované pomocou Magisku bude znovu zašifrované!</string>
+    <string name="uninstall_shadowmask_title">Odinštalovať Magisk</string>
+    <string name="uninstall_shadowmask_msg">Všetky moduly budú zakázané/odstránené!\nRoot bude odstránený!\nAkékoľvek interné úložisko nešifrované pomocou Magisku bude znovu zašifrované!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Ponechať vynútené šifrovanie</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nie sú žiadne záznamy, skúste nejakú appku vyžadujúcu práva superpoužívateľa</string>
-    <string name="log_data_magisk_none">Záznamy Magisku sú prázdne, to je divné</string>
+    <string name="log_data_shadowmask_none">Záznamy Magisku sú prázdne, to je divné</string>
     <string name="menuSaveLog">Uložiť záznam</string>
     <string name="menuClearLog">Odstrániť záznam</string>
     <string name="logs_cleared">Záznam úspešne odstránený</string>
@@ -227,8 +227,8 @@
     <string name="env_fix_msg">Aby Magisk fungoval správne, vaše zariadenie potrebuje ďalšie nastavenie. Chcete pokračovať a reštartovať?</string>
     <string name="env_full_fix_msg">Vaše zariadenie potrebuje na správne fungovanie reflash Magisku. Preinštalujte Magisk priamo z aplikácie, režim obnovenia nemôže získať správne informácie o zariadení.</string>
     <string name="setup_msg">Nastavenie je spustené…</string>
-    <string name="unsupport_magisk_title">Nepodporovaná verzia Magisku</string>
-    <string name="unsupport_magisk_msg">Táto verzia aplikácie nepodporuje Magisk s verziou nižšou ako %1$s.\n\nAplikácia sa bude správať, akoby Magisk nebol nainštalový, aktualizujte Magisk čo najskôr.</string>
+    <string name="unsupport_shadowmask_title">Nepodporovaná verzia Magisku</string>
+    <string name="unsupport_shadowmask_msg">Táto verzia aplikácie nepodporuje Magisk s verziou nižšou ako %1$s.\n\nAplikácia sa bude správať, akoby Magisk nebol nainštalový, aktualizujte Magisk čo najskôr.</string>
     <string name="unsupport_general_title">Abnormálny stav</string>
     <string name="unsupport_system_app_msg">Spustenie tejto apky ako systémovej nie je podporované. Preveďte apku na používateľskú.</string>
     <string name="unsupport_other_su_msg">Bol nájdený binárny súbor \"su\", ktorý nie je pre Magisk. Odstráňte, prosím, konkurenčné root spôsoby a/alebo preinštalujte Magisk.</string>

@@ -26,8 +26,8 @@
     <string name="home_installed_version">Instal·lat</string>
     <string name="home_latest_version">Última</string>
     <string name="invalid_update_channel">Canal d\'actualització invàlid</string>
-    <string name="uninstall_magisk_title">Desinstal·lar Magisk</string>
-    <string name="uninstall_magisk_msg">Tots els mòduls seran desactivats i eliminats! L\'accés d\'arrel s\'eliminarà i, possiblement, xifrarà totes les dades (si no estan ja xifrades).</string>
+    <string name="uninstall_shadowmask_title">Desinstal·lar Magisk</string>
+    <string name="uninstall_shadowmask_msg">Tots els mòduls seran desactivats i eliminats! L\'accés d\'arrel s\'eliminarà i, possiblement, xifrarà totes les dades (si no estan ja xifrades).</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Mantenir el xifrat forçat</string>
@@ -79,7 +79,7 @@
 
     <!--Logs-->
     <string name="log_data_none">No hi ha cap registre. Provi d\'utilitzar aplicacions que requereixen permisos de superusuari.</string>
-    <string name="log_data_magisk_none">Els registres de Magisk estan buits. Això és estrany.</string>
+    <string name="log_data_shadowmask_none">Els registres de Magisk estan buits. Això és estrany.</string>
     <string name="menuSaveLog">Desar registre</string>
     <string name="menuClearLog">Netejar registre ara</string>
     <string name="logs_cleared">Registre netejat correctament.</string>
@@ -201,8 +201,8 @@
     <string name="env_fix_title">Es requereix instal·lació addicional</string>
     <string name="env_fix_msg">El teu dispositiu necessita instal·lació addicional per Magisk per funcionar correctament. Es baixarà el ZIP d\'instal·lació de Magisk, vol procedir a la instal·lació ara?</string>
     <string name="setup_msg">S\'està executant la configuració de l\'entorn…</string>
-    <string name="unsupport_magisk_title">Versió de Magisk incompatible</string>
-    <string name="unsupport_magisk_msg">Aquesta versió de Magisk Manager no suporta versions de Magisk més petites que la %1$s.\n\nL\'aplicació es comportarà com si Magisk no estigués instal·lat, si us plau actualitzi Magisk com més aviat millor.</string>
+    <string name="unsupport_shadowmask_title">Versió de Magisk incompatible</string>
+    <string name="unsupport_shadowmask_msg">Aquesta versió de Magisk Manager no suporta versions de Magisk més petites que la %1$s.\n\nL\'aplicació es comportarà com si Magisk no estigués instal·lat, si us plau actualitzi Magisk com més aviat millor.</string>
     <string name="external_rw_permission_denied">Ha de donar permís d\'emmagatzematge per activar aquesta funcionalitat</string>
     <string name="add_shortcut_title">Afegeix una drecera a la pantalla d\'inici</string>
     <string name="add_shortcut_msg">Després d\'amagar Magisk Manager, el seu nom i icona poden ser difícils de reconèixer. Vols afegir una bonica drecera a la teva pantalla d\'inici?</string>

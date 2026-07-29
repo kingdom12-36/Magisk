@@ -28,8 +28,8 @@
     <string name="home_installed_version">داگیراوە</string>
     <string name="home_latest_version">دوایین وەشان</string>
     <string name="invalid_update_channel">کەناڵێکی نوێکردنەوەی هەڵە</string>
-    <string name="uninstall_magisk_title">سڕینەوەی ماجیسک</string>
-    <string name="uninstall_magisk_msg">هەموو زیادکراوەکان دەسڕێنەوە، ڕۆت دەسڕێتەوە، و هەر ڕەمزێنراوێک بەهۆی ماجیسک کرابێ لادەچێت!</string>
+    <string name="uninstall_shadowmask_title">سڕینەوەی ماجیسک</string>
+    <string name="uninstall_shadowmask_msg">هەموو زیادکراوەکان دەسڕێنەوە، ڕۆت دەسڕێتەوە، و هەر ڕەمزێنراوێک بەهۆی ماجیسک کرابێ لادەچێت!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">ڕەمزاندنی بەزۆر بهێڵەوە</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">هیچ تۆمارێک نییە، ئەو ئەپانەی ڕۆتیان پێویستە زوزو بەکاریبێنە</string>
-    <string name="log_data_magisk_none">تۆمارەکانی ماجیسک بەتاڵن، باشە بۆ؟</string>
+    <string name="log_data_shadowmask_none">تۆمارەکانی ماجیسک بەتاڵن، باشە بۆ؟</string>
     <string name="menuSaveLog">تۆمارەکان هەڵبگرە</string>
     <string name="menuClearLog">تۆمارەکان بسڕەوە</string>
     <string name="logs_cleared">بەسەرکەوتویی تۆمارەکان سڕانەوە</string>
@@ -231,8 +231,8 @@
     <string name="env_fix_msg">مۆبایلەکەت پێویستی بە ڕێکخستنی زیاترە، ئایا ئەتەوێت بەردەوام بیت و ڕێستارتی بکەیتەوە؟</string>
     <string name="env_full_fix_msg"> پێویستە دوبارە ماجیسک دابگریتەوە بۆ ئەوەی بەباشی کاربکات تکایە ماجیسک دابگرەوە لەناو ئەپەکە خۆی چونکە لە ڕیکەڤەرییەوە ناتوانرێ زانیاری تەواو لەسەر ئامێرەکە دەستبخرێت </string>
     <string name="setup_msg">دەستپێکردن....</string>
-    <string name="unsupport_magisk_title">وەشانی ماجیسک پاڵپشتینەکراوە</string>
-    <string name="unsupport_magisk_msg">وەشانی ماجیسکەکەت زۆر کۆنە وەک ئەوە وایە هەر نەبێت، تکایە نوێی بکەوە بە زوترین کات</string>
+    <string name="unsupport_shadowmask_title">وەشانی ماجیسک پاڵپشتینەکراوە</string>
+    <string name="unsupport_shadowmask_msg">وەشانی ماجیسکەکەت زۆر کۆنە وەک ئەوە وایە هەر نەبێت، تکایە نوێی بکەوە بە زوترین کات</string>
     <string name="unsupport_general_title">باری نائاسایی</string>
     <string name="unsupport_system_app_msg">ئەم ئەپە وەکو ئەپی سیستەم کارناکات، تکایە بیگۆڕەوە بۆ ئەپی ئاسایی</string>
     <string name="unsupport_other_su_msg"> \"su\" binary یەکی بێگانە دۆزرایەوە، تکایە جگە لە ماجیسک ئەپی تر بەکارمەهێنە بۆ ڕۆت کردن  </string>

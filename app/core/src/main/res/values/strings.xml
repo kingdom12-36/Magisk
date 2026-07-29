@@ -38,8 +38,8 @@
     <string name="home_latest_version">Latest</string>
     <string name="invalid_update_channel">Invalid update channel</string>
     <string name="uninstall">Uninstall</string>
-    <string name="uninstall_magisk_title">Uninstall ShadowMask</string>
-    <string name="uninstall_magisk_msg">All modules will be disabled/removed!\nRoot will be removed!\nAny internal storage unencrypted through the use of ShadowMask will be re-encrypted!</string>
+    <string name="uninstall_shadowmask_title">Uninstall ShadowMask</string>
+    <string name="uninstall_shadowmask_msg">All modules will be disabled/removed!\nRoot will be removed!\nAny internal storage unencrypted through the use of ShadowMask will be re-encrypted!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Preserve force encryption</string>
@@ -101,7 +101,7 @@
 
     <!--Logs-->
     <string name="log_data_none">You\'re log-free. Try using your root apps more.</string>
-    <string name="log_data_magisk_none">ShadowMask logs are empty, that\'s weird.</string>
+    <string name="log_data_shadowmask_none">ShadowMask logs are empty, that\'s weird.</string>
     <string name="menuSaveLog">Save log</string>
     <string name="menuClearLog">Clear log now</string>
     <string name="logs_cleared">Log successfully cleared</string>
@@ -271,8 +271,8 @@
     <string name="env_fix_msg">Your device needs additional setup for ShadowMask to work properly. Do you want to proceed and reboot?</string>
     <string name="env_full_fix_msg">Your device needs reflash ShadowMask to work properly. Please reinstall ShadowMask within app, Recovery mode cannot get correct device info.</string>
     <string name="setup_msg">Running environment setup&#8230;</string>
-    <string name="unsupport_magisk_title">Unsupported ShadowMask version</string>
-    <string name="unsupport_magisk_msg">This version of the app doesn\'t support ShadowMask versions lower than %1$s.\n\nThe app will behave as if no ShadowMask is installed. Please update ShadowMask as soon as possible.</string>
+    <string name="unsupport_shadowmask_title">Unsupported ShadowMask version</string>
+    <string name="unsupport_shadowmask_msg">This version of the app doesn\'t support ShadowMask versions lower than %1$s.\n\nThe app will behave as if no ShadowMask is installed. Please update ShadowMask as soon as possible.</string>
     <string name="unsupport_general_title">Abnormal state</string>
     <string name="unsupport_system_app_msg">Running this app as a system app isn\'t supported. Please revert the app to a user app.</string>
     <string name="unsupport_other_su_msg">A "su" binary not from ShadowMask has been detected. Please remove any competing root solution and/or reinstall ShadowMask.</string>

@@ -28,8 +28,8 @@
     <string name="home_installed_version">Versiune instalată</string>
     <string name="home_latest_version">Ultima versiune</string>
     <string name="invalid_update_channel">Canal de actualizare nevalid</string>
-    <string name="uninstall_magisk_title">Dezinstalează Magisk</string>
-    <string name="uninstall_magisk_msg">Toate modulele vor fi dezactivate/eliminate!\nRootul va fi eliminat!\nOrice spațiu de stocare intern necriptat prin folosirea Magisk va fi recriptat!</string>
+    <string name="uninstall_shadowmask_title">Dezinstalează Magisk</string>
+    <string name="uninstall_shadowmask_msg">Toate modulele vor fi dezactivate/eliminate!\nRootul va fi eliminat!\nOrice spațiu de stocare intern necriptat prin folosirea Magisk va fi recriptat!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Păstrează criptarea forțată</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nu există jurnale, încearcă să folosești ceva mai mult aplicațiile care folosesc root</string>
-    <string name="log_data_magisk_none">Jurnalele Magisk sunt goale, asta-i ciudat</string>
+    <string name="log_data_shadowmask_none">Jurnalele Magisk sunt goale, asta-i ciudat</string>
     <string name="menuSaveLog">Salvează jurnalul</string>
     <string name="menuClearLog">Golește jurnalul acum</string>
     <string name="logs_cleared">Jurnal golit cu succes</string>
@@ -227,8 +227,8 @@
     <string name="env_fix_msg">Dispozitivul are nevoie de configurare suplimentară pentru ca Magisk să funcționeze corect. Vrei să continui și să repornești?</string>
     <string name="env_full_fix_msg">Dispozitivul are nevoie de rescrierea în memoria flash a Magisk pentru a funcționa corect. Te rugăm să reinstalezi Magisk în cadrul aplicației, modul de recuperare nu poate obține informații corecte despre dispozitiv.</string>
     <string name="setup_msg">Rulează configurarea mediului…</string>
-    <string name="unsupport_magisk_title">Versiune Magisk nesuportată</string>
-    <string name="unsupport_magisk_msg">Această versiune a aplicației nu suportă versiunile Magisk mai mici de %1$s.\n\nAplicația se va comporta ca și cum Magisk nu este instalat, te rugăm să actualizezi Magisk cât mai curând posibil.</string>
+    <string name="unsupport_shadowmask_title">Versiune Magisk nesuportată</string>
+    <string name="unsupport_shadowmask_msg">Această versiune a aplicației nu suportă versiunile Magisk mai mici de %1$s.\n\nAplicația se va comporta ca și cum Magisk nu este instalat, te rugăm să actualizezi Magisk cât mai curând posibil.</string>
     <string name="unsupport_general_title">Stare anormală</string>
     <string name="unsupport_system_app_msg">Rularea acestei aplicații ca aplicație de sistem nu este suportată. Te rugăm să readuci aplicația într-o aplicație de utilizator.</string>
     <string name="unsupport_other_su_msg">A fost detectat un binar „su” care nu provine de la Magisk. Te rugăm să elimini orice soluție root concurentă și/sau să reinstalezi Magisk.</string>

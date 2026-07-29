@@ -26,8 +26,8 @@
     <string name="home_installed_version">Versión instalada</string>
     <string name="home_latest_version">Última versión</string>
     <string name="invalid_update_channel">La canal d\'anovamientu nun ye válida</string>
-    <string name="uninstall_magisk_title">Desinstalar Magisk</string>
-    <string name="uninstall_magisk_msg">¡Van quitase y desactivase tolos módulos y l\'accesu root!\nCualesquier almacenamientu internu ensin cifrar pente l\'usu de Magisk va volver cifrase.</string>
+    <string name="uninstall_shadowmask_title">Desinstalar Magisk</string>
+    <string name="uninstall_shadowmask_msg">¡Van quitase y desactivase tolos módulos y l\'accesu root!\nCualesquier almacenamientu internu ensin cifrar pente l\'usu de Magisk va volver cifrase.</string>
     <!--Install-->
     <string name="keep_force_encryption">Caltener el cifráu forciáu</string>
     <string name="keep_dm_verity">Caltener l\'AVB 2.0/dm-verity</string>
@@ -75,7 +75,7 @@
     <string name="superuser_policy_none">Pel momentu, nenguna aplicación pidió\'l permisu de superusuariu.</string>
     <!--Logs-->
     <string name="log_data_none">El rexistru ta baleru. Prueba a usar más aplicaciones de root</string>
-    <string name="log_data_magisk_none">El rexistru de Magisk ta baleru. ¡Qué raro!</string>
+    <string name="log_data_shadowmask_none">El rexistru de Magisk ta baleru. ¡Qué raro!</string>
     <string name="menuSaveLog">Guardar el rexistru</string>
     <string name="menuClearLog">Llimpiar el rexistru</string>
     <string name="logs_cleared">El rexistru borróse correutamente</string>
@@ -217,8 +217,8 @@
     <string name="env_fix_msg">El preséu precisa una configuración adicional pa que Magisk funcione afayadizamente. ¿Quies siguir y reaniciar?</string>
     <string name="env_full_fix_msg">El preséu precisa volver flaxar Magisk pa que funcione afayadizamente. Volvi instalar Magisk dientro de l\'aplicación porque\'l mou de recuperación nun pue consiguir la información correuta del preséu.</string>
     <string name="setup_msg">Executando la configuración del entornu…</string>
-    <string name="unsupport_magisk_title">Versión non compatible</string>
-    <string name="unsupport_magisk_msg">Esta versión de l\'aplicación nun ye compatible coles versiones de Magisk anteriores a la %1$s.\n\nL\'aplicación va comportase como si Magisk nun tuviere instaláu, anueva Magisk namás que puedas.</string>
+    <string name="unsupport_shadowmask_title">Versión non compatible</string>
+    <string name="unsupport_shadowmask_msg">Esta versión de l\'aplicación nun ye compatible coles versiones de Magisk anteriores a la %1$s.\n\nL\'aplicación va comportase como si Magisk nun tuviere instaláu, anueva Magisk namás que puedas.</string>
     <string name="unsupport_general_title">Estáu anormal</string>
     <string name="unsupport_system_app_msg">Esta aplicación nun se pue executar nel espaciu del sistema. Volvi instalala mas nel espaciu del usuariu.</string>
     <string name="unsupport_other_su_msg">Detectóse un binariu «su» que nun ye de Magisk. Quita cualesquier solución de root y/o volvi instalar Magisk.</string>

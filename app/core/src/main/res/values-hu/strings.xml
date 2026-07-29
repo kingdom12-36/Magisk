@@ -28,8 +28,8 @@
     <string name="home_installed_version">Telepítve</string>
     <string name="home_latest_version">Legújabb</string>
     <string name="invalid_update_channel">Érvénytelen frissítési csatorna</string>
-    <string name="uninstall_magisk_title">A Magisk eltávolítása</string>
-    <string name="uninstall_magisk_msg">Az összes modul le lesz tiltva/eltávolítva!\nA root eltávolításra kerül!\nA Magisk használatával titkosítatlan belső tárhely újra titkosításra kerül!</string>
+    <string name="uninstall_shadowmask_title">A Magisk eltávolítása</string>
+    <string name="uninstall_shadowmask_msg">Az összes modul le lesz tiltva/eltávolítva!\nA root eltávolításra kerül!\nA Magisk használatával titkosítatlan belső tárhely újra titkosításra kerül!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Az erőltetett titkosítás megőrzése</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nincs naplózás, próbáld többet használni a root alkalmazásokat</string>
-    <string name="log_data_magisk_none">A Magisk naplók üresek, ez furcsa</string>
+    <string name="log_data_shadowmask_none">A Magisk naplók üresek, ez furcsa</string>
     <string name="menuSaveLog">Napló mentés</string>
     <string name="menuClearLog">Napló törlése most</string>
     <string name="logs_cleared">A napló sikeresen törölve</string>
@@ -215,8 +215,8 @@
     <string name="env_fix_title">További beállítást igényel</string>
     <string name="env_fix_msg">A Magisk megfelelő működéséhez az eszközön további beállításokra van szükség. Folytatod és újraindítod?</string>
     <string name="setup_msg">Futási környezet beállítása…</string>
-    <string name="unsupport_magisk_title">Nem támogatott Magisk verzió</string>
-    <string name="unsupport_magisk_msg">Az alkalmazás ezen verziója nem támogatja a %1$s-nál régebbi Magisk-verziókat.\n\nAz alkalmazás úgy fog viselkedni, mintha nem lenne telepítve a Magisk. A lehető leghamarabb frissítsd a Magisk-et..</string>
+    <string name="unsupport_shadowmask_title">Nem támogatott Magisk verzió</string>
+    <string name="unsupport_shadowmask_msg">Az alkalmazás ezen verziója nem támogatja a %1$s-nál régebbi Magisk-verziókat.\n\nAz alkalmazás úgy fog viselkedni, mintha nem lenne telepítve a Magisk. A lehető leghamarabb frissítsd a Magisk-et..</string>
     <string name="unsupport_general_title">Rendellenes állapot</string>
     <string name="unsupport_system_app_msg">Az alkalmazás rendszeralkalmazásként való futtatása nem támogatott. Állítsd vissza az alkalmazást felhasználói alkalmazássá.</string>
     <string name="unsupport_other_su_msg">Nem a Magisktől származó \"su\" binárist észleltünk. Távolíts el minden konkurens gyökérmegoldást, és/vagy telepítsd újra a Magisk-et.</string>

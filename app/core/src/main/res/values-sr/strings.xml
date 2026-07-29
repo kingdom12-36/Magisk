@@ -36,8 +36,8 @@
     <string name="home_latest_version">Најновије</string>
     <string name="invalid_update_channel">Невалидан канал ажурирања</string>
     <string name="uninstall">Деинсталирај</string>
-    <string name="uninstall_magisk_title">Деинсталирај Magisk</string>
-    <string name="uninstall_magisk_msg">Сви модули ће бити онемогућени/уклоњени!\nКорен ће бити уклоњен!\nСвако неенкриптовано интерно складиште ће употребом Magisk-а бити поново енкриптовано!</string>
+    <string name="uninstall_shadowmask_title">Деинсталирај Magisk</string>
+    <string name="uninstall_shadowmask_msg">Сви модули ће бити онемогућени/уклоњени!\nКорен ће бити уклоњен!\nСвако неенкриптовано интерно складиште ће употребом Magisk-а бити поново енкриптовано!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Задржи форсирану енкрипцију</string>
@@ -99,7 +99,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Немате логова. Покушајте користити коренске апликације више.</string>
-    <string name="log_data_magisk_none">Magisk логови су празни, то је чудно.</string>
+    <string name="log_data_shadowmask_none">Magisk логови су празни, то је чудно.</string>
     <string name="menuSaveLog">Сачувај лог</string>
     <string name="menuClearLog">Уклони лог</string>
     <string name="logs_cleared">Лог успешно уклоњен</string>
@@ -269,8 +269,8 @@
     <string name="env_fix_msg">Ваш уређај захтева додатно подешавање да би Magisk радио како треба. Да ли желите наставити и покренути поново?</string>
     <string name="env_full_fix_msg">Ваш уређај захтева поновно флешовање да би Magisk радио како треба. Реинсталирајте Magisk кроз апликацију, режим опоравка не може добити тачне информације о уређају.</string>
     <string name="setup_msg">Покретање подешавања окружења…</string>
-    <string name="unsupport_magisk_title">Неподржана верзија Magisk-а</string>
-    <string name="unsupport_magisk_msg">Ова верзија апликације не подржава Magisk верзије мање од %1$s.\n\nАпликација ће се понашати као да Magisk није инсталиран. Молимо ажурирајте Magisk што пре.</string>
+    <string name="unsupport_shadowmask_title">Неподржана верзија Magisk-а</string>
+    <string name="unsupport_shadowmask_msg">Ова верзија апликације не подржава Magisk верзије мање од %1$s.\n\nАпликација ће се понашати као да Magisk није инсталиран. Молимо ажурирајте Magisk што пре.</string>
     <string name="unsupport_general_title">Ненормално стање</string>
     <string name="unsupport_system_app_msg">Покретање апликације као системске није подржано. Молимо поставите апликацију да буде корисничка.</string>
     <string name="unsupport_other_su_msg">Детектован \"su\" binary који није Magisk-ов. Молимо уклоните конкурентно коренско решење и/или реинсталирајте Magisk.</string>

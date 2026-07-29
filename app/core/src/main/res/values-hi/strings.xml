@@ -28,8 +28,8 @@
     <string name="home_installed_version">इंस्टॉल्ड</string>
     <string name="home_latest_version">नवीनतम</string>
     <string name="invalid_update_channel">अमान्य अपडेट चैनल</string>
-    <string name="uninstall_magisk_title">मैजिस्क को अनइंस्टॉल करें</string>
-    <string name="uninstall_magisk_msg">सभी मॉड्यूल्स को निष्क्रिय/हटा दिया जाएगा!\n रूट को हटा दिया जाएगा!\n आपका डेटा संभावित रूप से एन्क्रिप्ट किया गया है यदि पहले से नहीं है!</string>
+    <string name="uninstall_shadowmask_title">मैजिस्क को अनइंस्टॉल करें</string>
+    <string name="uninstall_shadowmask_msg">सभी मॉड्यूल्स को निष्क्रिय/हटा दिया जाएगा!\n रूट को हटा दिया जाएगा!\n आपका डेटा संभावित रूप से एन्क्रिप्ट किया गया है यदि पहले से नहीं है!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">फ़ोर्स एन्क्रिप्शन को संरक्षित रखें</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">कोई लॉग नहीं, अपने सुपरयूज़र सक्षम एप्लिकेशन का अधिक उपयोग करने का प्रयास करें।</string>
-    <string name="log_data_magisk_none">मैजिस्क लॉग खाली हैं, यह अजीब है।</string>
+    <string name="log_data_shadowmask_none">मैजिस्क लॉग खाली हैं, यह अजीब है।</string>
     <string name="menuSaveLog">लॉग सहेजे</string>
     <string name="menuClearLog">लॉग साफ़ करें</string>
     <string name="logs_cleared">लॉग सफलतापूर्वक साफ़ किया गया।</string>
@@ -215,8 +215,8 @@
     <string name="env_fix_title">अतिरिक्त सेटअप की आवश्यकता</string>
     <string name="env_fix_msg">मैजिस्क के ठीक से काम करने के लिए आपके डिवाइस को अतिरिक्त सेटअप की आवश्यकता है। क्या आप आगे बढ़ना और रिबूट करना चाहते हैं?</string>
     <string name="setup_msg">वातावरण सेटअप चल रहा है...</string>
-    <string name="unsupport_magisk_title">असमर्थित मैजिस्क संस्करण</string>
-    <string name="unsupport_magisk_msg">ऐप का यह संस्करण %1$s से कम के मैजिस्क संस्करणों का समर्थन नहीं करता है।\n\nऐप ऐसा व्यवहार करेगा जैसे कोई मैजिस्क इंस्टॉल नहीं है, कृपया जितनी जल्दी हो सके मैजिस्क को अपग्रेड करें।</string>
+    <string name="unsupport_shadowmask_title">असमर्थित मैजिस्क संस्करण</string>
+    <string name="unsupport_shadowmask_msg">ऐप का यह संस्करण %1$s से कम के मैजिस्क संस्करणों का समर्थन नहीं करता है।\n\nऐप ऐसा व्यवहार करेगा जैसे कोई मैजिस्क इंस्टॉल नहीं है, कृपया जितनी जल्दी हो सके मैजिस्क को अपग्रेड करें।</string>
     <string name="unsupport_general_title">असामान्य अवस्था</string>
     <string name="unsupport_system_app_msg">इस ऐप को सिस्टम ऐप के रूप में चलाना समर्थित नहीं है। कृपया ऐप को उपयोगकर्ता ऐप पर वापस लाएं।</string>
     <string name="unsupport_other_su_msg">एक \"su\" बाइनरी का पता चला है जो मैजिस्क से नहीं है। कृपया कोई प्रतिस्पर्धी मूल समाधान निकालें और/या मैजिस्क को फिर से स्थापित करें।</string>

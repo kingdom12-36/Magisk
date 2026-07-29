@@ -24,8 +24,8 @@
     <string name="home_installed_version">ਇੰਸਟਾਲਡ</string>
     <string name="home_latest_version">ਨਵੀਨਤਮ</string>
     <string name="invalid_update_channel">ਅਵੈਧ ਅਪਡੇਟ ਚੈਨਲ</string>
-    <string name="uninstall_magisk_title">ਮੈਜਿਸਕ ਨੂੰ ਅਣਇੰਸਟੌਲ ਕਰੋ</string>
-    <string name="uninstall_magisk_msg">ਸਾਰੇ ਮੋਡੀਊਲ ਅਯੋਗ/ਮਿਟਾ ਦਿੱਤੇ ਜਾਣਗੇ!\n ਰੂਟ ਨੂੰ ਹਟਾਇਆ ਜਾਏਗਾ!\n ਤੁਹਾਡਾ ਡਾਟਾ ਸੰਭਾਵਤ ਤੌਰ ਤੇ ਐਨਕ੍ਰਿਪਟ ਕੀਤਾ ਗਿਆ ਹੈ ਜੇ ਪਹਿਲਾਂ ਹੀ ਨਹੀਂ!</string>
+    <string name="uninstall_shadowmask_title">ਮੈਜਿਸਕ ਨੂੰ ਅਣਇੰਸਟੌਲ ਕਰੋ</string>
+    <string name="uninstall_shadowmask_msg">ਸਾਰੇ ਮੋਡੀਊਲ ਅਯੋਗ/ਮਿਟਾ ਦਿੱਤੇ ਜਾਣਗੇ!\n ਰੂਟ ਨੂੰ ਹਟਾਇਆ ਜਾਏਗਾ!\n ਤੁਹਾਡਾ ਡਾਟਾ ਸੰਭਾਵਤ ਤੌਰ ਤੇ ਐਨਕ੍ਰਿਪਟ ਕੀਤਾ ਗਿਆ ਹੈ ਜੇ ਪਹਿਲਾਂ ਹੀ ਨਹੀਂ!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">ਫੋਰਸ ਇਨਕ੍ਰਿਪਸ਼ਨ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖੋ</string>
@@ -76,7 +76,7 @@
 
     <!--Logs-->
     <string name="log_data_none">ਕੋਈ ਲੌਗਸ ਨਹੀਂ, ਆਪਣੀ ਸੁਪਰਯੂਜ਼ਰ ਸਮਰਥਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਹੋਰ ਵਰਤਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
-    <string name="log_data_magisk_none">ਮੈਜਿਸਕ ਲੌਗਸ ਖਾਲੀ ਹਨ, ਇਹ ਅਜੀਬ ਹੈ।</string>
+    <string name="log_data_shadowmask_none">ਮੈਜਿਸਕ ਲੌਗਸ ਖਾਲੀ ਹਨ, ਇਹ ਅਜੀਬ ਹੈ।</string>
     <string name="menuSaveLog">ਲੌਗ ਸੇਵ ਕਰੋ</string>
     <string name="menuClearLog">ਲੌਗ ਸਾਫ ਕਰੋ</string>
     <string name="logs_cleared">ਲੌਗ ਸਫਲਤਾਪੂਰਕ ਸਾਫ ਹੋ ਗਏ ਹਨ।</string>
@@ -190,7 +190,7 @@
     <string name="setup_fail">ਸੈਟਅਪ ਅਸਫਲ ਹੋਇਆ</string>
     <string name="env_fix_title">ਵਾਧੂ ਸੈਟਅਪ ਚਾਹੀਦਾ ਹੈ</string>
     <string name="setup_msg">ਵਾਤਾਵਰਣ ਸੈਟਅਪ ਚੱਲ ਰਿਹਾ ਹੈ …</string>
-    <string name="unsupport_magisk_title">ਗ਼ੈਰ ਮੈਜਿਸਕ ਵਰਜਨ</string>
+    <string name="unsupport_shadowmask_title">ਗ਼ੈਰ ਮੈਜਿਸਕ ਵਰਜਨ</string>
     <string name="external_rw_permission_denied">ਇਸ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਟੋਰੇਜ ਦੀ ਆਗਿਆ ਦਿਓ</string>
     <string name="add_shortcut_title">ਹੋਮਸਕ੍ਰੀਨ \'ਤੇ ਸ਼ਾਰਟਕੱਟ ਸ਼ਾਮਲ ਕਰੋ</string>
     <string name="app_not_found">ਇਸ ਐਕਸ਼ਨ ਨੂੰ ਸੰਭਾਲਣ ਲਈ ਕੋਈ ਐਪਲੀਕੇਸ਼ਨ ਨਹੀਂ ਮਿਲੀ</string>

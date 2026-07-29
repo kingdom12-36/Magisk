@@ -28,8 +28,8 @@
     <string name="home_installed_version">Орнатылған</string>
     <string name="home_latest_version">Соңғы</string>
     <string name="invalid_update_channel">Жарамсыз жаңарту көзі</string>
-    <string name="uninstall_magisk_title">Magisk-ті жою</string>
-    <string name="uninstall_magisk_msg">Барлық модуль сөндіріледі/жойылады!\nRoot құқығынан айырыласыз!\nMagisk көмегімен шифрлауды сөндірген болсаңыз, құрылғының жады қайта шифрланады!</string>
+    <string name="uninstall_shadowmask_title">Magisk-ті жою</string>
+    <string name="uninstall_shadowmask_msg">Барлық модуль сөндіріледі/жойылады!\nRoot құқығынан айырыласыз!\nMagisk көмегімен шифрлауды сөндірген болсаңыз, құрылғының жады қайта шифрланады!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Шифрлауды сөндірмей қалдыру</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Әрекет логы бос, root құқығын қажет ететін қолданбаларды көбірек қолданып көріңіз.</string>
-    <string name="log_data_magisk_none">Magisk логы бос, біртүрлі екен</string>
+    <string name="log_data_shadowmask_none">Magisk логы бос, біртүрлі екен</string>
     <string name="menuSaveLog">Логты сақтау</string>
     <string name="menuClearLog">Логты тазалау</string>
     <string name="logs_cleared">Лог сәтті тазаланды</string>
@@ -225,8 +225,8 @@
     <string name="env_fix_msg">Magisk дұрыс жұмыс істеуі үшін қосымша әрекет қажет. Орнатуды жалғастырып, құрылғыны қайта қосасыз ба?</string>
     <string name="env_full_fix_msg">Magisk дұрыс жұмыс істеуі үшін оны қайта орнату керек. Magisk-ті қолданба арқылы қайта орнатыңыз; Recovery режімі құрылғыңыз туралы дұрыс ақпаратты таба алмайды.</string>
     <string name="setup_msg">Жұмыс ортасын баптауда…</string>
-    <string name="unsupport_magisk_title">Үйлеспейтін Magisk нұсқасы</string>
-    <string name="unsupport_magisk_msg">Қолданбаның осы нұсқасы Magisk-тің %1$s дейінгі нұсқаларына үйлеспейді.\n\nҚолданба Magisk орнатылмағандай жұмыс істейді; Magisk-ті жақын арада жаңартыңыз.</string>
+    <string name="unsupport_shadowmask_title">Үйлеспейтін Magisk нұсқасы</string>
+    <string name="unsupport_shadowmask_msg">Қолданбаның осы нұсқасы Magisk-тің %1$s дейінгі нұсқаларына үйлеспейді.\n\nҚолданба Magisk орнатылмағандай жұмыс істейді; Magisk-ті жақын арада жаңартыңыз.</string>
     <string name="unsupport_general_title">Қалыпты емес жағдай</string>
     <string name="unsupport_system_app_msg">Бұл қолданба жүйе қолданбасы ретінде жұмыс істей алмайды. Оны қалыпты қолданба ретінде қайта орнатыңыз.</string>
     <string name="unsupport_other_su_msg">Magisk өзге бағдарламаға тиесілі \"su\" файлын анықтады. Қайшы келетін root қолданбасын жойып, Magisk-ті қайта орнатыңыз.</string>

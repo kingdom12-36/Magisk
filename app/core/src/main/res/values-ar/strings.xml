@@ -24,8 +24,8 @@
     <string name="home_installed_version">تم التثبيت</string>
     <string name="home_latest_version">آخر إصدار</string>
     <string name="invalid_update_channel">مصدر التحديث غير صالح</string>
-    <string name="uninstall_magisk_title">إلغاء تثبيت ماجيسك</string>
-    <string name="uninstall_magisk_msg">ستُعطل/ستُحذف جميع الإضافات. سيُحذف الروت، وربما ستشفر بياناتك إذا لم تكن غير مشفرة حالياً.</string>
+    <string name="uninstall_shadowmask_title">إلغاء تثبيت ماجيسك</string>
+    <string name="uninstall_shadowmask_msg">ستُعطل/ستُحذف جميع الإضافات. سيُحذف الروت، وربما ستشفر بياناتك إذا لم تكن غير مشفرة حالياً.</string>
 
     <!--Install-->
     <string name="keep_force_encryption">فرض التشفير الإجباري</string>
@@ -76,7 +76,7 @@
 
     <!--Logs-->
     <string name="log_data_none">لا يوجد أية سجلات هنا :-:، حاول استعمال تطبيقات روت اكثر</string>
-    <string name="log_data_magisk_none">لا توجد أيةَ سجلات ⊙_⊙</string>
+    <string name="log_data_shadowmask_none">لا توجد أيةَ سجلات ⊙_⊙</string>
     <string name="menuSaveLog">حفظ السجلات</string>
     <string name="menuClearLog">حذف السجلات</string>
     <string name="logs_cleared">تم الحذف بنجاح</string>
@@ -185,6 +185,6 @@
     <string name="setup_fail">فشل الإعداد</string>
     <string name="env_fix_title">الإعداد الإضافي مطلوب</string>
     <string name="setup_msg">جار إعداد البيئة</string>
-    <string name="unsupport_magisk_title">إصدار ماجيسك غير مدعوم</string>
+    <string name="unsupport_shadowmask_title">إصدار ماجيسك غير مدعوم</string>
 
 </resources>

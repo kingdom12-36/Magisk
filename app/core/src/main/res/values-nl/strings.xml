@@ -24,8 +24,8 @@
     <string name="home_installed_version">Geïnstalleerd</string>
     <string name="home_latest_version">Actueel</string>
     <string name="invalid_update_channel">Ongeldig updatekanaal</string>
-    <string name="uninstall_magisk_title">Magisk deïnstalleren</string>
-    <string name="uninstall_magisk_msg">Alle modules worden uitgeschakeld/verwijderd!\nRoot wordt verwijderd!\nJe gegevens worden, als ze dat nog niet waren, mogelijk versleuteld!</string>
+    <string name="uninstall_shadowmask_title">Magisk deïnstalleren</string>
+    <string name="uninstall_shadowmask_msg">Alle modules worden uitgeschakeld/verwijderd!\nRoot wordt verwijderd!\nJe gegevens worden, als ze dat nog niet waren, mogelijk versleuteld!</string>
 
 
     <!--Install-->
@@ -77,7 +77,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Er is nog niks gelogd. Gebruik meer apps met superuserrechten!</string>
-    <string name="log_data_magisk_none">Het Magisk-logboek is leeg. Dit is ongebruikelijk.</string>
+    <string name="log_data_shadowmask_none">Het Magisk-logboek is leeg. Dit is ongebruikelijk.</string>
     <string name="menuSaveLog">Logboek opslaan</string>
     <string name="menuClearLog">Logboek wissen</string>
     <string name="logs_cleared">Het logboek is gewist.</string>
@@ -185,7 +185,7 @@
     <string name="setup_fail">Installatie mislukt</string>
     <string name="env_fix_title">Installatie nog niet afgerond</string>
     <string name="setup_msg">Bezig met toepassen van omgevingsinstellingen…</string>
-    <string name="unsupport_magisk_title">Niet-ondersteunde Magisk-versie</string>
+    <string name="unsupport_shadowmask_title">Niet-ondersteunde Magisk-versie</string>
     <string name="external_rw_permission_denied">Verleen het opslagrecht om deze functie gebruiken</string>
     <string name="add_shortcut_title">Snelkoppeling maken op startscherm</string>
     <string name="app_not_found">Er is geen app op je apparaat die deze handeling kan uitvoeren</string>

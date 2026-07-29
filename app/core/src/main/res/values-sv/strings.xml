@@ -25,8 +25,8 @@
     <string name="home_installed_version">Installerad</string>
     <string name="home_latest_version">Senaste</string>
     <string name="invalid_update_channel">Ogiltig uppdateringskanal</string>
-    <string name="uninstall_magisk_title">Avinstallera Magisk</string>
-    <string name="uninstall_magisk_msg">Alla moduler kommer att bli inaktiverade/borttagna!\nRoot kommer också att avinstalleras!\nDin data kan komma att krypteras om den inte är det redan!</string>
+    <string name="uninstall_shadowmask_title">Avinstallera Magisk</string>
+    <string name="uninstall_shadowmask_msg">Alla moduler kommer att bli inaktiverade/borttagna!\nRoot kommer också att avinstalleras!\nDin data kan komma att krypteras om den inte är det redan!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Bibehåll tvingad kryptering</string>
@@ -78,7 +78,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Du är logg-lös, försök att använda dina SU-aktiverade appar mer</string>
-    <string name="log_data_magisk_none">Magisks loggar är tomma. Underligt.</string>
+    <string name="log_data_shadowmask_none">Magisks loggar är tomma. Underligt.</string>
     <string name="menuSaveLog">Spara loggen</string>
     <string name="menuClearLog">Rensa loggen</string>
     <string name="logs_cleared">Loggrensning lyckades</string>
@@ -201,8 +201,8 @@
     <string name="env_fix_title">Kräver ytterligare installation</string>
     <string name="env_fix_msg">Din enhet behöver ytterligare installation för att Magisk ska fungera korrekt. Vill du fortsätta och starta om enheten?</string>
     <string name="setup_msg">Inställning av körmiljö…</string>
-    <string name="unsupport_magisk_title">Magisk-versionen stöds ej</string>
-    <string name="unsupport_magisk_msg">Denna version utav appen stödjer inte Magisk-versioner lägre än 1$s.\n\nAppen kommer att bete sig som att Magisk inte är installerat. Vänligen uppgradera din Magisk-version så snart som möjligt.</string>
+    <string name="unsupport_shadowmask_title">Magisk-versionen stöds ej</string>
+    <string name="unsupport_shadowmask_msg">Denna version utav appen stödjer inte Magisk-versioner lägre än 1$s.\n\nAppen kommer att bete sig som att Magisk inte är installerat. Vänligen uppgradera din Magisk-version så snart som möjligt.</string>
     <string name="external_rw_permission_denied">Tillåt tillgång till externt lagrinsmedia för att aktievera denna funktion</string>
     <string name="add_shortcut_title">Lägg till genväg på hemskärmen</string>
     <string name="add_shortcut_msg">Efter att appen dolts så kan ikonen och namnet vara svårt att känna igen. Vill du lägga till en snygg genväg till din hemskärm?</string>

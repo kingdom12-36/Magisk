@@ -27,8 +27,8 @@
     <string name="home_installed_version">نصب شده</string>
     <string name="home_latest_version">آخرین نسخه</string>
     <string name="invalid_update_channel">کانال بروزرسانی نامعتبر است</string>
-    <string name="uninstall_magisk_title">حذف Magisk</string>
-    <string name="uninstall_magisk_msg">همه ماژول ها غیرفعال/حذف می شوند!\nروت حذف می شود!\nداده های شما اگر از قبل رمزگذارری نشده بودند رمز نگاری میشوند!</string>
+    <string name="uninstall_shadowmask_title">حذف Magisk</string>
+    <string name="uninstall_shadowmask_msg">همه ماژول ها غیرفعال/حذف می شوند!\nروت حذف می شود!\nداده های شما اگر از قبل رمزگذارری نشده بودند رمز نگاری میشوند!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">حفظ رمزگذاری اجباری</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">شما هیچ لاگی ندارید, سعی کنید برنامه های که به روت دسترسی میگیرند را استفاده کنید.</string>
-    <string name="log_data_magisk_none">لاگ های مربوط به Magisk خالی است.</string>
+    <string name="log_data_shadowmask_none">لاگ های مربوط به Magisk خالی است.</string>
     <string name="menuSaveLog">ذخیره کردن لاگ</string>
     <string name="menuClearLog">پاک کردن لاگ</string>
     <string name="logs_cleared">لاگ با موفقیت پاک شد.</string>
@@ -229,8 +229,8 @@
     <string name="env_fix_msg">دستگاه شما به پیکربندی اضافی نیاز دارد تا Magisk به درستی کار کند. آیا می‌خواهید ادامه دهید و راه‌اندازی مجدد انجام شود؟</string>
     <string name="env_full_fix_msg">دستگاه شما نیاز به نصب دوباره Magisk دارد تا به درستی کار کند. لطفاً Magisk را از داخل برنامه دوباره نصب کنید، حالت Recovery نمی‌تواند اطلاعات دستگاه را به درستی بگیرد.</string>
     <string name="setup_msg">راه اندازی محیط نصب…</string>
-    <string name="unsupport_magisk_title">نسخه پشتیبانی نشده Magisk</string>
-    <string name="unsupport_magisk_msg">این نسخه از برنامه از نسخه‌های Magisk پایین‌تر از %1$s پشتیبانی نمی‌کند.\n\nبرنامه طوری رفتار می‌کند که انگار Magisk نصب نشده است. لطفاً هرچه سریع‌تر Magisk را به‌روزرسانی کنید.</string>
+    <string name="unsupport_shadowmask_title">نسخه پشتیبانی نشده Magisk</string>
+    <string name="unsupport_shadowmask_msg">این نسخه از برنامه از نسخه‌های Magisk پایین‌تر از %1$s پشتیبانی نمی‌کند.\n\nبرنامه طوری رفتار می‌کند که انگار Magisk نصب نشده است. لطفاً هرچه سریع‌تر Magisk را به‌روزرسانی کنید.</string>
     <string name="unsupport_general_title">وضعیت غیرعادی</string>
     <string name="unsupport_system_app_msg">اجرای این برنامه به عنوان برنامه سیستمی پشتیبانی نمی‌شود. لطفاً آن را به برنامه کاربری بازگردانید.</string>
     <string name="unsupport_other_su_msg">یک باینری "su" غیر از Magisk شناسایی شد. لطفاً هر راهکار روت دیگری را حذف کنید و/یا Magisk را دوباره نصب کنید.</string>

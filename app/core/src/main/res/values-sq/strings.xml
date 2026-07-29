@@ -35,8 +35,8 @@
     <string name="home_latest_version">I fundit</string>
     <string name="invalid_update_channel">Kanal përditësimi i pavlefshëm</string>
     <string name="uninstall">Çinstalo</string>
-    <string name="uninstall_magisk_title">Çinstalo Magisk</string>
-    <string name="uninstall_magisk_msg">Të gjitha modulet do të çaktivizohen/hiqen!\nRoot do të hiqet!\nÇdo hapësirë ruajtëse e brendshme e çkoduar përmes Magisk do të ri-enkriptohet!</string>
+    <string name="uninstall_shadowmask_title">Çinstalo Magisk</string>
+    <string name="uninstall_shadowmask_msg">Të gjitha modulet do të çaktivizohen/hiqen!\nRoot do të hiqet!\nÇdo hapësirë ruajtëse e brendshme e çkoduar përmes Magisk do të ri-enkriptohet!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Ruaj enkriptimin e detyruar</string>
@@ -95,7 +95,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nuk keni regjistra. Provoni të përdorni më shumë aplikacionet root.</string>
-    <string name="log_data_magisk_none">Regjistrat e Magisk janë bosh, kjo është e çuditshme.</string>
+    <string name="log_data_shadowmask_none">Regjistrat e Magisk janë bosh, kjo është e çuditshme.</string>
     <string name="menuSaveLog">Ruaj regjistrin</string>
     <string name="menuClearLog">Pastro regjistrin tani</string>
     <string name="logs_cleared">Regjistri u pastrua me sukses</string>
@@ -263,8 +263,8 @@
     <string name="env_fix_msg">Pajisja juaj ka nevojë për konfigurim shtesë që Magisk të punojë siç duhet. Dëshironi të vazhdoni dhe të rinisni pajisjen?</string>
     <string name="env_full_fix_msg">Pajisja juaj ka nevojë të riflash-ojë Magisk që të punojë siç duhet. Ju lutemi ri-instaloni Magisk brenda aplikacionit, mënyra Recovery nuk mund të marrë informacionin e saktë të pajisjes.</string>
     <string name="setup_msg">Duke ekzekutuar konfigurimin e mjedisit…</string>
-    <string name="unsupport_magisk_title">Version i Magisk i pambështetur</string>
-    <string name="unsupport_magisk_msg">Ky version i aplikacionit nuk mbështet versione të Magisk më të ulëta se %1$s.\n\nAplikacioni do të sillet sikur nuk ka Magisk të instaluar. Ju lutemi përditësoni Magisk sa më shpejt të jetë e mundur.</string>
+    <string name="unsupport_shadowmask_title">Version i Magisk i pambështetur</string>
+    <string name="unsupport_shadowmask_msg">Ky version i aplikacionit nuk mbështet versione të Magisk më të ulëta se %1$s.\n\nAplikacioni do të sillet sikur nuk ka Magisk të instaluar. Ju lutemi përditësoni Magisk sa më shpejt të jetë e mundur.</string>
     <string name="unsupport_general_title">Gjendje jonormale</string>
     <string name="unsupport_system_app_msg">Ekzekutimi i këtij aplikacioni si aplikacion sistemi nuk mbështetet. Ju lutemi kthejeni aplikacionin në një aplikacion përdoruesi.</string>
     <string name="unsupport_other_su_msg">Është zbuluar një binar \"su\" që nuk është nga Magisk. Ju lutemi hiqni çdo zgjidhje tjetër root dhe/ose ri-instaloni Magisk.</string>

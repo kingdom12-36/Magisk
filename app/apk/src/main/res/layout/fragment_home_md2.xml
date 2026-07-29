@@ -120,7 +120,7 @@
                 android:layout_marginStart="@dimen/l1"
                 android:layout_marginEnd="@dimen/l1"
                 android:onClick="@{() -> viewModel.onDeletePressed()}"
-                android:text="@string/uninstall_magisk_title"
+                android:text="@string/uninstall_shadowmask_title"
                 android:textAllCaps="false"
                 android:textSize="12sp"
                 app:cornerRadius="@dimen/r1"

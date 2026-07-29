@@ -27,8 +27,8 @@
     <string name="home_installed_version">설치됨</string>
     <string name="home_latest_version">최신</string>
     <string name="invalid_update_channel">잘못된 업데이트 채널</string>
-    <string name="uninstall_magisk_title">Magisk 제거</string>
-    <string name="uninstall_magisk_msg">모든 모듈이 비활성화/제거됩니다. 루트도 제거될 것이며, 데이터도 암호화 되어있지 않으면 암호화될 수도 있습니다.</string>
+    <string name="uninstall_shadowmask_title">Magisk 제거</string>
+    <string name="uninstall_shadowmask_msg">모든 모듈이 비활성화/제거됩니다. 루트도 제거될 것이며, 데이터도 암호화 되어있지 않으면 암호화될 수도 있습니다.</string>
 
     <!--Install-->
     <string name="keep_force_encryption">강제 암호화 유지</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">로그가 없습니다. 슈퍼유저 권한을 필요로 하는 앱을 사용하십시오.</string>
-    <string name="log_data_magisk_none">Magisk 로그가 없습니다.</string>
+    <string name="log_data_shadowmask_none">Magisk 로그가 없습니다.</string>
     <string name="menuSaveLog">로그 저장</string>
     <string name="menuClearLog">로그 삭제</string>
     <string name="logs_cleared">로그 삭제 완료.</string>
@@ -213,8 +213,8 @@
     <string name="env_fix_title">추가 설정 필요</string>
     <string name="env_fix_msg">Magisk가 제대로 작동하려면 추가 설정이 필요합니다. 다시 시작 하시겠습니까?</string>
     <string name="setup_msg">환경 설정 진행 중…</string>
-    <string name="unsupport_magisk_title">지원되지 않는 Magisk 버전</string>
-    <string name="unsupport_magisk_msg">이 버전의 앱은 %1$s 미만의 Magisk 버전을 지원하지 않습니다.\n\n해당앱은 Magisk가 설치되지 않은것처럼 동작할것입니다. 가능한 빨리 Magisk 를 업데이트 하세요.</string>
+    <string name="unsupport_shadowmask_title">지원되지 않는 Magisk 버전</string>
+    <string name="unsupport_shadowmask_msg">이 버전의 앱은 %1$s 미만의 Magisk 버전을 지원하지 않습니다.\n\n해당앱은 Magisk가 설치되지 않은것처럼 동작할것입니다. 가능한 빨리 Magisk 를 업데이트 하세요.</string>
     <string name="unsupport_general_title">비정상적인 상태</string>
     <string name="unsupport_system_app_msg">해당 앱을 시스템 앱으로 실행하는 것은 지원되지 않습니다. 앱을 일반 사용자 앱으로 실행해 주세요.</string>
     <string name="unsupport_other_su_msg">Magisk으로 부터 설치되지 않은 \"su\" 바이너리가 감지되었습니다. 다른 루팅 방법을 제거하거나, Magisk 를 다시 설치해주세요.</string>

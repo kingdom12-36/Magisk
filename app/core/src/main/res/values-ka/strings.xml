@@ -26,8 +26,8 @@
     <string name="home_installed_version">დაინსტალირებული</string>
     <string name="home_latest_version">უახლესი</string>
     <string name="invalid_update_channel">არასწორი განახლების არხი</string>
-    <string name="uninstall_magisk_title">Magisk-ის დეინსტალაცია</string>
-    <string name="uninstall_magisk_msg">ყველა მოდული იქნება წაშლილი/გამორთული!\nRoot-ი წაიშლება!\nთქვენი მონაცემები დაიშიფრება!</string>
+    <string name="uninstall_shadowmask_title">Magisk-ის დეინსტალაცია</string>
+    <string name="uninstall_shadowmask_msg">ყველა მოდული იქნება წაშლილი/გამორთული!\nRoot-ი წაიშლება!\nთქვენი მონაცემები დაიშიფრება!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">შიფრირება ყოველთვის იყოს ჩართული</string>
@@ -79,7 +79,7 @@
 
     <!--Logs-->
     <string name="log_data_none">თქვენი ლოგი ცარიელია, სცადეთ Root-ზე დაფუძნებული პროგრამების გამოყენება.</string>
-    <string name="log_data_magisk_none">Magisk-ის ლოგები ცარიელია, უცნაურია.</string>
+    <string name="log_data_shadowmask_none">Magisk-ის ლოგები ცარიელია, უცნაურია.</string>
     <string name="menuSaveLog">ლოგის შენხავა</string>
     <string name="menuClearLog">ლოგის გასუფთავება</string>
     <string name="logs_cleared">ლოგი წარმატებით გასუფთავდა.</string>
@@ -200,8 +200,8 @@
     <string name="env_fix_title">სჭირდება დამატებითი გამართვა</string>
     <string name="env_fix_msg">თქვენს მოწყობილობას სჭრიდება დამატებითი გამართვა იმისთვის რომ Magisk-მა იმუშავოს. გადმოიწერება "Magisk setup.zip" ფაილი, გსურთ გაგრძელება?</string>
     <string name="setup_msg">მიმდინარეობს ინტერფეისის ინსტალაცია…</string>
-    <string name="unsupport_magisk_title">შეუთავსებელი Magisk-ის ვერსია</string>
-    <string name="unsupport_magisk_msg">ეს აპის ვერსია შეუთავსებსლია Magisk-ის %1$s-ზე ნაკლებ ვერსიებთან.\n\nაპს ეგონება, რომ Magisk-ი არაა დაყენებული, გთხოვთ გაანხალოთ Magisk-ი დროულად.</string>
+    <string name="unsupport_shadowmask_title">შეუთავსებელი Magisk-ის ვერსია</string>
+    <string name="unsupport_shadowmask_msg">ეს აპის ვერსია შეუთავსებსლია Magisk-ის %1$s-ზე ნაკლებ ვერსიებთან.\n\nაპს ეგონება, რომ Magisk-ი არაა დაყენებული, გთხოვთ გაანხალოთ Magisk-ი დროულად.</string>
     <string name="external_rw_permission_denied">დართეთ მეხსიერებასთან წვდომის ნებართვა ამ ფუნქციის გამოსაყნებლად</string>
     <string name="add_shortcut_title">ხატულის დამატება საწყისს ეკრანზე</string>
     <string name="add_shortcut_msg">აპის დამალვის შემდეგ, მისი ნახატი და სახელი შეიძლება ამოუცნობი გახდეს. გნებავთ ხატულის დამატება ასწყისს ეკრანზე?</string>

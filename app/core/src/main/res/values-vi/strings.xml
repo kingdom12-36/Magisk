@@ -27,8 +27,8 @@
     <string name="home_installed_version">Cài đặt</string>
     <string name="home_latest_version">Mới nhất</string>
     <string name="invalid_update_channel">Kênh cập nhật không hợp lệ</string>
-    <string name="uninstall_magisk_title">Gỡ cài đặt Magisk</string>
-    <string name="uninstall_magisk_msg">Tất cả các mô-đun sẽ bị tắt hoặc bị xóa!\nRoot sẽ bị gỡ bỏ\nPhân vùng data đã tắt mã hóa thông qua Magisk sẽ bị mã hóa lại!</string>
+    <string name="uninstall_shadowmask_title">Gỡ cài đặt Magisk</string>
+    <string name="uninstall_shadowmask_msg">Tất cả các mô-đun sẽ bị tắt hoặc bị xóa!\nRoot sẽ bị gỡ bỏ\nPhân vùng data đã tắt mã hóa thông qua Magisk sẽ bị mã hóa lại!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Giữ bắt buộc mã hóa</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nhật ký của bạn đang trống, hãy thử sử dụng các ứng dụng root của bạn nhiều hơn</string>
-    <string name="log_data_magisk_none">Nhật ký Magisk trống, điều đó thật kỳ lạ</string>
+    <string name="log_data_shadowmask_none">Nhật ký Magisk trống, điều đó thật kỳ lạ</string>
     <string name="menuSaveLog">Lưu nhật ký</string>
     <string name="menuClearLog">Xóa nhật ký ngay bây giờ</string>
     <string name="logs_cleared">Đã xóa nhật ký thành công</string>
@@ -215,8 +215,8 @@
     <string name="env_fix_title">Yêu cầu thiết lập bổ sung</string>
     <string name="env_fix_msg">Thiết bị của bạn cần thiết lập bổ sung để Magisk hoạt động bình thường. Bạn có muốn tiếp tục và khởi động lại không?</string>
     <string name="setup_msg">Đang chạy thiết lập môi trường…</string>
-    <string name="unsupport_magisk_title">Phiên bản Magisk không được hỗ trợ</string>
-    <string name="unsupport_magisk_msg">Phiên bản hiện tại của ứng dụng không hỗ trợ phiên bản Magisk thấp hơn %1$s.\n\nỨng dụng sẽ hoạt động như thể Magisk chưa được cài đặt. Vui lòng nâng cấp lên phiên bản mới nhất.</string>
+    <string name="unsupport_shadowmask_title">Phiên bản Magisk không được hỗ trợ</string>
+    <string name="unsupport_shadowmask_msg">Phiên bản hiện tại của ứng dụng không hỗ trợ phiên bản Magisk thấp hơn %1$s.\n\nỨng dụng sẽ hoạt động như thể Magisk chưa được cài đặt. Vui lòng nâng cấp lên phiên bản mới nhất.</string>
     <string name="unsupport_general_title">Trạng thái bất thường</string>
     <string name="unsupport_system_app_msg">Không hỗ trợ chạy ứng dụng này dưới dạng ứng dụng hệ thống. Vui lòng hoàn nguyên ứng dụng về ứng dụng người dùng.</string>
     <string name="unsupport_other_su_msg">Một lệnh \"su\" không thuộc về Magisk được phát hiện. Vui lòng gỡ bỏ bất kì phương pháp root khác và/hoặc cài đặt lại Magisk.</string>

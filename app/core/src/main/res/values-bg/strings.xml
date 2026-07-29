@@ -28,8 +28,8 @@
     <string name="home_installed_version">Инсталиранo</string>
     <string name="home_latest_version">Последно</string>
     <string name="invalid_update_channel">Каналът за обновяване е недействителен</string>
-    <string name="uninstall_magisk_title">Премахване на Magisk</string>
-    <string name="uninstall_magisk_msg">Всички модули ще бъдат изключени/премахнати. Достъпът до правата на суперпотребителя ще бъде премахнат!\nАко вътрешното хранилище е разшифровано с Magisk, то ще бъде шифровано отново!</string>
+    <string name="uninstall_shadowmask_title">Премахване на Magisk</string>
+    <string name="uninstall_shadowmask_msg">Всички модули ще бъдат изключени/премахнати. Достъпът до правата на суперпотребителя ще бъде премахнат!\nАко вътрешното хранилище е разшифровано с Magisk, то ще бъде шифровано отново!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Запазване на наложеното шифроване</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Дневникът е празен</string>
-    <string name="log_data_magisk_none">Дневникът на Magisk е празен</string>
+    <string name="log_data_shadowmask_none">Дневникът на Magisk е празен</string>
     <string name="menuSaveLog">Запазване на дневника</string>
     <string name="menuClearLog">Изчистване на дневника</string>
     <string name="logs_cleared">Дневникът е изчистен</string>
@@ -218,8 +218,8 @@
     <string name="env_fix_msg">За да работи Magisk нормално, устройството се нуждае от допълнителна настройка. Да бъде ли продължено след рестарт?</string>
     <string name="env_full_fix_msg">За да работи Magisk нормално, е необходимо да бъде инсталиран отново. Преинсталирайте Magisk от приложението, защото режимът за възстановяване не получава необходимата информация за устройството.</string>
     <string name="setup_msg">Надстройка на средата…</string>
-    <string name="unsupport_magisk_title">Неподдържано издание на Magisk</string>
-    <string name="unsupport_magisk_msg">Това издание на приложението не поддържа издания на Magisk преди %1$s.\n\nПриложението ще се държи все едно няма инсталиран Magisk. Обновете Magisk възможно най-скоро.</string>
+    <string name="unsupport_shadowmask_title">Неподдържано издание на Magisk</string>
+    <string name="unsupport_shadowmask_msg">Това издание на приложението не поддържа издания на Magisk преди %1$s.\n\nПриложението ще се държи все едно няма инсталиран Magisk. Обновете Magisk възможно най-скоро.</string>
     <string name="unsupport_general_title">Неочаквано състояние</string>
     <string name="unsupport_system_app_msg">Приложението не се поддържа да работи като системно. Върнете го като потребителско.</string>
     <string name="unsupport_other_su_msg">Намерен е двоичен файл „su“, който не е от Magisk. Премахнете всички други решения за достъп до правата на суперпотребителя и/или инсталирайте Magisk отново.</string>

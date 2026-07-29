@@ -28,8 +28,8 @@
     <string name="home_installed_version">Qurulan</string>
     <string name="home_latest_version">Ən son versiya</string>
     <string name="invalid_update_channel">Keçərsiz yeniləmə kanalı</string>
-    <string name="uninstall_magisk_title">Magisk\'i sil</string>
-    <string name="uninstall_magisk_msg">Bütün modullar ləğv olunacaq/silinəcək. Root silinəcək, və əgər hal-hazırda deyilsə, bütün məlumatlarınız potensiyal olaraq şifrələnəcək.</string>
+    <string name="uninstall_shadowmask_title">Magisk\'i sil</string>
+    <string name="uninstall_shadowmask_msg">Bütün modullar ləğv olunacaq/silinəcək. Root silinəcək, və əgər hal-hazırda deyilsə, bütün məlumatlarınız potensiyal olaraq şifrələnəcək.</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Zorla şifrələməni saxla</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Qeyd yoxdur, root icazəli tətbiqlərdən daha çox istifadə edin</string>
-    <string name="log_data_magisk_none">Qəribədir, Magisk qeydləri boşdur</string>
+    <string name="log_data_shadowmask_none">Qəribədir, Magisk qeydləri boşdur</string>
     <string name="menuSaveLog">Qeydləri saxla</string>
     <string name="menuClearLog">Qeydləri sil</string>
     <string name="logs_cleared">Qeydlər silindi</string>
@@ -219,8 +219,8 @@
     <string name="env_fix_title">Əlavə yükləməyə ethiyac var</string>
     <string name="env_fix_msg">Cihazınız Magiskin düzgün işləməsi üçün əlavə yükləməyə ehtiyac duyur. Yenidən başlatmaq istəyirsiniz?</string>
     <string name="setup_msg">Yüklənir…</string>
-    <string name="unsupport_magisk_title">Bu Magisk versiyası dəstəklənmir</string>
-    <string name="unsupport_magisk_msg">Tətbiqin bu versiyası Magiskin %1$s versiyasından aşağıları dəstəkləmir.\n\nTətbiq sanki Magisk heç yoxmuş kimi davranacaq, lütfən Magiski yüksəldin.</string>
+    <string name="unsupport_shadowmask_title">Bu Magisk versiyası dəstəklənmir</string>
+    <string name="unsupport_shadowmask_msg">Tətbiqin bu versiyası Magiskin %1$s versiyasından aşağıları dəstəkləmir.\n\nTətbiq sanki Magisk heç yoxmuş kimi davranacaq, lütfən Magiski yüksəldin.</string>
     <string name="unsupport_general_title">Anormal Hal</string>
     <string name="unsupport_system_app_msg">Bu tətbiqi sistem tətbiqi kimi açmaq olmur. Onu yenidən istifadəçi tətbiqi etməlisiniz.</string>
     <string name="unsupport_other_su_msg">ShadowMaskdən olmayan \"su\" tapıldı. Lütfən digər kök tətbiqi silin yaxud ShadowMaski yenidən quraşdırın.</string>

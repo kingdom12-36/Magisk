@@ -27,8 +27,8 @@
     <string name="home_installed_version">Jo version install hai</string>
     <string name="home_latest_version">Latest</string>
     <string name="invalid_update_channel">Galat update channel</string>
-    <string name="uninstall_magisk_title">Magisk uninstall karo</string>
-    <string name="uninstall_magisk_msg">Saare modules disable ya remove ho jayenge!\nRoot khatam ho jayega!\nAgar Magisk ne storage ko decrypt kiya tha toh wo phir se encrypt ho jayega!</string>
+    <string name="uninstall_shadowmask_title">Magisk uninstall karo</string>
+    <string name="uninstall_shadowmask_msg">Saare modules disable ya remove ho jayenge!\nRoot khatam ho jayega!\nAgar Magisk ne storage ko decrypt kiya tha toh wo phir se encrypt ho jayega!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Force encryption ko preserve karo</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Koi logs nahi mile. Shayad tumhe root apps ka zyada use krna chahiye.</string>
-    <string name="log_data_magisk_none">Ajeeb baat hai, Yaha toh logs hain hi nahi.</string>
+    <string name="log_data_shadowmask_none">Ajeeb baat hai, Yaha toh logs hain hi nahi.</string>
     <string name="menuSaveLog">Log save karo</string>
     <string name="menuClearLog">Log clear karo</string>
     <string name="logs_cleared">Logs clear ho gaye</string>
@@ -229,8 +229,8 @@
     <string name="env_fix_msg">Magisk ko sahi se chalane ke liye thoda aur setup karna padega. Kya aap proceed karke device reboot karna chahte ho?</string>
     <string name="env_full_fix_msg">Magisk ko properly chalane ke liye aapko usse dubara flash karna padega. App ke andar se Magisk reinstall karo, kyunki Recovery mode sahi device info nahi de pata.</string>
     <string name="setup_msg">Environment setup chal raha hai…</string>
-    <string name="unsupport_magisk_title">Magisk version supported nahi hain</string>
-    <string name="unsupport_magisk_msg">Is app version ko %1$s se purani Magisk versions support nahi karti.\n\nApp aise behave karega jaise Magisk install hi nahi hai. Jaldi se Magisk ko update karo.</string>
+    <string name="unsupport_shadowmask_title">Magisk version supported nahi hain</string>
+    <string name="unsupport_shadowmask_msg">Is app version ko %1$s se purani Magisk versions support nahi karti.\n\nApp aise behave karega jaise Magisk install hi nahi hai. Jaldi se Magisk ko update karo.</string>
     <string name="unsupport_general_title">System thoda alag behave kar raha hai</string>
     <string name="unsupport_system_app_msg">App ko system app bana ke chalana supported nahi hai. Please app ko wapas user app bana do.</string>
     <string name="unsupport_other_su_msg">Pehle doosri root method hatao ya Magisk dobara install karo.</string>

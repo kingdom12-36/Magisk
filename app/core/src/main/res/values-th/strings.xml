@@ -11,8 +11,8 @@
     <string name="invalid_update_channel">ช่องทางการอัปเดตไม่ถูกต้อง</string>
     <string name="keep_force_encryption">เก็บค่าบังคับการเข้ารหัส</string>
     <string name="keep_dm_verity">เก็บค่า AVB 2.0/dm-verity</string>
-    <string name="uninstall_magisk_title">ถอนการติดตั้ง Magisk</string>
-    <string name="uninstall_magisk_msg">โมดูลทั้งหมดจะถูกปิดการใช้งาน/ถูกลบ, สิทธิการเข้าถึง Root จะถูกลบ และข้อมูลของคุณอาจถูกเข้ารหัส</string>
+    <string name="uninstall_shadowmask_title">ถอนการติดตั้ง Magisk</string>
+    <string name="uninstall_shadowmask_msg">โมดูลทั้งหมดจะถูกปิดการใช้งาน/ถูกลบ, สิทธิการเข้าถึง Root จะถูกลบ และข้อมูลของคุณอาจถูกเข้ารหัส</string>
     <string name="update">อัปเดต</string>
 
     <!--Module Fragment-->

@@ -26,8 +26,8 @@
     <string name="home_installed_version">انسٹال شدہ</string>
     <string name="home_latest_version">تازہ ترین</string>
     <string name="invalid_update_channel">غلط اپ ڈیٹ چینل</string>
-    <string name="uninstall_magisk_title">Magisk اَن انسٹال کریں</string>
-    <string name="uninstall_magisk_msg">تمام ماڈیولز غیر فعال/ہٹا دیے جائیں گے!\nروٹ ہٹا دیا جائے گا!\nMagisk کے استعمال کے ذریعے غیر اینکرپٹ کی گئی کوئی بھی اندرونی اسٹوریج دوبارہ اینکرپٹ ہو جائے گی!</string>
+    <string name="uninstall_shadowmask_title">Magisk اَن انسٹال کریں</string>
+    <string name="uninstall_shadowmask_msg">تمام ماڈیولز غیر فعال/ہٹا دیے جائیں گے!\nروٹ ہٹا دیا جائے گا!\nMagisk کے استعمال کے ذریعے غیر اینکرپٹ کی گئی کوئی بھی اندرونی اسٹوریج دوبارہ اینکرپٹ ہو جائے گی!</string>
 
     <string name="keep_force_encryption">جبری انکرپشن کو محفوظ رکھیں</string>
     <string name="keep_dm_verity">AVB 2.0/dm-verity کو محفوظ رکھیں</string>
@@ -76,7 +76,7 @@
     <string name="superuser_policy_none">ابھی تک کسی ایپ نے سپر یوزر کی اجازت نہیں مانگی ہے۔</string>
 
     <string name="log_data_none">آپ لاگ فری ہیں، اپنی روٹ ایپس کو مزید استعمال کرنے کی کوشش کریں</string>
-    <string name="log_data_magisk_none">Magisk لاگز خالی ہیں، یہ عجیب بات ہے</string>
+    <string name="log_data_shadowmask_none">Magisk لاگز خالی ہیں، یہ عجیب بات ہے</string>
     <string name="menuSaveLog">لاگ محفوظ کریں</string>
     <string name="menuClearLog">ابھی لاگ صاف کریں</string>
     <string name="logs_cleared">لاگ کامیابی سے صاف ہو گیا</string>
@@ -212,8 +212,8 @@
     <string name="env_fix_title">اضافی سیٹ اپ درکار ہے</string>
     <string name="env_fix_msg">Magisk کو صحیح طریقے سے کام کرنے کے لیے آپ کے آلے کو اضافی سیٹ اپ کی ضرورت ہے۔ کیا آپ جاری رکھنا چاہتے ہیں اور ریبوٹ کرنا چاہتے ہیں؟</string>
     <string name="setup_msg">ماحول کا سیٹ اپ چل رہا ہے…</string>
-    <string name="unsupport_magisk_title">Magisk کا غیر تعاون یافتہ ورژن</string>
-    <string name="unsupport_magisk_msg">ایپ کا یہ ورژن %1$s سے کم Magisk ورژنز کو سپورٹ نہیں کرتا ہے۔\n\nایپ ایسے برتاؤ کرے گی جیسے کوئی Magisk انسٹال نہیں ہے، براہ کرم جلد از جلد Magisk کو اپ گریڈ کریں۔</string>
+    <string name="unsupport_shadowmask_title">Magisk کا غیر تعاون یافتہ ورژن</string>
+    <string name="unsupport_shadowmask_msg">ایپ کا یہ ورژن %1$s سے کم Magisk ورژنز کو سپورٹ نہیں کرتا ہے۔\n\nایپ ایسے برتاؤ کرے گی جیسے کوئی Magisk انسٹال نہیں ہے، براہ کرم جلد از جلد Magisk کو اپ گریڈ کریں۔</string>
     <string name="unsupport_general_title">غیر معمولی حالت</string>
     <string name="unsupport_system_app_msg">سسٹم ایپ کے طور پر اس ایپ کو چلانا تعاون یافتہ نہیں ہے۔ براہ کرم ایپ کو صارف ایپ میں واپس کریں۔</string>
     <string name="unsupport_other_su_msg">Magisk کے علاوہ کسی اور "su" بائنری کا پتہ چلا ہے۔ براہ کرم کسی بھی مسابقتی روٹ حل کو ہٹا دیں اور/یا Magisk کو دوبارہ انسٹال کریں۔</string>

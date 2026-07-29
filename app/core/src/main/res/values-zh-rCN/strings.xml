@@ -27,8 +27,8 @@
     <string name="home_installed_version">当前</string>
     <string name="home_latest_version">最新</string>
     <string name="invalid_update_channel">无效的更新通道</string>
-    <string name="uninstall_magisk_title">卸载 Magisk</string>
-    <string name="uninstall_magisk_msg">所有模块将被停用或删除！超级用户权限丢失！\n如果设备尚未加密，用户数据可能被自动加密。</string>
+    <string name="uninstall_shadowmask_title">卸载 Magisk</string>
+    <string name="uninstall_shadowmask_msg">所有模块将被停用或删除！超级用户权限丢失！\n如果设备尚未加密，用户数据可能被自动加密。</string>
 
     <!--Install-->
     <string name="keep_force_encryption">保持强制加密</string>
@@ -83,7 +83,7 @@
 
     <!--Logs-->
     <string name="log_data_none">没有超级用户权限使用日志</string>
-    <string name="log_data_magisk_none">没有 Magisk 日志</string>
+    <string name="log_data_shadowmask_none">没有 Magisk 日志</string>
     <string name="menuSaveLog">保存日志</string>
     <string name="menuClearLog">清空日志</string>
     <string name="logs_cleared">日志已清空</string>
@@ -232,8 +232,8 @@
     <string name="env_fix_msg">需要一些额外的安装才能使 Magisk 正常工作。完成后自动重启，是否继续？</string>
     <string name="env_full_fix_msg">需要重新安装才能使 Magisk 正常工作。请在应用内重新安装，recovery 模式无法正确获取设备信息。</string>
     <string name="setup_msg">正在修复运行环境</string>
-    <string name="unsupport_magisk_title">不支持的 Magisk 版本</string>
-    <string name="unsupport_magisk_msg">应用不支持低于 %1$s 版本的 Magisk，表现为未安装状态。但升级功能可用，请尽快在应用内升级 Magisk。</string>
+    <string name="unsupport_shadowmask_title">不支持的 Magisk 版本</string>
+    <string name="unsupport_shadowmask_msg">应用不支持低于 %1$s 版本的 Magisk，表现为未安装状态。但升级功能可用，请尽快在应用内升级 Magisk。</string>
     <string name="unsupport_general_title">异常状态</string>
     <string name="unsupport_system_app_msg">Magisk 不支持安装为系统应用，请还原为用户应用。</string>
     <string name="unsupport_other_su_msg">检测到不属于 Magisk 的 su 文件，请删除其他超级用户程序。</string>

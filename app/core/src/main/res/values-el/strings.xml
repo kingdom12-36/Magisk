@@ -28,8 +28,8 @@
     <string name="home_installed_version">Τρέχουσα έκδοση</string>
     <string name="home_latest_version">Διαθέσιμη έκδοση</string>
     <string name="invalid_update_channel">Λανθασμένο κανάλι ενημέρωσης</string>
-    <string name="uninstall_magisk_title">Απεγκατάσταση Magisk</string>
-    <string name="uninstall_magisk_msg">Όλα τα modules θα απενεργοποιηθούν/αφαιρεθούν. Το root θα αφαιρεθεί και ενδέχεται να κρυπτογραφηθούν τα δεδομένα σας, εάν δεν είναι κρυπτογραφημένα!</string>
+    <string name="uninstall_shadowmask_title">Απεγκατάσταση Magisk</string>
+    <string name="uninstall_shadowmask_msg">Όλα τα modules θα απενεργοποιηθούν/αφαιρεθούν. Το root θα αφαιρεθεί και ενδέχεται να κρυπτογραφηθούν τα δεδομένα σας, εάν δεν είναι κρυπτογραφημένα!</string>
 
     <!--Install-->
 	<string name="keep_force_encryption">Διατήρηση επιβεβλημένης κρυπτογράφησης</string>
@@ -81,7 +81,7 @@
 	
     <!--Logs-->
     <string name="log_data_none">Δεν υπάρχουν αρχεία καταγραφής, δοκιμάστε να χρησιμοποιήσετε περισσότερο τις εφαρμογές με δυνατότητα SU</string>
-    <string name="log_data_magisk_none">Τα αρχεία καταγραφής του Magisk είναι κενά, αυτό είναι περίεργο</string>
+    <string name="log_data_shadowmask_none">Τα αρχεία καταγραφής του Magisk είναι κενά, αυτό είναι περίεργο</string>
     <string name="menuSaveLog">Αποθήκευση καταγραφής</string>
     <string name="menuClearLog">Εκκαθάριση αρχείου καταγραφής</string>
     <string name="logs_cleared">Το αρχείο καταγραφής εκκαθαρίστηκε επιτυχώς</string>
@@ -215,8 +215,8 @@
     <string name="env_fix_title">Απαιτείται πρόσθετη εγκατάσταση</string>
     <string name="env_fix_msg">Η συσκευή σας χρειάζεται πρόσθετη ρύθμιση για να λειτουργεί σωστά το Magisk. Θέλετε να συνεχίσετε και να επανεκκινήσετε;</string>
     <string name="setup_msg">Τρέχει η εγκατάσταση περιβάλλοντος…</string>
-    <string name="unsupport_magisk_title">Μη υποστηριζόμενη έκδοση Magisk</string>
-    <string name="unsupport_magisk_msg">Αυτή η έκδοση της εφαρμογής δεν υποστηρίζει έκδοση Magisk χαμηλότερη από %1$s.\n\nΗ εφαρμογή θα συμπεριφέρεται σαν να μην έχει εγκατασταθεί το Magisk, αναβαθμίστε το Magisk το συντομότερο δυνατό.</string>
+    <string name="unsupport_shadowmask_title">Μη υποστηριζόμενη έκδοση Magisk</string>
+    <string name="unsupport_shadowmask_msg">Αυτή η έκδοση της εφαρμογής δεν υποστηρίζει έκδοση Magisk χαμηλότερη από %1$s.\n\nΗ εφαρμογή θα συμπεριφέρεται σαν να μην έχει εγκατασταθεί το Magisk, αναβαθμίστε το Magisk το συντομότερο δυνατό.</string>
     <string name="unsupport_general_title">Μη Φυσιολογική Κατάσταση</string>
     <string name="unsupport_system_app_msg">Η εκτέλεση αυτής της εφαρμογής ως εφαρμογής συστήματος δεν υποστηρίζεται. Επαναφέρετε την εφαρμογή σε εφαρμογή χρήστη.</string>
     <string name="unsupport_other_su_msg">Εντοπίστηκε ένα \"su\" binary που δεν είναι από το Magisk. Καταργήστε οποιαδήποτε άλλη root μέθοδο και/ή επανεγκαταστήστε το Magisk.</string>

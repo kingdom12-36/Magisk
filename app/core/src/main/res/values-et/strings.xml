@@ -27,8 +27,8 @@
     <string name="home_installed_version">Installitud</string>
     <string name="home_latest_version">Viimatine</string>
     <string name="invalid_update_channel">Sobimatu uuenduste kanal</string>
-    <string name="uninstall_magisk_title">Eemalda Magisk</string>
-    <string name="uninstall_magisk_msg">Kõik moodulid keelatakse/eemaldatakse!\nJuurkasutaja eemaldatakse!\nMistahes sisemälu failid, millelt eemaldati Magiski tarbeks krüpteering, krüpteeritakse taas!</string>
+    <string name="uninstall_shadowmask_title">Eemalda Magisk</string>
+    <string name="uninstall_shadowmask_msg">Kõik moodulid keelatakse/eemaldatakse!\nJuurkasutaja eemaldatakse!\nMistahes sisemälu failid, millelt eemaldati Magiski tarbeks krüpteering, krüpteeritakse taas!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Säilita sunnitud krüpteering</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Sa oled logivaba, proovi oma superkasutaja õigustega rakendusi rohkem kasutada</string>
-    <string name="log_data_magisk_none">Magiski logid on tühjad, see on imelik</string>
+    <string name="log_data_shadowmask_none">Magiski logid on tühjad, see on imelik</string>
     <string name="menuSaveLog">Salvesta logi</string>
     <string name="menuClearLog">Tühjenda logi nüüd</string>
     <string name="logs_cleared">Logi edukalt tühjendatud.</string>
@@ -210,8 +210,8 @@
     <string name="env_fix_title">Vajab lisaseadistust</string>
     <string name="env_fix_msg">Sinu seade vajab Magiski korralikuks toimimiseks lisaseadistust. Kas soovid jätkata ning seadme taaskäivitada?</string>
     <string name="setup_msg">Käivitan keskkonnaseadistust…</string>
-    <string name="unsupport_magisk_title">Mittetoetatud Magiski versioon</string>
-    <string name="unsupport_magisk_msg">See rakenduse versioon ei toeta Magiski versioone, mis on vanemad kui %1$s.\n\nRakendus käitub nii, nagu Magisk ei olekski installitud, palun täienda Magiskit esimesel võimalusel.</string>
+    <string name="unsupport_shadowmask_title">Mittetoetatud Magiski versioon</string>
+    <string name="unsupport_shadowmask_msg">See rakenduse versioon ei toeta Magiski versioone, mis on vanemad kui %1$s.\n\nRakendus käitub nii, nagu Magisk ei olekski installitud, palun täienda Magiskit esimesel võimalusel.</string>
     <string name="unsupport_general_title">Ebanormaalne seisund</string>
     <string name="unsupport_system_app_msg">Selle rakenduse käitamine süsteemirakendusena ei ole toetatud. Palun taasta see kasutajarakenduseks.</string>
     <string name="unsupport_other_su_msg">Tuvastati \"su\"-binaar, mida ei installinud Magisk. Palun eemalda mistahes konkureeriv juurkasutaja paigaldus ja/või taasinstalli Magisk.</string>

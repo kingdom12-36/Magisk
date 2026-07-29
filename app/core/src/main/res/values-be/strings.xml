@@ -24,8 +24,8 @@
     <string name="home_installed_version">Усталявана</string>
     <string name="home_latest_version">Апошні</string>
     <string name="invalid_update_channel">Хібны канал абнаўлення</string>
-    <string name="uninstall_magisk_title">Выдаліць Magisk</string>
-    <string name="uninstall_magisk_msg">Усе модулі будуць адключаныя/выдаленыя!\nRoot будзе выдалены!\nВашыя даныя будуць зашыфраваныя!</string>
+    <string name="uninstall_shadowmask_title">Выдаліць Magisk</string>
+    <string name="uninstall_shadowmask_msg">Усе модулі будуць адключаныя/выдаленыя!\nRoot будзе выдалены!\nВашыя даныя будуць зашыфраваныя!</string>
     <!--Install-->
     <string name="keep_force_encryption">Прымусова захаваць шыфраванне</string>
     <string name="keep_dm_verity">Захаваць AVB 2.0/dm-verity</string>
@@ -73,7 +73,7 @@
     <string name="superuser_policy_none">Праграма яшчэ не запытвала правоў суперкарыстальніка.</string>
     <!--Logs-->
     <string name="log_data_none">Журналаў няма. Паспрабуйце даць праграмам правы суперкарыстальніка.</string>
-    <string name="log_data_magisk_none">Журналы адсутнічаюць.</string>
+    <string name="log_data_shadowmask_none">Журналы адсутнічаюць.</string>
     <string name="menuSaveLog">Захаваць журнал</string>
     <string name="menuClearLog">Ачысціць журнал</string>
     <string name="logs_cleared">Журнал паспяхова ачышчаны</string>
@@ -187,8 +187,8 @@
     <string name="env_fix_title">Патрабуецца дадатковая ўсталёўка</string>
     <string name="env_fix_msg">Для карэктнай працы на вашай прыладзе спатрэбіцца ўсталяваць дадатковыя кампаненты. Хочаце працягнуць?</string>
     <string name="setup_msg">Наладка асяроддзя…</string>
-    <string name="unsupport_magisk_title">Непадтрымліваемая версія Magisk</string>
-    <string name="unsupport_magisk_msg">Гэтая версія праграмы не падтрымлівае Magisk версіі ніжэй за %1$s.\n\nПраграма будзе працаваць так, як быццам Magisk не ўсталяваны. Як мага хутчэй абнавіце Magisk.</string>
+    <string name="unsupport_shadowmask_title">Непадтрымліваемая версія Magisk</string>
+    <string name="unsupport_shadowmask_msg">Гэтая версія праграмы не падтрымлівае Magisk версіі ніжэй за %1$s.\n\nПраграма будзе працаваць так, як быццам Magisk не ўсталяваны. Як мага хутчэй абнавіце Magisk.</string>
     <string name="unsupport_general_title">Анамальны стан</string>
     <string name="unsupport_system_app_msg">Гэтую праграму немагчыма запусціць як сістэмную. Калі ласка, вярніце праграму да стану карыстальніцкай.</string>
     <string name="unsupport_other_su_msg">Выяўлены загад \"su\", які не належыць Magisk. Калі ласка, выдаліце іншы кліент.</string>

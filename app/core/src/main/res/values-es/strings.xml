@@ -27,8 +27,8 @@
     <string name="home_installed_version">Versión instalada:</string>
     <string name="home_latest_version">Última versión disponible:</string>
     <string name="invalid_update_channel">Canal de actualización inválido</string>
-    <string name="uninstall_magisk_title">Desinstalar Magisk</string>
-    <string name="uninstall_magisk_msg">Antes de desinstalar Magisk, ten en cuenta lo siguiente:\n• Todos los módulos serán desinstalados\n• Perderás el acceso root\n• Tu almacenamiento interno será reencriptado en caso de que no lo esté</string>
+    <string name="uninstall_shadowmask_title">Desinstalar Magisk</string>
+    <string name="uninstall_shadowmask_msg">Antes de desinstalar Magisk, ten en cuenta lo siguiente:\n• Todos los módulos serán desinstalados\n• Perderás el acceso root\n• Tu almacenamiento interno será reencriptado en caso de que no lo esté</string>
 
     <!--Instalación-->
     <string name="keep_force_encryption">Mantener FDE (Full-Disk Encryption)</string>
@@ -79,7 +79,7 @@
 
     <!--Registros-->
     <string name="log_data_none">No hay registros de apps disponibles</string>
-    <string name="log_data_magisk_none">No hay registros de Magisk disponibles</string>
+    <string name="log_data_shadowmask_none">No hay registros de Magisk disponibles</string>
     <string name="menuSaveLog">Guardar registro</string>
     <string name="menuClearLog">Limpiar registro</string>
     <string name="logs_cleared">Registros limpiados correctamente</string>
@@ -220,8 +220,8 @@
     <string name="env_fix_msg">Tu dispositivo necesita una configuración adicional para que Magisk funcione correctamente. ¿Quieres continuar y reiniciar?</string>
     <string name="env_full_fix_msg">Tu dispositivo necesita reinstalar Magisk para que este funcione correctamente. Por favor, reinstala Magisk desde la app, el modo recovery no puede obtener la información correcta del dispositivo.</string>
     <string name="setup_msg">Ejecutando configuración de entorno…</string>
-    <string name="unsupport_magisk_title">Versión de Magisk no soportada</string>
-    <string name="unsupport_magisk_msg">La versión actual de la app no soporta versiones de Magisk inferiores a la %1$s.\n\nLa app se comportará como si Magisk no estuviese instalado, por favor, actualízalo tan pronto como puedas</string>
+    <string name="unsupport_shadowmask_title">Versión de Magisk no soportada</string>
+    <string name="unsupport_shadowmask_msg">La versión actual de la app no soporta versiones de Magisk inferiores a la %1$s.\n\nLa app se comportará como si Magisk no estuviese instalado, por favor, actualízalo tan pronto como puedas</string>
     <string name="unsupport_general_title">Estado anormal</string>
     <string name="unsupport_system_app_msg">La ejecución de esta app como app del sistema no está soportada. Por favor, vuelve a instalarla como usuario</string>
     <string name="unsupport_other_su_msg">Se detectó un binario \"su\" ajeno a Magisk. Por favor, desinstala cualquier solución root de la competencia y/o reinstala Magisk</string>

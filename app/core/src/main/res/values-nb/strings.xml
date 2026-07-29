@@ -26,8 +26,8 @@
     <string name="home_installed_version">Installert</string>
     <string name="home_latest_version">Seneste</string>
     <string name="invalid_update_channel">Ugyldig installasjonskanal</string>
-    <string name="uninstall_magisk_title">Avinstaller Magisk</string>
-    <string name="uninstall_magisk_msg">Alle moduler vil bli avskrudd/fjernet.\nRot-tigang vil bli fjernet!\nKrypter din data hvis den ikke er det allerede.</string>
+    <string name="uninstall_shadowmask_title">Avinstaller Magisk</string>
+    <string name="uninstall_shadowmask_msg">Alle moduler vil bli avskrudd/fjernet.\nRot-tigang vil bli fjernet!\nKrypter din data hvis den ikke er det allerede.</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Bevar påvunget kryptering</string>
@@ -79,7 +79,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Ingen loggføring. Prøv å bruke superbrukerprogrammene dine oftere.</string>
-    <string name="log_data_magisk_none">Magisk-loggene er tomme, det er rart</string>
+    <string name="log_data_shadowmask_none">Magisk-loggene er tomme, det er rart</string>
     <string name="menuSaveLog">Lagre logg</string>
     <string name="menuClearLog">Tøm logg nå</string>
     <string name="logs_cleared">Loggføring tømt</string>
@@ -201,8 +201,8 @@
     <string name="env_fix_title">Krever ytterligere oppsett</string>
     <string name="env_fix_msg">Enheten din krever ytterligere oppsett for at Magisk skal fungere rett. Fortsett med omstart?</string>
     <string name="setup_msg">Kjører oppsett av miljø…</string>
-    <string name="unsupport_magisk_title">Ustøttet Magisk-versjon</string>
-    <string name="unsupport_magisk_msg">Denne versjonen av programmet støtter ikke Magisk før versjon %1$s.\n\nProgrammet vil oppføre seg som om Magisk ikke er installert. Oppgrader Magisk så snart som mulig.</string>
+    <string name="unsupport_shadowmask_title">Ustøttet Magisk-versjon</string>
+    <string name="unsupport_shadowmask_msg">Denne versjonen av programmet støtter ikke Magisk før versjon %1$s.\n\nProgrammet vil oppføre seg som om Magisk ikke er installert. Oppgrader Magisk så snart som mulig.</string>
     <string name="unsupport_general_title">Unormal tilstand</string>
     <string name="unsupport_system_app_msg">Kjøring av dette programmet som systemprogram støttes ikke. Gjør om programmet til et brukerprogram igjen.</string>
     <string name="unsupport_other_su_msg">En \"su\"-kommando som ikke tilhører Magisk ble oppdaget. Fjern dette andre ustøttede opphavet.</string>

@@ -27,8 +27,8 @@
     <string name="home_installed_version">Встановлено</string>
     <string name="home_latest_version">Найновіша</string>
     <string name="invalid_update_channel">Невірний канал оновлення</string>
-    <string name="uninstall_magisk_title">Видалити Magisk</string>
-    <string name="uninstall_magisk_msg">Ця дія призведе до вимкнення/видалення всіх модулів! Рут буде повністю видалено!\nВаші дані можуть зашифруватися, якщо вони не зашифровані!\nВпевнені, що бажаєте продовжити?</string>
+    <string name="uninstall_shadowmask_title">Видалити Magisk</string>
+    <string name="uninstall_shadowmask_msg">Ця дія призведе до вимкнення/видалення всіх модулів! Рут буде повністю видалено!\nВаші дані можуть зашифруватися, якщо вони не зашифровані!\nВпевнені, що бажаєте продовжити?</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Залишити примусове шифрування</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Покищо немає даних в журналі, спробуйте більше користуватися застосунками, які потребують прав суперкористувача</string>
-    <string name="log_data_magisk_none">Журнал Magisk порожній, це дивно.</string>
+    <string name="log_data_shadowmask_none">Журнал Magisk порожній, це дивно.</string>
     <string name="menuSaveLog">Зберегти журнал</string>
     <string name="menuClearLog">Очистити журнал</string>
     <string name="logs_cleared">Журнал успішно очищено</string>
@@ -207,8 +207,8 @@
     <string name="env_fix_title">Потрібне додаткове налаштування</string>
     <string name="env_fix_msg">Для вашого пристрою необхідне додаткове налаштування, щоб Magisk працював як слід. Бажаєте виконати налаштування та перезавантажити пристрій?</string>
     <string name="setup_msg">Налаштування робочого середовища…</string>
-    <string name="unsupport_magisk_title">Версія Magisk не підтримується</string>
-    <string name="unsupport_magisk_msg">Ця версія застосунку не підтримує версію Magisk, нижчу за %1$s.\n\nЗастосунок буде працювати так, ніби немає встановленого Magisk. Будь ласка, оновіть Magisk якнайшвидше.</string>
+    <string name="unsupport_shadowmask_title">Версія Magisk не підтримується</string>
+    <string name="unsupport_shadowmask_msg">Ця версія застосунку не підтримує версію Magisk, нижчу за %1$s.\n\nЗастосунок буде працювати так, ніби немає встановленого Magisk. Будь ласка, оновіть Magisk якнайшвидше.</string>
     <string name="unsupport_general_title">Ненормальний стан</string>
     <string name="unsupport_system_app_msg">Запуск цього застосунку як системний застосунок не підтримується. Будь ласка, перевстановіть цей застосунок, щоб він був як звичайний застосунок, який встановлений користувачем.</string>
     <string name="unsupport_other_su_msg">Виявлено команду \"su\", яка не належить до Magisk. Будь ласка, видаліть інші непідтримувані su.</string>

@@ -27,8 +27,8 @@
     <string name="home_installed_version">Installed</string>
     <string name="home_latest_version">Latest</string>
     <string name="invalid_update_channel">Invalid Update Channel</string>
-    <string name="uninstall_magisk_title">Uninstall Magisk</string>
-    <string name="uninstall_magisk_msg">All modules will be disabled/removed!\nRoot will be removed!\nAny internal storage unencrypted through the use of Magisk will be re-encrypted!</string>
+    <string name="uninstall_shadowmask_title">Uninstall Magisk</string>
+    <string name="uninstall_shadowmask_msg">All modules will be disabled/removed!\nRoot will be removed!\nAny internal storage unencrypted through the use of Magisk will be re-encrypted!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Preserve force encryption</string>
@@ -80,7 +80,7 @@
 
     <!--Logs-->
     <string name="log_data_none">You\'re log-free, try using your root apps more</string>
-    <string name="log_data_magisk_none">Magisk logs are empty, that\'s weird</string>
+    <string name="log_data_shadowmask_none">Magisk logs are empty, that\'s weird</string>
     <string name="menuSaveLog">Save log</string>
     <string name="menuClearLog">Clear log now</string>
     <string name="logs_cleared">Log successfully cleared</string>
@@ -213,8 +213,8 @@
     <string name="env_fix_title">Requires Additional Setup</string>
     <string name="env_fix_msg">Your device needs additional setup for Magisk to work properly. Do you want to proceed and reboot?</string>
     <string name="setup_msg">Running environment setup…</string>
-    <string name="unsupport_magisk_title">Unsupported Magisk Version</string>
-    <string name="unsupport_magisk_msg">This version of the app does not support Magisk versions lower than %1$s.\n\nThe app will behave as if no Magisk is installed, please upgrade Magisk as soon as possible.</string>
+    <string name="unsupport_shadowmask_title">Unsupported Magisk Version</string>
+    <string name="unsupport_shadowmask_msg">This version of the app does not support Magisk versions lower than %1$s.\n\nThe app will behave as if no Magisk is installed, please upgrade Magisk as soon as possible.</string>
     <string name="unsupport_general_title">Abnormal State</string>
     <string name="unsupport_system_app_msg">Running this app as a system app is not supported. Please revert the app to a user app.</string>
     <string name="unsupport_other_su_msg">A \"su\" binary not from Magisk has been detected. Please remove any competing root solution and/or reinstall Magisk.</string>

@@ -6,14 +6,14 @@
     <string name="logs">Записник</string>
     <string name="settings">Поставки</string>
     <string name="install">Инсталирај</string>
-    <string name="unsupport_magisk_title">Неподдржана верзија на Magisk</string>
+    <string name="unsupport_shadowmask_title">Неподдржана верзија на Magisk</string>
 
     <!--Status Fragment-->
     <string name="invalid_update_channel">Невалиден канал за ажурирања</string>
     <string name="keep_force_encryption">Задржи ја присилната енкрипција</string>
     <string name="keep_dm_verity">Задржи AVB 2.0/dm-verity</string>
-    <string name="uninstall_magisk_title">Деинсталирај го Magisk</string>
-    <string name="uninstall_magisk_msg">Сите модули ќе бидат оневозможени/oтстранети. Рут привилегиите ќе бидат отстранети, а вашите податоци може да се енкриптираат ако моментално не се.</string>
+    <string name="uninstall_shadowmask_title">Деинсталирај го Magisk</string>
+    <string name="uninstall_shadowmask_msg">Сите модули ќе бидат оневозможени/oтстранети. Рут привилегиите ќе бидат отстранети, а вашите податоци може да се енкриптираат ако моментално не се.</string>
     <string name="update">Ажурирај</string>
 
     <!--Module Fragment-->

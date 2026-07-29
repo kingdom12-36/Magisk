@@ -28,8 +28,8 @@
     <string name="home_installed_version">インストール済</string>
     <string name="home_latest_version">最新版</string>
     <string name="invalid_update_channel">不正な更新チャンネルです</string>
-    <string name="uninstall_magisk_title">Magisk のアンインストール</string>
-    <string name="uninstall_magisk_msg">すべてのモジュールが無効化/削除されます。\nアンインストール後は root が削除され､ストレージが暗号化されていない場合は暗号化される場合があります。</string>
+    <string name="uninstall_shadowmask_title">Magisk のアンインストール</string>
+    <string name="uninstall_shadowmask_msg">すべてのモジュールが無効化/削除されます。\nアンインストール後は root が削除され､ストレージが暗号化されていない場合は暗号化される場合があります。</string>
 
     <!--Install-->
     <string name="keep_force_encryption">暗号化を維持する</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">ログはありません。スーパーユーザー権限を使用するアプリをもっと使ってみてください</string>
-    <string name="log_data_magisk_none">おかしなことに Magisk のログは空です</string>
+    <string name="log_data_shadowmask_none">おかしなことに Magisk のログは空です</string>
     <string name="menuSaveLog">ログを保存</string>
     <string name="menuClearLog">ログを消去</string>
     <string name="logs_cleared">ログを消去しました</string>
@@ -218,8 +218,8 @@
     <string name="env_fix_title">追加のセットアップが必要です</string>
     <string name="env_fix_msg">Magisk を正常に動作させるためには追加のセットアップが必要です。今すぐ再起動しますか？</string>
     <string name="setup_msg">追加セットアップを実行中…</string>
-    <string name="unsupport_magisk_title">対応していない Magisk バージョンです</string>
-    <string name="unsupport_magisk_msg">このバージョンのアプリではバージョン %1$s 以下の Magisk に対応していません。\n\nアプリで Magisk を使えないため、すぐに Magisk を更新してください</string>
+    <string name="unsupport_shadowmask_title">対応していない Magisk バージョンです</string>
+    <string name="unsupport_shadowmask_msg">このバージョンのアプリではバージョン %1$s 以下の Magisk に対応していません。\n\nアプリで Magisk を使えないため、すぐに Magisk を更新してください</string>
     <string name="unsupport_general_title">異常な状態です</string>
     <string name="unsupport_system_app_msg">このアプリをシステムアプリとして起動することはサポートされていません。ユーザーアプリに戻してください。</string>
     <string name="unsupport_other_su_msg">Magisk 以外の \"su\" バイナリが検出されました。競合する root 権限取得ソフトを削除し、Magisk をインストールし直してください。</string>

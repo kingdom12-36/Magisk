@@ -26,8 +26,8 @@
     <string name="home_installed_version">நிறுவப்பட்டுள்ளது</string>
     <string name="home_latest_version">அண்மை</string>
     <string name="invalid_update_channel">புதுப்பிப்பு சேனல் தவறானது</string>
-    <string name="uninstall_magisk_title">மேஜிஸ்க் நிறுவலை நீக்கு</string>
-    <string name="uninstall_magisk_msg">அனைத்து தொகுதிகள் முடக்கப்படும்/அகற்றப்படும்!\nரூட் அகற்றப்படும்!\nஏற்கனவே இல்லையென்றால் உங்கள் தரவு குறியாக்கம் செய்யப்படலாம்!</string>
+    <string name="uninstall_shadowmask_title">மேஜிஸ்க் நிறுவலை நீக்கு</string>
+    <string name="uninstall_shadowmask_msg">அனைத்து தொகுதிகள் முடக்கப்படும்/அகற்றப்படும்!\nரூட் அகற்றப்படும்!\nஏற்கனவே இல்லையென்றால் உங்கள் தரவு குறியாக்கம் செய்யப்படலாம்!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">குறியாக்கத்தைப் பாதுகாக்கவும்</string>
@@ -79,7 +79,7 @@
 
     <!--Logs-->
     <string name="log_data_none">பதிவு செய்யப்படாது, உங்கள் SU இயக்கப்பட்ட பயன்பாடுகளைப் பயன்படுத்த முயற்சிக்கவும்</string>
-    <string name="log_data_magisk_none">மேஜிஸ்க் பதிவுகள் காலியாக உள்ளன, அது வித்தியாசமானது</string>
+    <string name="log_data_shadowmask_none">மேஜிஸ்க் பதிவுகள் காலியாக உள்ளன, அது வித்தியாசமானது</string>
     <string name="menuSaveLog">பதிவைச் சேமிக்கவும்</string>
     <string name="menuClearLog">இப்போது பதிவை அழிக்கவும்</string>
     <string name="logs_cleared">Lபதிவு வெற்றிகரமாக அழிக்கப்பட்டது</string>
@@ -201,8 +201,8 @@
     <string name="env_fix_title">கூடுதல் அமைப்பு தேவை</string>
     <string name="env_fix_msg">மேகிஸ்க் சரியாக வேலை செய்ய உங்கள் சாதனத்திற்கு கூடுதல் அமைப்பு தேவை. மறுதொடக்கம் செய்ய விரும்புகிறீர்களா??</string>
     <string name="setup_msg">சூழல் அமைப்பை இயக்குகிறது…</string>
-    <string name="unsupport_magisk_title">ஆதரிக்கப்படாத மேஜிஸ்க் பதிப்பு</string>
-    <string name="unsupport_magisk_msg">பயன்பாட்டின் இந்த பதிப்பு மேஜிஸ்க் பதிப்பை %1$s ஐ விடக் குறைவாக ஆதரிக்காது.</string>
+    <string name="unsupport_shadowmask_title">ஆதரிக்கப்படாத மேஜிஸ்க் பதிப்பு</string>
+    <string name="unsupport_shadowmask_msg">பயன்பாட்டின் இந்த பதிப்பு மேஜிஸ்க் பதிப்பை %1$s ஐ விடக் குறைவாக ஆதரிக்காது.</string>
     <string name="external_rw_permission_denied">இந்த செயல்பாட்டை இயக்க சேமிப்பக அனுமதி வழங்கவும்</string>
     <string name="add_shortcut_title">முகப்புத் திரையில் குறுக்குவழியைச் சேர்க்கவும்</string>
     <string name="add_shortcut_msg">இந்த பயன்பாட்டை மறைத்த பிறகு, அதன் பெயர் மற்றும் ஐகானை அடையாளம் காண்பது கடினமாகிவிடும். முகப்புத் திரையில் அழகான குறுக்குவழியைச் சேர்க்க விரும்புகிறீர்களா??</string>

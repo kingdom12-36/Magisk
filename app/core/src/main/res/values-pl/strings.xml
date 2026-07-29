@@ -28,8 +28,8 @@
     <string name="home_installed_version">Zainstalowany</string>
     <string name="home_latest_version">Ostatni</string>
     <string name="invalid_update_channel">Nieprawidłowy kanał aktualizacji</string>
-    <string name="uninstall_magisk_title">Odinstalowywanie Magisk</string>
-    <string name="uninstall_magisk_msg">Wszystkie moduły zostaną wyłączone/usunięte!\nRoot zostanie usunięty!\nWszelka wewnętrzna pamięć niezaszyfrowana w związku z użytkowaniem Magisk zostanie ponownie zaszyfrowana!</string>
+    <string name="uninstall_shadowmask_title">Odinstalowywanie Magisk</string>
+    <string name="uninstall_shadowmask_msg">Wszystkie moduły zostaną wyłączone/usunięte!\nRoot zostanie usunięty!\nWszelka wewnętrzna pamięć niezaszyfrowana w związku z użytkowaniem Magisk zostanie ponownie zaszyfrowana!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Zachowaj force encryption (wymuszenie szyfrowania)</string>
@@ -81,7 +81,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Nie masz żadnych logów, spróbuj użyć aplikacji wymagających roota</string>
-    <string name="log_data_magisk_none">Logi Magisk są puste, to jest dziwne</string>
+    <string name="log_data_shadowmask_none">Logi Magisk są puste, to jest dziwne</string>
     <string name="menuSaveLog">Zapisz log</string>
     <string name="menuClearLog">Wyczyść log</string>
     <string name="logs_cleared">Log został pomyślnie wyczyszczony</string>
@@ -224,8 +224,8 @@
     <string name="env_fix_msg">Twoje urządzenie wymaga dodatkowej konfiguracji, aby Magisk działał poprawnie. Czy chcesz kontynuować i uruchomić ponownie?</string>
     <string name="env_full_fix_msg">Twoje urządzenie wymaga ponownej instalacji Magisk, aby działać poprawnie. Zainstaluj ponownie Magisk używając aplikacji, tryb recovery nie może uzyskać prawidłowych informacji o urządzeniu.</string>
     <string name="setup_msg">Uruchamianie środowiska konfiguracji…</string>
-    <string name="unsupport_magisk_title">Nieobsługiwana wersja Magisk</string>
-    <string name="unsupport_magisk_msg">Ta wersja aplikacji nie obsługuje Magisk w wersji niższej niż %1$s.\n\nAplikacja będzie zachowywać się tak, jakby Magisk nie był zainstalowany, zaktualizuj Magisk tak szybko, jak to możliwe.</string>
+    <string name="unsupport_shadowmask_title">Nieobsługiwana wersja Magisk</string>
+    <string name="unsupport_shadowmask_msg">Ta wersja aplikacji nie obsługuje Magisk w wersji niższej niż %1$s.\n\nAplikacja będzie zachowywać się tak, jakby Magisk nie był zainstalowany, zaktualizuj Magisk tak szybko, jak to możliwe.</string>
     <string name="unsupport_general_title">Nieprawidłowy stan</string>
     <string name="unsupport_system_app_msg">Uruchomienie tej aplikacji jako aplikacja systemowa nie jest obsługiwane. Przywróć aplikację do stanu aplikacji użytkownika.</string>
     <string name="unsupport_other_su_msg">Wykryto plik binarny \"su\" nie należący do Magisk. Usuń wszelkie konkurencyjne rozwiązania root i/lub zainstaluj ponownie Magisk.</string>

@@ -27,8 +27,8 @@
     <string name="home_installed_version">מותקנת</string>
     <string name="home_latest_version">אחרונה</string>
     <string name="invalid_update_channel">ערוץ עדכון לא חוקי</string>
-    <string name="uninstall_magisk_title">הסרת Magisk</string>
-    <string name="uninstall_magisk_msg">כל המודולים יושבתו/יוסרו!\nגישת Root תושבת!\nהנתונים שלך עשויים להיות מוצפנים אם לא הוצפנו כבר!</string>
+    <string name="uninstall_shadowmask_title">הסרת Magisk</string>
+    <string name="uninstall_shadowmask_msg">כל המודולים יושבתו/יוסרו!\nגישת Root תושבת!\nהנתונים שלך עשויים להיות מוצפנים אם לא הוצפנו כבר!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">שמירה על הצפנה בכח</string>
@@ -79,7 +79,7 @@
 
     <!--Logs-->
     <string name="log_data_none">אין Log, יש לנסות להשתמש יותר ביישומי הRoot שלך</string>
-    <string name="log_data_magisk_none">Log Magisk ריק, זה מוזר</string>
+    <string name="log_data_shadowmask_none">Log Magisk ריק, זה מוזר</string>
     <string name="menuSaveLog">שמירת Log</string>
     <string name="menuClearLog">ניקוי Log כעת</string>
     <string name="logs_cleared">Log נוקה בהצלחה</string>
@@ -227,8 +227,8 @@
     <string name="env_fix_msg">ההתקן שלך זקוק להתקנה נוספת כדי ש-Magisk יפעל כראוי. האם ברצונך להמשיך ולהפעיל מחדש?</string>
     <string name="env_full_fix_msg">ההתקן שלך זקוק לצריבה מחדש של Magisk כדי לעבוד כראוי. נא להתקין מחדש את Magisk בתוך היישום, מצב הRecovery אינו יכול לקבל מידע נכון על ההתקן.</string>
     <string name="setup_msg">הגדרת סביבת ריצה…</string>
-    <string name="unsupport_magisk_title">גרסת Magisk אינה נתמכת</string>
-    <string name="unsupport_magisk_msg">גרסה זו של היישום אינה תומכת ביישום  Magisk הנמוך מ- %1$s.\n\nהיישום יתנהג כאילו Magisk אינו מותקן,יש לשדרג את Magisk במהירות האפשריות.</string>
+    <string name="unsupport_shadowmask_title">גרסת Magisk אינה נתמכת</string>
+    <string name="unsupport_shadowmask_msg">גרסה זו של היישום אינה תומכת ביישום  Magisk הנמוך מ- %1$s.\n\nהיישום יתנהג כאילו Magisk אינו מותקן,יש לשדרג את Magisk במהירות האפשריות.</string>
     <string name="unsupport_general_title">מצב לא תקין</string>
     <string name="unsupport_system_app_msg">הפעלת יישום זה כיישום מערכת אינה נתמך. נא להשיב את היישום כיישום משתמש.</string>
     <string name="unsupport_other_su_msg">התגלתה פקודת \"su\" שאינה שייכת ליישום Magisk נא להסיר את הפקודה שאינה נתמכת.</string>

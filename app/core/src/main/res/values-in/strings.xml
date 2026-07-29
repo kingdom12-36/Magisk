@@ -35,8 +35,8 @@
     <string name="home_latest_version">Terbaru</string>
     <string name="invalid_update_channel">Saluran pembaruan tidak valid</string>
     <string name="uninstall">Hapus</string>
-    <string name="uninstall_magisk_title">Hapus Magisk</string>
-    <string name="uninstall_magisk_msg">Semua modul akan dinonaktifkan/dihapus!\nRoot akan dihapus!\nSemua data internal yang tidak dienkripsi melalui penggunaan Magisk akan dienkripsi ulang!</string>
+    <string name="uninstall_shadowmask_title">Hapus Magisk</string>
+    <string name="uninstall_shadowmask_msg">Semua modul akan dinonaktifkan/dihapus!\nRoot akan dihapus!\nSemua data internal yang tidak dienkripsi melalui penggunaan Magisk akan dienkripsi ulang!</string>
 
     <!--Install-->
     <string name="keep_force_encryption">Pertahankan enkripsi paksa</string>
@@ -89,7 +89,7 @@
 
     <!--Logs-->
     <string name="log_data_none">Belum ada log. Coba gunakan aplikasi root Anda lebih sering.</string>
-    <string name="log_data_magisk_none">Log Magisk kosong, ini aneh.</string>
+    <string name="log_data_shadowmask_none">Log Magisk kosong, ini aneh.</string>
     <string name="menuSaveLog">Simpan log</string>
     <string name="menuClearLog">Bersihkan log</string>
     <string name="logs_cleared">Log berhasil dibersihkan</string>
@@ -257,8 +257,8 @@
     <string name="env_fix_msg">Perangkat Anda memerlukan penyiapan tambahan agar Magisk dapat berfungsi dengan benar. Apakah Anda ingin melanjutkan dan memulai ulang?</string>
     <string name="env_full_fix_msg">Perangkat Anda perlu melakukan pemasangan ulang Magisk agar berfungsi dengan benar. Harap pasang ulang Magisk melalui aplikasi, mode recovery tidak dapat memperoleh informasi perangkat yang benar.</string>
     <string name="setup_msg">Menyiapkan lingkungan…</string>
-    <string name="unsupport_magisk_title">Versi Magisk tidak didukung</string>
-    <string name="unsupport_magisk_msg">Versi aplikasi ini tidak mendukung versi Magisk yang lebih rendah dari %1$s.\n\nAplikasi akan berperilaku seolah-olah tidak ada Magisk yang terpasang. Harap perbarui Magisk sesegera mungkin.</string>
+    <string name="unsupport_shadowmask_title">Versi Magisk tidak didukung</string>
+    <string name="unsupport_shadowmask_msg">Versi aplikasi ini tidak mendukung versi Magisk yang lebih rendah dari %1$s.\n\nAplikasi akan berperilaku seolah-olah tidak ada Magisk yang terpasang. Harap perbarui Magisk sesegera mungkin.</string>
     <string name="unsupport_general_title">Status abnormal</string>
     <string name="unsupport_system_app_msg">Menjalankan aplikasi ini sebagai aplikasi sistem tidak didukung. Harap kembalikan ke aplikasi pengguna.</string>
     <string name="unsupport_other_su_msg">Sebuah biner \"su\" bukan berasal dari Magisk telah terdeteksi. Harap hapus solusi root yang bersaing dan/atau pasang ulang Magisk.</string>
