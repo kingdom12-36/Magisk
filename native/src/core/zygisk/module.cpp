@@ -425,27 +425,6 @@ static int new_lstat64(const char *path, void *buf) {
 // ---- Master installer -----------------------------------------------------
 
 static void install_spoof_hooks() {
-    ino_t libc_inode = 0;
-    dev_t libc_dev   = 0;
-
-    for (auto &map : lsplt::MapInfo::Scan()) {
-        if (map.path.ends_with("/libc.so")) {
-            libc_inode = map.inode;
-            libc_dev   = map.dev;
-        }
-        // Exclude Samsung Zygisk and core system libraries from PLT patching to avoid Scudo heap corruption
-        if (map.path.ends_with("/libzygisk.so") ||
-            map.path.ends_with("/libandroid_runtime.so") ||
-            map.path.ends_with("/libart.so")) {
-            lsplt::ExcludeHook(map.dev, map.inode);
-        }
-    }
-
-    if (!libc_inode) {
-        ZLOGE("spoof: libc.so not found in maps\n");
-        return;
-    }
-
     struct HookEntry { const char *sym; void *hook; void **backup; };
     const HookEntry hooks[] = {
         // property — legacy API and modern callback API
@@ -467,20 +446,42 @@ static void install_spoof_hooks() {
         {"lgetxattr",   (void *)new_lgetxattr,  (void **)&old_lgetxattr},
         {"fgetxattr",   (void *)new_fgetxattr,  (void **)&old_fgetxattr},
     };
-    for (const auto &h : hooks) {
-        if (!lsplt::RegisterHook(libc_dev, libc_inode, h.sym, h.hook, h.backup))
-            ZLOGE("spoof: failed to register hook for %s\n", h.sym);
+
+    size_t registered_count = 0;
+
+    for (auto &map : lsplt::MapInfo::Scan()) {
+        // استهداف خرائط الـ ELF الرئسية الفعالة فقط (offset == 0)
+        if (map.offset != 0 || !map.is_private || !(map.perms & PROT_READ)) continue;
+
+        // استثناء مكتبة سامسونج libzygisk ومكتبات النظام الحساسة لتفادي Scudo Heap Corruption
+        if (map.path.ends_with("/libzygisk.so") ||
+            map.path.ends_with("/libandroid_runtime.so") ||
+            map.path.ends_with("/libart.so")) {
+            continue;
+        }
+
+        // تطبيق الـ Hooks على بقية المكتبات المسموحة فقط
+        for (const auto &h : hooks) {
+            if (lsplt::RegisterHook(map.dev, map.inode, h.sym, h.hook, h.backup)) {
+                registered_count++;
+            }
+        }
     }
+
+    if (registered_count == 0) {
+        ZLOGW("spoof: no hooks registered\n");
+        return;
+    }
+
     if (!lsplt::CommitHook())
         ZLOGE("spoof: CommitHook failed\n");
     else {
         ZLOGI("spoof: all hooks installed safely for denylist process\n");
-        // Spoof hook functions live inside our library. If ShadowMask unmaps itself
-        // the patched GOT entries (e.g. in libjavacore.so) become dangling
-        // pointers → SIGSEGV SEGV_MAPERR. Keep ShadowMask mapped for process lifetime.
+        // Keep ShadowMask mapped for process lifetime to prevent dangling GOT pointers
         disable_shadowmask_unmap();
     }
 }
+
 
 static int zygisk_request(int req) {
     int fd = connect_daemon(RequestCode::ZYGISK);
