@@ -11,7 +11,7 @@ gradlePlugin {
     plugins {
         register("MagiskPlugin") {
             id = "MagiskPlugin"
-            implementationClass = "MagiskPlugin"
+            implementationClass = "ShadowMaskPlugin"
         }
     }
 }
