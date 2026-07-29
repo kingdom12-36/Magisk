@@ -165,10 +165,10 @@ jobs:
             > config.prop
 
       - name: Build Release APK (classic)
-        run: ./build.py -r app
+        run: ./build.py app -r
 
       - name: Build Release APK (ng)
-        run: ./build.py -r app-ng
+        run: ./build.py app-ng -r
 
       - name: Rename Release APKs
         run: |
