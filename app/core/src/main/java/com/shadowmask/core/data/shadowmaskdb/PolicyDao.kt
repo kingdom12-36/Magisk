@@ -9,8 +9,10 @@ private const val SELECT_QUERY = "SELECT (until - strftime(\"%s\", \"now\")) AS 
 class PolicyDao : ShadowMaskDB() {
 
     suspend fun deleteOutdated() {
+        // Only delete timed-out entries (until > 0 and past expiry).
+        // Entries with until = -1 are permanent grants and must NOT be deleted.
         val query = "DELETE FROM ${Table.POLICY} WHERE " +
-            "(until > 0 AND until < strftime(\"%s\", \"now\")) OR until < 0"
+            "(until > 0 AND until < strftime(\"%s\", \"now\"))"
         exec(query)
     }
 

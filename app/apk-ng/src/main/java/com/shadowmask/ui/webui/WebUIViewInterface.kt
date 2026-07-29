@@ -42,8 +42,9 @@ class WebUIViewInterface(
             processOptions(this, options)
             append(cmd)
         }
-        val result = withNewRootShell(globalMnt = true) {
-            newJob().add(finalCommand).to(ArrayList(), ArrayList()).exec()
+        // Use createRootShell directly so we get Shell.Result (not String) back.
+        val result = createRootShell(globalMnt = true).use { shell ->
+            shell.newJob().add(finalCommand).to(ArrayList<String>(), ArrayList<String>()).exec()
         }
         val stdout = result.out.joinToString("\n")
         val stderr = result.err.joinToString("\n")
@@ -71,11 +72,13 @@ class WebUIViewInterface(
 
         val shell = createRootShell(globalMnt = true)
 
-        val emitData = { name: String, data: String ->
+        // Explicit Unit return type so onAddElement overrides satisfy Unit contract.
+        val emitData: (String, String) -> Unit = { name, data ->
             val jsCode = "(function() { try { $callbackFunc.$name.emit('data', ${
                 JSONObject.quote(data)
             }); } catch(e) { console.error('emitData', e); } })();"
             webView.post { webView.evaluateJavascript(jsCode, null) }
+            Unit
         }
 
         val stdout = object : CallbackList<String>(UiThreadHandler::runAndWait) {
