@@ -18,11 +18,11 @@ static void zygiskd(int socket) {
         exit(-1);
 
 #if defined(__LP64__)
-    set_nice_name("media.audio64");
-    LOGI("* Launching media.audio64\n");
+    set_nice_name("zygiskd64");
+    LOGI("* Launching zygiskd64\n");
 #else
-    set_nice_name("media.audio32");
-    LOGI("* Launching media.audio32\n");
+    set_nice_name("zygiskd32");
+    LOGI("* Launching zygiskd32\n");
 #endif
 
     // Load modules
@@ -56,12 +56,12 @@ static void zygiskd(int socket) {
     for (;;) {
         poll(&pfd, 1, -1);
         if (pfd.revents && !(pfd.revents & POLLIN)) {
-            // Something bad happened in shadowmaskd, terminate zygiskd
+            // Something bad happened in magiskd, terminate zygiskd
             exit(0);
         }
         int client = recv_fd(socket);
         if (client < 0) {
-            // Something bad happened in shadowmaskd, terminate zygiskd
+            // Something bad happened in magiskd, terminate zygiskd
             exit(0);
         }
         int module_id = read_int(client);
