@@ -66,7 +66,7 @@
                     gone="@{viewModel.magiskState != State.OUTDATED}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.onMagiskPressed()}"
+                    android:onClick="@{() -> viewModel.onShadowMaskPressed()}"
                     android:text="@string/update"
                     android:textAllCaps="false"
                     android:layout_gravity="end"
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:onClick="@{() -> viewModel.onMagiskPressed()}"
+                    android:onClick="@{() -> viewModel.onShadowMaskPressed()}"
                     android:text="@string/install"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_install"/>

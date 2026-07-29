@@ -60,7 +60,7 @@
                 android:layout_marginTop="@dimen/l1" />
 
             <FrameLayout
-                gone="@{viewModel.loading || !viewModel.magiskLogRaw.empty}"
+                gone="@{viewModel.loading || !viewModel.shadowmaskLogRaw.empty}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
