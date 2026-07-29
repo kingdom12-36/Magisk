@@ -26,14 +26,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -41,6 +44,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -93,6 +97,7 @@ fun ModuleScreen(viewModel: ModuleViewModel) {
 
     var pendingOnlineModule by remember { mutableStateOf<OnlineModule?>(null) }
     val showOnlineDialog = rememberSaveable { mutableStateOf(false) }
+    var showNetworkDialog by rememberSaveable { mutableStateOf(false) }
 
     val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
@@ -110,6 +115,13 @@ fun ModuleScreen(viewModel: ModuleViewModel) {
                 }
             }
         }
+    }
+
+    if (showNetworkDialog) {
+        NetworkModulesDialog(
+            activity = activity,
+            onDismiss = { showNetworkDialog = false }
+        )
     }
 
     if (showOnlineDialog.value && pendingOnlineModule != null) {
@@ -139,21 +151,38 @@ fun ModuleScreen(viewModel: ModuleViewModel) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { filePicker.launch("application/zip") },
-                shape = CircleShape,
-                modifier = Modifier
-                    .padding(bottom = 88.dp, end = 20.dp)
-                    .border(0.05.dp, colorScheme.outline.copy(alpha = 0.5f), CircleShape),
-                content = {
+            Column(
+                modifier = Modifier.padding(bottom = 88.dp, end = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.End,
+            ) {
+                SmallFloatingActionButton(
+                    onClick = { showNetworkDialog = true },
+                    shape = CircleShape,
+                    modifier = Modifier.border(0.05.dp, colorScheme.outline.copy(alpha = 0.5f), CircleShape),
+                    containerColor = colorScheme.secondaryContainer,
+                    contentColor = colorScheme.onSecondaryContainer,
+                ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(CoreR.string.module_action_install_external),
-                        modifier = Modifier.size(28.dp),
-                        tint = colorScheme.onPrimaryContainer
+                        imageVector = Icons.Default.CloudDownload,
+                        contentDescription = stringResource(CoreR.string.module_action_install_network),
+                        modifier = Modifier.size(20.dp),
                     )
-                },
-            )
+                }
+                FloatingActionButton(
+                    onClick = { filePicker.launch("application/zip") },
+                    shape = CircleShape,
+                    modifier = Modifier.border(0.05.dp, colorScheme.outline.copy(alpha = 0.5f), CircleShape),
+                    content = {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(CoreR.string.module_action_install_external),
+                            modifier = Modifier.size(28.dp),
+                            tint = colorScheme.onPrimaryContainer
+                        )
+                    },
+                )
+            }
         }
     ) { padding ->
         if (uiState.loading) {
@@ -415,6 +444,116 @@ private fun ModuleCard(item: ModuleItem, viewModel: ModuleViewModel, onUpdateCli
             }
         }
     }
+}
+
+private data class NetworkModule(
+    val name: String,
+    val version: String,
+    val type: String,
+    val url: String,
+) {
+    val fileName: String get() = url.substringAfterLast("/")
+}
+
+private val NETWORK_MODULES = listOf(
+    NetworkModule(
+        name = "Integrity Box",
+        version = "v39",
+        type = "Module",
+        url = "https://github.com/MeowDump/Integrity-Box/releases/download/v39/v39-Integrity-Box-17-07-2026.zip",
+    ),
+    NetworkModule(
+        name = "Vector",
+        version = "v2.0",
+        type = "Module",
+        url = "https://github.com/JingMatrix/Vector/releases/download/v2.0/Vector-v2.0-3021-Release.zip",
+    ),
+    NetworkModule(
+        name = "TeleVip",
+        version = "3.6.2",
+        type = "App",
+        url = "https://github.com/mustafa1dev/TeleVip-LSPosed/releases/download/3.6.2/TeleVip.apk",
+    ),
+)
+
+@Composable
+private fun NetworkModulesDialog(
+    activity: MainActivity,
+    onDismiss: () -> Unit,
+) {
+    val colorScheme = MaterialTheme.colorScheme
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(CoreR.string.module_network_dialog_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                NETWORK_MODULES.forEach { module ->
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = colorScheme.surfaceVariant.copy(alpha = 0.6f)
+                        ),
+                        shape = MaterialTheme.shapes.medium,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = module.name,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = colorScheme.onSurface,
+                                )
+                                Text(
+                                    text = "${module.version}  ·  ${module.type}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = colorScheme.onSurfaceVariant,
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    DownloadEngine.startWithActivity(
+                                        activity,
+                                        NetworkInstallSubject(
+                                            downloadUrl = module.url,
+                                            fileName = module.fileName,
+                                        )
+                                    )
+                                    onDismiss()
+                                },
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = colorScheme.secondaryContainer,
+                                    contentColor = colorScheme.onSecondaryContainer,
+                                ),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Download,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                )
+                                Spacer(Modifier.padding(horizontal = 2.dp))
+                                Text(
+                                    text = stringResource(CoreR.string.module_network_download),
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
 }
 
 @Composable

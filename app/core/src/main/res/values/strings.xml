@@ -145,6 +145,9 @@
     <string name="module_webui_open">Open</string>
     <string name="module_state_restore">Restore</string>
     <string name="module_action_install_external">Install from storage</string>
+    <string name="module_action_install_network">Install from network</string>
+    <string name="module_network_dialog_title">Install from network</string>
+    <string name="module_network_download">Download</string>
     <string name="update_available">Update available</string>
     <string name="suspend_text_riru">Module suspended because %1$s is enabled</string>
     <string name="suspend_text_zygisk">Module suspended because %1$s isn\'t enabled</string>
