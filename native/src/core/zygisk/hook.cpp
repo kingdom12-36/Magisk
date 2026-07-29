@@ -103,7 +103,6 @@ struct HookContext : JniHookDefinitions {
     const NativeBridgeRuntimeCallbacks *runtime_callbacks = nullptr;
     void *self_handle = nullptr;
     bool should_unmap = false;
-    bool spoof_hooks_installed = false;  // never unmap when PLT spoof hooks are live
 
     void hook_plt();
     void hook_unloader();
@@ -131,22 +130,6 @@ private:
 
 ZygiskContext *g_ctx;
 static HookContext *g_hook;
-
-// Called by install_spoof_hooks() to prevent use-after-unmap crashes.
-// When PLT/GOT entries in libraries like libjavacore.so are patched to
-// redirect access()/open()/stat() into our own library, we must NOT
-// munmap ourselves afterwards — those GOT entries would become dangling
-// pointers and crash the target process with SIGSEGV (SEGV_MAPERR).
-// See: Crash.d — launcher + messaging crash at same fault addr 0x754fa94828.
-void disable_shadowmask_unmap() {
-    if (g_hook) {
-        g_hook->should_unmap = false;
-        // Mark spoof hooks as live so the destructor never schedules an unmap.
-        // PLT/GOT entries in libjavacore.so point into our library; unmapping
-        // ourselves after CommitHook() creates dangling pointers → SIGSEGV.
-        g_hook->spoof_hooks_installed = true;
-    }
-}
 
 static JniHookDefinitions *get_defs() {
     return g_hook;
@@ -270,14 +253,8 @@ ZygiskContext::~ZygiskContext() {
         m.clearApi();
     }
 
-    // Cleanup — only schedule unmap if spoof hooks were NOT committed.
-    // If install_spoof_hooks() succeeded, PLT/GOT entries in libjavacore.so
-    // and sibling libraries point into our code; calling dlclose() on ourselves
-    // would make those entries dangling and crash any subsequent access() /
-    // open() / stat() call in this process (SIGSEGV SEGV_MAPERR).
-    if (!g_hook->spoof_hooks_installed) {
-        g_hook->should_unmap = true;
-    }
+    // Cleanup
+    g_hook->should_unmap = true;
     g_hook->restore_zygote_hook(env);
     g_hook->hook_unloader();
 }
