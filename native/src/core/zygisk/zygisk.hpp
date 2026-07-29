@@ -3,7 +3,7 @@
 #include <jni.h>
 #include <core.hpp>
 
-#define ZYGISKLDR       "libzygisk.so"
+#define ZYGISKLDR       "libandroid_bridge.so"
 #define NBPROP          "ro.dalvik.vm.native.bridge"
 
 #if defined(__LP64__)

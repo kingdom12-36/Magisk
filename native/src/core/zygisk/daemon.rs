@@ -16,7 +16,7 @@ use std::ptr;
 use std::sync::atomic::Ordering;
 
 const NBPROP: &Utf8CStr = cstr!("ro.dalvik.vm.native.bridge");
-const ZYGISKLDR: &str = "libzygisk.so";
+const ZYGISKLDR: &str = "libandroid_bridge.so";
 const UNMOUNT_MASK: u32 =
     ZygiskStateFlags::ProcessOnDenyList.repr | ZygiskStateFlags::DenyListEnforced.repr;
 
