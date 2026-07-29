@@ -46,10 +46,10 @@ jobs:
           if-no-files-found: error
 
   # ==========================================
-  # 2. Build Debug APK
+  # 2. Build Debug APKs (classic + ng) in parallel with release
   # ==========================================
   build-debug-apk:
-    name: Build Debug APK
+    name: Build Debug APKs
     needs: build-native
     runs-on: ubuntu-latest
     steps:
@@ -67,24 +67,36 @@ jobs:
           name: native-binaries
           path: native/out/
 
-      - name: Build Debug APK
+      - name: Build Debug APK (classic)
         run: ./build.py app
 
-      - name: Rename Debug APK
-        run: mv out/app-debug.apk out/shadowmask-debug.apk
+      - name: Build Debug APK (ng)
+        run: ./build.py app-ng
 
-      - name: Upload Debug APK
+      - name: Rename Debug APKs
+        run: |
+          mv out/app-debug.apk    out/shadowmask-debug.apk
+          mv out/app-ng-debug.apk out/shadowmask-ng-debug.apk
+
+      - name: Upload Debug APK (classic)
         uses: actions/upload-artifact@v7
         with:
           name: shadowmask-debug
           path: out/shadowmask-debug.apk
           compression-level: 9
 
+      - name: Upload Debug APK (ng)
+        uses: actions/upload-artifact@v7
+        with:
+          name: shadowmask-ng-debug
+          path: out/shadowmask-ng-debug.apk
+          compression-level: 9
+
   # ==========================================
-  # 3. Build Signed Release APK & Publish
+  # 3. Build Signed Release APKs (classic + ng) & Publish
   # ==========================================
   build-release-apk:
-    name: Build Signed Release APK & Publish
+    name: Build Signed Release APKs & Publish
     needs: build-native
     runs-on: ubuntu-latest
     permissions:
@@ -152,17 +164,29 @@ jobs:
             "$(pwd)/shadowmask-release.jks" "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" \
             > config.prop
 
-      - name: Build Release APK
+      - name: Build Release APK (classic)
         run: ./build.py -r app
 
-      - name: Rename Release APK
-        run: mv out/app-release.apk out/shadowmask-release.apk
+      - name: Build Release APK (ng)
+        run: ./build.py -r app-ng
 
-      - name: Upload Release APK
+      - name: Rename Release APKs
+        run: |
+          mv out/app-release.apk    out/shadowmask-release.apk
+          mv out/app-ng-release.apk out/shadowmask-ng-release.apk
+
+      - name: Upload Release APK (classic)
         uses: actions/upload-artifact@v7
         with:
           name: shadowmask-release
           path: out/shadowmask-release.apk
+          compression-level: 9
+
+      - name: Upload Release APK (ng)
+        uses: actions/upload-artifact@v7
+        with:
+          name: shadowmask-ng-release
+          path: out/shadowmask-ng-release.apk
           compression-level: 9
 
       - name: Publish to GitHub Releases
@@ -175,5 +199,6 @@ jobs:
           git push origin :refs/tags/latest 2>/dev/null || true
           gh release create latest \
             --title "ShadowMask Build (latest)" \
-            --notes "Automatically built from the master branch. Install shadowmask-release.apk to get the full ShadowMask app." \
+            --notes "Automatically built from the master branch. Install shadowmask-ng-release.apk (new Compose UI) or shadowmask-release.apk (classic UI)." \
+            out/shadowmask-ng-release.apk \
             out/shadowmask-release.apk
