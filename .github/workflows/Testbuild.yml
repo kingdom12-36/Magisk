@@ -156,7 +156,7 @@ jobs:
           EOF
 
       - name: Build Release APK
-        run: ./build.py app --release
+        run: ./build.py -r app
 
       - name: Rename Release APK
         run: mv out/app-release.apk out/shadowmask-release.apk
