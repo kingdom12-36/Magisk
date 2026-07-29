@@ -425,16 +425,22 @@ static int new_lstat64(const char *path, void *buf) {
 // ---- Master installer -----------------------------------------------------
 
 static void install_spoof_hooks() {
-    // Locate libc.so once; reuse dev+inode for all hooks.
     ino_t libc_inode = 0;
     dev_t libc_dev   = 0;
+
     for (auto &map : lsplt::MapInfo::Scan()) {
         if (map.path.ends_with("/libc.so")) {
             libc_inode = map.inode;
             libc_dev   = map.dev;
-            break;
+        }
+        // Exclude Samsung Zygisk and core system libraries from PLT patching to avoid Scudo heap corruption
+        if (map.path.ends_with("/libzygisk.so") ||
+            map.path.ends_with("/libandroid_runtime.so") ||
+            map.path.ends_with("/libart.so")) {
+            lsplt::ExcludeHook(map.dev, map.inode);
         }
     }
+
     if (!libc_inode) {
         ZLOGE("spoof: libc.so not found in maps\n");
         return;
@@ -468,7 +474,7 @@ static void install_spoof_hooks() {
     if (!lsplt::CommitHook())
         ZLOGE("spoof: CommitHook failed\n");
     else {
-        ZLOGI("spoof: all hooks installed for denylist process\n");
+        ZLOGI("spoof: all hooks installed safely for denylist process\n");
         // Spoof hook functions live inside our library. If ShadowMask unmaps itself
         // the patched GOT entries (e.g. in libjavacore.so) become dangling
         // pointers → SIGSEGV SEGV_MAPERR. Keep ShadowMask mapped for process lifetime.
