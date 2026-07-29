@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <HorizontalScrollView
-            android:id="@+id/log_scroll_magisk"
+            android:id="@+id/log_scroll_shadowmask"
             gone="@{viewModel.loading}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,7 @@
             android:fillViewport="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/log_magisk"
+                android:id="@+id/log_shadowmask"
                 app:items="@{viewModel.logs}"
                 app:extraBindings="@{viewModel.extraBindings}"
                 android:layout_width="wrap_content"

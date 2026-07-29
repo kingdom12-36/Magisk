@@ -41,7 +41,7 @@ class HomeViewModel(
     }
 
     val shadowmaskTitleBarrierIds =
-        intArrayOf(R.id.home_shadowmask_icon, R.id.home_shadowmask_title, R.id.home_shadowmask_button)
+        intArrayOf(R.id.home_shadow_mask_icon, R.id.home_shadow_mask_title, R.id.home_shadow_mask_button)
     val appTitleBarrierIds =
         intArrayOf(R.id.home_manager_icon, R.id.home_manager_title, R.id.home_manager_button)
 
