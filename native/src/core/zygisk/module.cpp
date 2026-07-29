@@ -18,8 +18,8 @@
 #include "zygisk.hpp"
 #include "module.hpp"
 
-// Defined in hook.cpp — prevents munmap of Magisk when PLT hooks point into us.
-extern void disable_magisk_unmap();
+// Defined in hook.cpp — prevents munmap of ShadowMask when PLT hooks point into us.
+extern void disable_shadowmask_unmap();
 
 using namespace std;
 
@@ -41,12 +41,12 @@ using namespace std;
 //                          "shadowmask", "zygisk", or root-manager names.
 //  3. /proc filtering    — /proc/self/maps, /proc/net/unix, /proc/mounts,
 //                          /proc/self/mountinfo — returned fds point to
-//                          in-memory copies with Magisk/Zygisk lines stripped.
+//                          in-memory copies with ShadowMask/Zygisk lines stripped.
 //  4. SELinux attr spoof — /proc/self/attr/current reads return a clean
-//                          untrusted_app context so the Magisk domain is never
+//                          untrusted_app context so the ShadowMask domain is never
 //                          exposed.
 //  5. SELinux xattr hide — getxattr/lgetxattr/fgetxattr replace any
-//                          magisk_file / magisk_log_file label with
+//                          shadowmask_file / shadowmask_log_file label with
 //                          u:object_r:system_file:s0, covering both path-based
 //                          and fd-based callers (getfilecon uses lgetxattr).
 // ---------------------------------------------------------------------------
@@ -264,7 +264,7 @@ static bool unix_drop_line(const char *line, size_t) {
     return strstr(line, "shadowmask") != nullptr;
 }
 
-// Drop mount entries that reference magisk/zygisk bind-mounts.
+// Drop mount entries that reference shadowmask/zygisk bind-mounts.
 // Both /proc/mounts and /proc/self/mountinfo use whitespace-delimited
 // fields where the mount-point or source may contain "shadowmask" or ".shadowmask".
 static bool mounts_drop_line(const char *line, size_t) {
@@ -272,7 +272,7 @@ static bool mounts_drop_line(const char *line, size_t) {
 }
 
 // Return a memfd whose content is a clean SELinux process context so that
-// /proc/self/attr/current never reveals the magisk domain.
+// /proc/self/attr/current never reveals the shadowmask domain.
 static int make_selinux_attr_fd() {
 #ifndef MFD_CLOEXEC
 #define MFD_CLOEXEC 0x0001U
@@ -316,8 +316,8 @@ static getxattr_fn_t  old_getxattr  = nullptr;
 static lgetxattr_fn_t old_lgetxattr = nullptr;
 static fgetxattr_fn_t old_fgetxattr = nullptr;
 
-// Clean SELinux label substituted for any magisk_* context.
-// Length (25 chars + NUL) intentionally matches SHADOWMASK_FILE_CON / MAGISK_LOG_FILE_CON
+// Clean SELinux label substituted for any shadowmask_* context.
+// Length (25 chars + NUL) intentionally matches SHADOWMASK_FILE_CON / SHADOWMASK_LOG_FILE_CON
 // so no buffer arithmetic is needed; we use memcpy for safety.
 static const char CLEAN_FILE_CTX[] = "u:object_r:system_file:s0";
 static constexpr size_t   CLEAN_FILE_CTX_LEN = sizeof(CLEAN_FILE_CTX) - 1; // excl. NUL
@@ -469,10 +469,10 @@ static void install_spoof_hooks() {
         ZLOGE("spoof: CommitHook failed\n");
     else {
         ZLOGI("spoof: all hooks installed for denylist process\n");
-        // Spoof hook functions live inside our library. If Magisk unmaps itself
+        // Spoof hook functions live inside our library. If ShadowMask unmaps itself
         // the patched GOT entries (e.g. in libjavacore.so) become dangling
-        // pointers → SIGSEGV SEGV_MAPERR. Keep Magisk mapped for process lifetime.
-        disable_magisk_unmap();
+        // pointers → SIGSEGV SEGV_MAPERR. Keep ShadowMask mapped for process lifetime.
+        disable_shadowmask_unmap();
     }
 }
 
@@ -875,7 +875,7 @@ void ZygiskContext::app_specialize_pre() {
     // path_is_hidden() → canWrite() returns false → SuRequestActivity bails
     // before showing the permission dialog → no grant, no superuser list entry.
     if (process && strstr(process, "com.shadowmask")) {
-        info_flags |= +ZygiskStateFlags::ProcessIsMagiskApp;
+        info_flags |= +ZygiskStateFlags::ProcessIsShadowMaskApp;
     }
     // ───────────────────────────────────────────────────────────────────────
 
@@ -884,23 +884,23 @@ void ZygiskContext::app_specialize_pre() {
     if ((info_flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
         ZLOGI("[%s] is on the denylist\n", process);
         flags |= DO_REVERT_UNMOUNT;
-        // Skip for the Magisk Manager itself — it needs to read its own
-        // mount entries and SELinux labels to detect that Magisk is active.
-        if (!(info_flags & +ZygiskStateFlags::ProcessIsMagiskApp)) {
+        // Skip for the ShadowMask Manager itself — it needs to read its own
+        // mount entries and SELinux labels to detect that ShadowMask is active.
+        if (!(info_flags & +ZygiskStateFlags::ProcessIsShadowMaskApp)) {
             install_spoof_hooks();
         }
     } else {
         if (fd >= 0) {
             run_modules_pre(module_fds);
         }
-        // Auto-deny: hide Magisk from every app that has not been explicitly
-        // granted root access and is not the Magisk Manager itself.
+        // Auto-deny: hide ShadowMask from every app that has not been explicitly
+        // granted root access and is not the ShadowMask Manager itself.
         //
         // This means you never have to touch the DenyList at all — games,
         // banking apps, and everything else see a clean unrooted phone by
         // default.  Only apps you have explicitly allowed root (via the
-        // superuser prompt) can see that Magisk exists.
-        if (!(info_flags & +ZygiskStateFlags::ProcessIsMagiskApp) &&
+        // superuser prompt) can see that ShadowMask exists.
+        if (!(info_flags & +ZygiskStateFlags::ProcessIsShadowMaskApp) &&
             !(info_flags & +ZygiskStateFlags::ProcessGrantedRoot)) {
             install_spoof_hooks();
         }
@@ -909,7 +909,7 @@ void ZygiskContext::app_specialize_pre() {
 
 void ZygiskContext::app_specialize_post() {
     run_modules_post();
-    if (info_flags & +ZygiskStateFlags::ProcessIsMagiskApp) {
+    if (info_flags & +ZygiskStateFlags::ProcessIsShadowMaskApp) {
         setenv("ZYGISK_ENABLED", "1", 1);
     }
 
@@ -925,7 +925,7 @@ void ZygiskContext::server_specialize_pre() {
         } else {
             run_modules_pre(module_fds);
 
-            // Find all failed module ids and send it back to magiskd
+            // Find all failed module ids and send it back to shadowmaskd
             vector<int> failed_ids;
             for (int i = 0; i < module_fds.size(); ++i) {
                 if (module_fds[i] < 0) {

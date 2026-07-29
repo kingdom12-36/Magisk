@@ -39,7 +39,7 @@ int quit_signals[] = { SIGALRM, SIGABRT, SIGHUP, SIGPIPE, SIGQUIT, SIGTERM, SIGI
     FILE *stream = (status == EXIT_SUCCESS) ? stdout : stderr;
 
     fprintf(stream,
-    "MagiskSU\n\n"
+    "ShadowMaskSU\n\n"
     "Usage: su [options] [-] [user [argument...]]\n\n"
     "Options:\n"
     "  -c, --command COMMAND         Pass COMMAND to the invoked shell\n"
@@ -150,10 +150,10 @@ int su_client_main(int argc, char *argv[]) {
                 req.shell = optarg;
                 break;
             case 'V':
-                printf("%d\n", MAGISK_VER_CODE);
+                printf("%d\n", SHADOWMASK_VER_CODE);
                 exit(EXIT_SUCCESS);
             case 'v':
-                printf("%s\n", MAGISK_VERSION ":MAGISKSU");
+                printf("%s\n", SHADOWMASK_VERSION ":SHADOWMASKSU");
                 exit(EXIT_SUCCESS);
             case 'Z':
                 req.context = optarg;
@@ -339,13 +339,13 @@ void exec_root_shell(int client, int pid, SuRequest &req, MntNsMode mode) {
     if (infd < 0 || outfd < 0 || errfd < 0) {
         string pts;
         string ptmx;
-        auto magiskpts = get_magisk_tmp() + "/"s SHELLPTS;
-        if (access(magiskpts.data(), F_OK)) {
+        auto shadowmaskpts = get_shadowmask_tmp() + "/"s SHELLPTS;
+        if (access(shadowmaskpts.data(), F_OK)) {
             pts = "/dev/pts";
             ptmx = "/dev/ptmx";
         } else {
-            pts = magiskpts;
-            ptmx = magiskpts + "/ptmx";
+            pts = shadowmaskpts;
+            ptmx = shadowmaskpts + "/ptmx";
         }
         int ptmx_fd = xopen(ptmx.data(), O_RDWR);
         grantpt(ptmx_fd);

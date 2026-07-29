@@ -15,7 +15,7 @@ struct Cli {
     live: bool,
 
     #[argh(switch)]
-    magisk: bool,
+    shadowmask: bool,
 
     #[argh(switch)]
     compile_split: bool,
@@ -41,7 +41,7 @@ struct Cli {
 
 fn print_usage(cmd: &str) {
     eprintln!(
-        r#"MagiskPolicy - SELinux Policy Patch Tool
+        r#"ShadowMaskPolicy - SELinux Policy Patch Tool
 
 Usage: {cmd} [--options...] [policy statements...]
 
@@ -53,7 +53,7 @@ Options:
    --compile-split   compile split cil policies
    --save FILE       dump monolithic sepolicy to FILE
    --live            immediately load sepolicy into the kernel
-   --magisk          apply built-in Magisk sepolicy rules
+   --shadowmask          apply built-in ShadowMask sepolicy rules
    --apply FILE      apply rules from FILE, read and parsed
                      line by line as policy statements
                      (multiple --apply are allowed)
@@ -100,7 +100,7 @@ pub unsafe extern "C" fn main(
         }
 
         if cli.print_rules {
-            if cli.magisk
+            if cli.shadowmask
                 || !cli.apply.is_empty()
                 || !cli.polices.is_empty()
                 || cli.live
@@ -112,8 +112,8 @@ pub unsafe extern "C" fn main(
             return Ok(());
         }
 
-        if cli.magisk {
-            sepol.magisk_rules();
+        if cli.shadowmask {
+            sepol.shadowmask_rules();
         }
 
         for file in cli.apply {

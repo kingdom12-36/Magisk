@@ -18,7 +18,7 @@ import com.shadowmask.core.ktx.synchronized
 import com.shadowmask.core.ktx.timeFormatStandard
 import com.shadowmask.core.ktx.toTime
 import com.shadowmask.core.tasks.FlashZip
-import com.shadowmask.core.tasks.MagiskInstaller
+import com.shadowmask.core.tasks.ShadowMaskInstaller
 import com.shadowmask.core.utils.MediaStoreUtils
 import com.shadowmask.core.utils.MediaStoreUtils.outputStream
 import com.shadowmask.databinding.set
@@ -64,27 +64,27 @@ class FlashViewModel : BaseViewModel() {
                 }
                 Const.Value.UNINSTALL -> {
                     showReboot = false
-                    MagiskInstaller.Uninstall(outItems, logItems).exec()
+                    ShadowMaskInstaller.Uninstall(outItems, logItems).exec()
                 }
-                Const.Value.FLASH_MAGISK -> {
+                Const.Value.FLASH_SHADOWMASK -> {
                     if (Info.isEmulator)
-                        MagiskInstaller.Emulator(outItems, logItems).exec()
+                        ShadowMaskInstaller.Emulator(outItems, logItems).exec()
                     else
-                        MagiskInstaller.Direct(outItems, logItems).exec()
+                        ShadowMaskInstaller.Direct(outItems, logItems).exec()
                 }
                 Const.Value.FLASH_INACTIVE_SLOT -> {
                     showReboot = false
-                    MagiskInstaller.SecondSlot(outItems, logItems).exec()
+                    ShadowMaskInstaller.SecondSlot(outItems, logItems).exec()
                 }
                 Const.Value.PATCH_FILE -> {
                     uri ?: return@launch
                     showReboot = false
-                    MagiskInstaller.Patch(uri, outItems, logItems).exec()
+                    ShadowMaskInstaller.Patch(uri, outItems, logItems).exec()
                 }
                 Const.Value.DOWNLOAD -> {
                     uri ?: return@launch
                     showReboot = false
-                    MagiskInstaller.Download(uri.toString(), outItems, logItems).exec()
+                    ShadowMaskInstaller.Download(uri.toString(), outItems, logItems).exec()
                 }
                 else -> {
                     back()
@@ -108,7 +108,7 @@ class FlashViewModel : BaseViewModel() {
 
     private fun savePressed() = withExternalRW {
         viewModelScope.launch(Dispatchers.IO) {
-            val name = "magisk_install_log_%s.log".format(
+            val name = "shadowmask_install_log_%s.log".format(
                 System.currentTimeMillis().toTime(timeFormatStandard)
             )
             val file = MediaStoreUtils.getFile(name)

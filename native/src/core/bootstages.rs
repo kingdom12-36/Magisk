@@ -1,8 +1,8 @@
 use crate::consts::{APP_PACKAGE_NAME, BBPATH, DATABIN, MODULEROOT, SECURE_DIR};
-use crate::daemon::MagiskD;
+use crate::daemon::ShadowMaskD;
 use crate::ffi::{
     DbEntryKey, RequestCode, check_key_combo, exec_common_scripts, exec_module_scripts,
-    get_magisk_tmp, initialize_denylist,
+    get_shadowmask_tmp, initialize_denylist,
 };
 use crate::logging::setup_logfile;
 use crate::module::disable_modules;
@@ -28,9 +28,9 @@ bitflags! {
     }
 }
 
-impl MagiskD {
-    fn setup_magisk_env(&self) -> bool {
-        info!("* Initializing Magisk environment");
+impl ShadowMaskD {
+    fn setup_shadowmask_env(&self) -> bool {
+        info!("* Initializing ShadowMask environment");
 
         let mut buf = cstr::buf::default();
 
@@ -72,7 +72,7 @@ impl MagiskD {
             return false;
         }
 
-        let tmp_bb = buf.append_path(get_magisk_tmp()).append_path(BBPATH);
+        let tmp_bb = buf.append_path(get_shadowmask_tmp()).append_path(BBPATH);
         tmp_bb.mkdirs(0o755).ok();
         tmp_bb.append_path("busybox");
         busybox.copy_to(tmp_bb).ok();
@@ -92,13 +92,13 @@ impl MagiskD {
         // from data to shadowmask tmp
         let shadowmask32 = cstr!(concatcp!(DATABIN, "/shadowmask32"));
         if shadowmask32.exists() {
-            let tmp = buf.append_path(get_magisk_tmp()).append_path("shadowmask32");
+            let tmp = buf.append_path(get_shadowmask_tmp()).append_path("shadowmask32");
             shadowmask32.copy_to(tmp).log_ok();
         }
         let shadowmaskpolicy = cstr!(concatcp!(DATABIN, "/shadowmaskpolicy"));
         if shadowmaskpolicy.exists() {
             let tmp = buf
-                .append_path(get_magisk_tmp())
+                .append_path(get_shadowmask_tmp())
                 .append_path("shadowmaskpolicy");
             shadowmaskpolicy.copy_to(tmp).log_ok();
         }
@@ -125,8 +125,8 @@ impl MagiskD {
 
         self.prune_su_access();
 
-        if !self.setup_magisk_env() {
-            error!("* Magisk environment incomplete, abort");
+        if !self.setup_shadowmask_env() {
+            error!("* ShadowMask environment incomplete, abort");
             return true;
         }
 

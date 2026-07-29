@@ -9,7 +9,7 @@ pub const APPLET_NAMES: &[&str] = &["su", "resetprop"];
 
 // versions
 pub use flags::*;
-pub const SHADOWMASK_FULL_VER: &str = concatcp!(MAGISK_VERSION, "(", MAGISK_VER_CODE, ")");
+pub const SHADOWMASK_FULL_VER: &str = concatcp!(SHADOWMASK_VERSION, "(", SHADOWMASK_VER_CODE, ")");
 
 pub const APP_PACKAGE_NAME: &str = "com.shadowmask";
 

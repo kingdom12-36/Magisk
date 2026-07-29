@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity(), SplashScreenHost {
         val initialTab = getInitialTab(intent)
 
         setContent {
-            MagiskTheme {
+            ShadowMaskTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     val navigator = rememberNavigator(Route.Main)
                     CompositionLocalProvider(LocalNavigator provides navigator) {
@@ -230,11 +230,11 @@ class MainActivity : ComponentActivity(), SplashScreenHost {
         val messages = mutableListOf<Pair<Int, Int>>()
 
         if (Info.env.isUnsupported) {
-            messages.add(CoreR.string.unsupport_magisk_title to CoreR.string.unsupport_magisk_msg)
+            messages.add(CoreR.string.unsupport_shadowmask_title to CoreR.string.unsupport_shadowmask_msg)
         }
         if (!Info.isEmulator && Info.env.isActive && System.getenv("PATH")
                 ?.split(':')
-                ?.filterNot { java.io.File("$it/magisk").exists() }
+                ?.filterNot { java.io.File("$it/shadowmask").exists() }
                 ?.any { java.io.File("$it/su").exists() } == true) {
             messages.add(CoreR.string.unsupport_general_title to CoreR.string.unsupport_other_su_msg)
         }

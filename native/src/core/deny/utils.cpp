@@ -376,7 +376,7 @@ int enable_deny() {
 
         denylist_enforced = true;
 
-        if (!MagiskD::Get().zygisk_enabled()) {
+        if (!ShadowMaskD::Get().zygisk_enabled()) {
             if (new_daemon_thread(&logcat)) {
                 denylist_enforced = false;
                 return DenyResponse::ERROR;
@@ -391,7 +391,7 @@ int enable_deny() {
         }
     }
 
-    MagiskD::Get().set_db_setting(DbEntryKey::DenylistConfig, true);
+    ShadowMaskD::Get().set_db_setting(DbEntryKey::DenylistConfig, true);
     return DenyResponse::OK;
 }
 
@@ -399,13 +399,13 @@ int disable_deny() {
     if (denylist_enforced.exchange(false)) {
         LOGI("* Disable DenyList\n");
     }
-    MagiskD::Get().set_db_setting(DbEntryKey::DenylistConfig, false);
+    ShadowMaskD::Get().set_db_setting(DbEntryKey::DenylistConfig, false);
     return DenyResponse::OK;
 }
 
 void initialize_denylist() {
     if (!denylist_enforced) {
-        if (MagiskD::Get().get_db_setting(DbEntryKey::DenylistConfig))
+        if (ShadowMaskD::Get().get_db_setting(DbEntryKey::DenylistConfig))
             enable_deny();
     }
 }

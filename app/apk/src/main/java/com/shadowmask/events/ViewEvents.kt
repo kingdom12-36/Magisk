@@ -14,7 +14,7 @@ import com.shadowmask.core.base.ContentResultCallback
 import com.shadowmask.core.base.relaunch
 import com.shadowmask.core.utils.TextHolder
 import com.shadowmask.core.utils.asText
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import com.shadowmask.view.Shortcuts
 
 class PermissionEvent(
@@ -115,10 +115,10 @@ class DialogEvent(
     private val builder: DialogBuilder
 ) : ViewEvent(), ActivityExecutor {
     override fun invoke(activity: UIActivity<*>) {
-        MagiskDialog(activity).apply(builder::build).show()
+        ShadowMaskDialog(activity).apply(builder::build).show()
     }
 }
 
 interface DialogBuilder {
-    fun build(dialog: MagiskDialog)
+    fun build(dialog: ShadowMaskDialog)
 }

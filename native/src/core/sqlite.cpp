@@ -276,7 +276,7 @@ sqlite3 *open_and_init_db() {
     if (ver == 10) {
         sql_chk_log(sql_exec_impl, db.get(),
                 "DROP TABLE IF EXISTS hidelist;"
-                "DELETE FROM settings WHERE key='magiskhide';");
+                "DELETE FROM settings WHERE key='shadowmaskhide';");
         sql_chk_log(create_denylist);
         ver = 11;
         upgrade = true;

@@ -1,6 +1,6 @@
-use crate::consts::{APPLET_NAMES, MAGISK_VER_CODE, MAGISK_VERSION, POST_FS_DATA_WAIT_TIME};
+use crate::consts::{APPLET_NAMES, SHADOWMASK_VER_CODE, SHADOWMASK_VERSION, POST_FS_DATA_WAIT_TIME};
 use crate::daemon::connect_daemon;
-use crate::ffi::{RequestCode, denylist_cli, get_magisk_tmp, install_module, unlock_blocks};
+use crate::ffi::{RequestCode, denylist_cli, get_shadowmask_tmp, install_module, unlock_blocks};
 use crate::mount::find_preinit_device;
 use crate::selinux::restorecon;
 use crate::socket::{Decodable, Encodable};
@@ -13,10 +13,10 @@ use std::process::exit;
 
 fn print_usage() {
     eprintln!(
-        r#"Magisk - Multi-purpose Utility
+        r#"ShadowMask - Multi-purpose Utility
 
-Usage: magisk [applet [arguments]...]
-   or: magisk [options]...
+Usage: shadowmask [applet [arguments]...]
+   or: shadowmask [options]...
 
 Options:
    -c                        print current binary version
@@ -27,16 +27,16 @@ Options:
    --install-module ZIP      install a module zip file
 
 Advanced Options (Internal APIs):
-   --daemon                  manually start magisk daemon
-   --stop                    remove all magisk changes and stop daemon
+   --daemon                  manually start shadowmask daemon
+   --stop                    remove all shadowmask changes and stop daemon
    --[init trigger]          callback on init triggers. Valid triggers:
                              post-fs-data, service, boot-complete, zygote-restart
    --unlock-blocks           set BLKROSET flag to OFF for all block devices
-   --restorecon              restore selinux context on Magisk files
+   --restorecon              restore selinux context on ShadowMask files
    --clone-attr SRC DEST     clone permission, owner, and selinux context
    --clone SRC DEST          clone SRC to DEST
-   --sqlite SQL              exec SQL commands to Magisk database
-   --path                    print Magisk tmpfs mount path
+   --sqlite SQL              exec SQL commands to ShadowMask database
+   --path                    print ShadowMask tmpfs mount path
    --denylist ARGS           denylist config CLI
    --preinit-device          resolve a device to store preinit files
 
@@ -50,12 +50,12 @@ Available applets:
 #[derive(FromArgs)]
 struct Cli {
     #[argh(subcommand)]
-    action: MagiskAction,
+    action: ShadowMaskAction,
 }
 
 #[derive(FromArgs)]
 #[argh(subcommand)]
-enum MagiskAction {
+enum ShadowMaskAction {
     LocalVersion(LocalVersion),
     Version(Version),
     VersionCode(VersionCode),
@@ -180,15 +180,15 @@ struct DenyList {
 #[argh(subcommand, name = "--preinit-device")]
 struct PreInitDevice {}
 
-impl MagiskAction {
+impl ShadowMaskAction {
     fn exec(self) -> LoggedResult<i32> {
-        use MagiskAction::*;
+        use ShadowMaskAction::*;
         match self {
             LocalVersion(_) => {
                 #[cfg(debug_assertions)]
-                println!("{MAGISK_VERSION}:MAGISK:D ({MAGISK_VER_CODE})");
+                println!("{SHADOWMASK_VERSION}:SHADOWMASK:D ({SHADOWMASK_VER_CODE})");
                 #[cfg(not(debug_assertions))]
-                println!("{MAGISK_VERSION}:MAGISK:R ({MAGISK_VER_CODE})");
+                println!("{SHADOWMASK_VERSION}:SHADOWMASK:R ({SHADOWMASK_VER_CODE})");
             }
             Version(_) => {
                 let mut fd = connect_daemon(RequestCode::CHECK_VERSION, false)?;
@@ -262,7 +262,7 @@ impl MagiskAction {
                 }
             }
             Path(_) => {
-                let tmp = get_magisk_tmp();
+                let tmp = get_shadowmask_tmp();
                 if tmp.is_empty() {
                     return Ok(1);
                 } else {
@@ -285,7 +285,7 @@ impl MagiskAction {
     }
 }
 
-pub fn magisk_main(argc: i32, argv: *mut *mut c_char) -> i32 {
+pub fn shadowmask_main(argc: i32, argv: *mut *mut c_char) -> i32 {
     if argc < 2 {
         print_usage();
         exit(1);

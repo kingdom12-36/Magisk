@@ -45,7 +45,7 @@ am_instrument() {
 
 run_setup() {
   local apk=$1
-  adb shell 'PATH=$PATH:/debug_ramdisk magisk -v'
+  adb shell 'PATH=$PATH:/debug_ramdisk shadowmask -v'
 
   # Install the ShadowMask app
   adb install -r -g $apk
@@ -74,17 +74,17 @@ run_tests() {
   local stub="repackaged.$pkg/$pkg.AppTestRunner"
 
   # Run app tests
-  am_instrument '.MagiskAppTest,.AdditionalTest' $app
+  am_instrument '.ShadowMaskAppTest,.AdditionalTest' $app
 
   # Test app hiding
   am_instrument '.AppMigrationTest#testAppHide' $self
 
   # Make sure it still works
-  am_instrument '.MagiskAppTest' $stub
+  am_instrument '.ShadowMaskAppTest' $stub
 
   # Test app restore
   am_instrument '.AppMigrationTest#testAppRestore' $self
 
   # Make sure it still works
-  am_instrument '.MagiskAppTest' $app
+  am_instrument '.ShadowMaskAppTest' $app
 }

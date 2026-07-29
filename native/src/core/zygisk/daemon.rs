@@ -1,6 +1,6 @@
 use crate::consts::MODULEROOT;
-use crate::daemon::{MagiskD, to_user_id};
-use crate::ffi::{ZygiskRequest, ZygiskStateFlags, get_magisk_tmp, update_deny_flags};
+use crate::daemon::{ShadowMaskD, to_user_id};
+use crate::ffi::{ZygiskRequest, ZygiskStateFlags, get_shadowmask_tmp, update_deny_flags};
 use crate::resetprop::{get_prop, set_prop};
 use crate::socket::{IpcRead, UnixSocketExt};
 use base::libc::STDOUT_FILENO;
@@ -21,7 +21,7 @@ const UNMOUNT_MASK: u32 =
     ZygiskStateFlags::ProcessOnDenyList.repr | ZygiskStateFlags::DenyListEnforced.repr;
 
 pub fn zygisk_should_load_module(flags: u32) -> bool {
-    flags & UNMOUNT_MASK != UNMOUNT_MASK && flags & ZygiskStateFlags::ProcessIsMagiskApp.repr == 0
+    flags & UNMOUNT_MASK != UNMOUNT_MASK && flags & ZygiskStateFlags::ProcessIsShadowMaskApp.repr == 0
 }
 
 #[allow(unused_variables)]
@@ -34,14 +34,14 @@ fn exec_zygiskd(is_64_bit: bool, remote: UnixStream) {
     // Start building the exec arguments
 
     #[cfg(target_pointer_width = "64")]
-    let magisk = if is_64_bit { "shadowmask" } else { "shadowmask32" };
+    let shadowmask = if is_64_bit { "shadowmask" } else { "shadowmask32" };
 
     #[cfg(target_pointer_width = "32")]
-    let magisk = "shadowmask";
+    let shadowmask = "shadowmask";
 
     let exe = cstr::buf::new::<64>()
-        .join_path(get_magisk_tmp())
-        .join_path(magisk);
+        .join_path(get_shadowmask_tmp())
+        .join_path(shadowmask);
 
     let mut fd_str = cstr::buf::new::<16>();
     write!(fd_str, "{}", remote.as_raw_fd()).ok();
@@ -66,7 +66,7 @@ pub struct ZygiskState {
 }
 
 impl ZygiskState {
-    fn connect_zygiskd(&mut self, mut client: UnixStream, daemon: &MagiskD) -> LoggedResult<()> {
+    fn connect_zygiskd(&mut self, mut client: UnixStream, daemon: &ShadowMaskD) -> LoggedResult<()> {
         let is_64_bit: bool = client.read_decodable()?;
         let socket = if is_64_bit {
             &mut self.sockets.1
@@ -155,7 +155,7 @@ impl ZygiskState {
     }
 }
 
-impl MagiskD {
+impl ShadowMaskD {
     pub fn zygisk_handler(&self, mut client: UnixStream) {
         let _ = || -> LoggedResult<()> {
             let code = ZygiskRequest {
@@ -182,7 +182,7 @@ impl MagiskD {
                 .map(|m| if is_64_bit { m.z64 } else { m.z32 })
                 // All fds passed over sockets have to be valid file descriptors.
                 // To work around this issue, send over STDOUT_FILENO as an indicator of an
-                // invalid fd as it will always be /dev/null in magiskd.
+                // invalid fd as it will always be /dev/null in shadowmaskd.
                 .map(|fd| if fd < 0 { STDOUT_FILENO } else { fd })
                 .collect()
         })
@@ -195,7 +195,7 @@ impl MagiskD {
         let mut flags: u32 = 0;
         update_deny_flags(uid, &process, &mut flags);
         if self.get_manager_uid(to_user_id(uid)) == uid {
-            flags |= ZygiskStateFlags::ProcessIsMagiskApp.repr
+            flags |= ZygiskStateFlags::ProcessIsShadowMaskApp.repr
         }
         if self.uid_granted_root(uid) {
             flags |= ZygiskStateFlags::ProcessGrantedRoot.repr
@@ -258,7 +258,7 @@ impl MagiskD {
 }
 
 // FFI to C++
-impl MagiskD {
+impl ShadowMaskD {
     pub fn zygisk_enabled(&self) -> bool {
         self.zygisk_enabled.load(Ordering::Acquire)
     }

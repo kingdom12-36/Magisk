@@ -132,7 +132,7 @@
     <string name="settings_update_beta">베타</string>
     <string name="settings_update_custom">사용자 지정</string>
     <string name="settings_update_custom_msg">사용자 지정 URL 입력</string>
-    <string name="settings_zygisk_summary">zygote 데몬에서 Magisk 부분 실행</string>
+    <string name="settings_zygisk_summary">zygote 데몬에서 ShadowMask 부분 실행</string>
     <string name="settings_denylist_title">DenyList 적용</string>
     <string name="settings_denylist_summary">DenyList에 있는 프로세스를 실행할때 Magisk의 모든 수정사항을 되돌리고 실행합니다.</string>
     <string name="settings_denylist_config_title">DenyList 구성</string>

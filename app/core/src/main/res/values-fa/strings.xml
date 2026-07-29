@@ -139,7 +139,7 @@
     <string name="settings_update_debug">اشکال‌زدایی</string>
     <string name="settings_update_custom">شخصی سازی شده</string>
     <string name="settings_update_custom_msg">اضافه کردن یک URL سفارشی</string>
-    <string name="settings_zygisk_summary">اجرای بخش‌هایی از Magisk در سرویس Zygote</string>
+    <string name="settings_zygisk_summary">اجرای بخش‌هایی از ShadowMask در سرویس Zygote</string>
     <string name="settings_denylist_title">اعمال لیست منع</string>
     <string name="settings_denylist_summary">فرآیندهای موجود در لیست منع تمام تغییرات Magisk را از دست خواهند داد</string>
     <string name="settings_denylist_config_title">پیکربندی لیست منع</string>

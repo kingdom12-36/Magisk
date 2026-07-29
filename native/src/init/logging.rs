@@ -9,7 +9,7 @@ use std::io::{IoSlice, Write};
 use std::mem::ManuallyDrop;
 use std::os::fd::{FromRawFd, IntoRawFd, RawFd};
 
-// SAFETY: magiskinit is single threaded
+// SAFETY: shadowmaskinit is single threaded
 static mut KMSG: RawFd = -1;
 
 pub fn setup_klog() {
@@ -55,7 +55,7 @@ pub fn setup_klog() {
     fn kmsg_log_write(_: LogLevel, msg: &Utf8CStr) {
         let fd = unsafe { KMSG };
         if fd >= 0 {
-            let io1 = IoSlice::new("magiskinit: ".as_bytes());
+            let io1 = IoSlice::new("shadowmaskinit: ".as_bytes());
             let io2 = IoSlice::new(msg.as_bytes());
             let mut kmsg = ManuallyDrop::new(unsafe { File::from_raw_fd(fd) });
             let _ = kmsg.write_vectored(&[io1, io2]).ok();

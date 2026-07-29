@@ -1,5 +1,5 @@
 use crate::consts::{DATABIN, LOG_PIPE, SHADOWMASK_LOG_CON, SHADOWMASKDB, MODULEROOT, SECURE_DIR};
-use crate::ffi::get_magisk_tmp;
+use crate::ffi::get_shadowmask_tmp;
 use base::{Directory, FsPathBuilder, LoggedResult, ResultExt, Utf8CStr, Utf8CStrBuf, cstr, libc};
 use nix::fcntl::OFlag;
 use std::io::Write;
@@ -73,7 +73,7 @@ pub(crate) fn restorecon() {
 }
 
 pub(crate) fn restore_tmpcon() -> LoggedResult<()> {
-    let tmp = get_magisk_tmp();
+    let tmp = get_shadowmask_tmp();
     if tmp == "/sbin" {
         tmp.set_secontext(ROOT_CON)?;
     } else {

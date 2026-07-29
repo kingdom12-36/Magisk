@@ -184,12 +184,12 @@ template <class T> void entry_impl(api_table *, JNIEnv *);
 
 // These values are used in Api::setOption(Option)
 enum Option : int {
-    // Force Magisk's denylist unmount routines to run on this process.
+    // Force ShadowMask's denylist unmount routines to run on this process.
     //
     // Setting this option only makes sense in preAppSpecialize.
     // The actual unmounting happens during app process specialization.
     //
-    // Set this option to force all Magisk and modules' files to be unmounted from the
+    // Set this option to force all ShadowMask and modules' files to be unmounted from the
     // mount namespace of the process, regardless of the denylist enforcement status.
     FORCE_DENYLIST_UNMOUNT = 0,
 

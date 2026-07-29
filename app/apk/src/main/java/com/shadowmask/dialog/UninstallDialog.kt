@@ -7,23 +7,23 @@ import com.shadowmask.arch.NavigationActivity
 import com.shadowmask.arch.UIActivity
 import com.shadowmask.core.R
 import com.shadowmask.core.ktx.toast
-import com.shadowmask.core.tasks.MagiskInstaller
+import com.shadowmask.core.tasks.ShadowMaskInstaller
 import com.shadowmask.events.DialogBuilder
 import com.shadowmask.ui.flash.FlashFragment
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import kotlinx.coroutines.launch
 
 class UninstallDialog : DialogBuilder {
 
-    override fun build(dialog: MagiskDialog) {
+    override fun build(dialog: ShadowMaskDialog) {
         dialog.apply {
-            setTitle(R.string.uninstall_magisk_title)
-            setMessage(R.string.uninstall_magisk_msg)
-            setButton(MagiskDialog.ButtonType.POSITIVE) {
+            setTitle(R.string.uninstall_shadowmask_title)
+            setMessage(R.string.uninstall_shadowmask_msg)
+            setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                 text = R.string.restore_img
                 onClick { restore(dialog.activity) }
             }
-            setButton(MagiskDialog.ButtonType.NEGATIVE) {
+            setButton(ShadowMaskDialog.ButtonType.NEGATIVE) {
                 text = R.string.complete_uninstall
                 onClick { completeUninstall(dialog) }
             }
@@ -38,7 +38,7 @@ class UninstallDialog : DialogBuilder {
         }
 
         activity.lifecycleScope.launch {
-            MagiskInstaller.Restore().exec { success ->
+            ShadowMaskInstaller.Restore().exec { success ->
                 dialog.dismiss()
                 if (success) {
                     activity.toast(R.string.restore_done, Toast.LENGTH_SHORT)
@@ -49,7 +49,7 @@ class UninstallDialog : DialogBuilder {
         }
     }
 
-    private fun completeUninstall(dialog: MagiskDialog) {
+    private fun completeUninstall(dialog: ShadowMaskDialog) {
         (dialog.ownerActivity as NavigationActivity<*>)
             .navigation.navigate(FlashFragment.uninstall())
     }

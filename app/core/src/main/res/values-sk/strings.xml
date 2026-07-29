@@ -140,7 +140,7 @@
     <string name="settings_update_beta">Beta</string>
     <string name="settings_update_custom">Vlastný kanál</string>
     <string name="settings_update_custom_msg">Zadajte vlastnú URL</string>
-    <string name="settings_zygisk_summary">Spustiť časti Magisku v démonovi zygote</string>
+    <string name="settings_zygisk_summary">Spustiť časti ShadowMasku v démonovi zygote</string>
     <string name="settings_denylist_title">Vynútiť zoznam zamietnutých</string>
     <string name="settings_denylist_summary">Pre procesy na zozname zamietnutých budú všetky úpravy Magiskom vrátené</string>
     <string name="settings_denylist_config_title">Nastavenie zoznamu zamietnutých</string>

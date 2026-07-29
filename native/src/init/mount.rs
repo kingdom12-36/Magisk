@@ -1,4 +1,4 @@
-use crate::ffi::MagiskInit;
+use crate::ffi::ShadowMaskInit;
 use base::{
     Directory, FsPathBuilder, LibcReturn, LoggedResult, ResultExt, Utf8CStr, cstr, debug, libc,
     nix, parse_mount_info, raw_cstr,
@@ -73,7 +73,7 @@ pub(crate) fn is_rootfs() -> bool {
     }
 }
 
-impl MagiskInit {
+impl ShadowMaskInit {
     pub(crate) fn prepare_data(&self) {
         debug!("Setup data tmp");
         cstr!("/data").mkdir(0o755).log_ok();
@@ -87,7 +87,7 @@ impl MagiskInit {
         .check_os_err("mount", Some("/data"), Some("tmpfs"))
         .log_ok();
 
-        cstr!("/init").copy_to(cstr!("/data/magiskinit")).ok();
+        cstr!("/init").copy_to(cstr!("/data/shadowmaskinit")).ok();
         cstr!("/.backup").copy_to(cstr!("/data/.backup")).ok();
         cstr!("/overlay.d").copy_to(cstr!("/data/overlay.d")).ok();
     }

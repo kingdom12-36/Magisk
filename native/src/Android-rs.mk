@@ -17,7 +17,7 @@ endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := boot-rs
-LOCAL_LIB = ../out/$(TARGET_ARCH_ABI)/libmagiskboot-rs.a
+LOCAL_LIB = ../out/$(TARGET_ARCH_ABI)/libshadowmaskboot-rs.a
 ifneq (,$(wildcard $(LOCAL_PATH)/$(LOCAL_LIB)))
 LOCAL_SRC_FILES := $(LOCAL_LIB)
 include $(PREBUILT_STATIC_LIBRARY)
@@ -27,7 +27,7 @@ endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := init-rs
-LOCAL_LIB = ../out/$(TARGET_ARCH_ABI)/libmagiskinit-rs.a
+LOCAL_LIB = ../out/$(TARGET_ARCH_ABI)/libshadowmaskinit-rs.a
 ifneq (,$(wildcard $(LOCAL_PATH)/$(LOCAL_LIB)))
 LOCAL_SRC_FILES := $(LOCAL_LIB)
 include $(PREBUILT_STATIC_LIBRARY)

@@ -17,7 +17,7 @@ object Const {
     // Paths
     const val MODULE_PATH  = "/data/adb/modules"
     const val TMPDIR = "/dev/tmp"
-    const val MAGISK_LOG = "/cache/shadowmask.log"
+    const val SHADOWMASK_LOG = "/cache/shadowmask.log"
 
     // Misc
     val USER_ID = Process.myUid() / 100000
@@ -57,7 +57,7 @@ object Const {
         const val FLASH_ZIP = "flash"
         const val PATCH_FILE = "patch"
         const val DOWNLOAD = "download"
-        const val FLASH_MAGISK = "shadowmask"
+        const val FLASH_SHADOWMASK = "shadowmask"
         const val FLASH_INACTIVE_SLOT = "slot"
         const val UNINSTALL = "uninstall"
     }

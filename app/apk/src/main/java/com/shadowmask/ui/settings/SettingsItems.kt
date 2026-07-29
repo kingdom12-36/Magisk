@@ -21,7 +21,7 @@ import com.shadowmask.databinding.DialogSettingsAppNameBinding
 import com.shadowmask.databinding.DialogSettingsDownloadPathBinding
 import com.shadowmask.databinding.DialogSettingsUpdateChannelBinding
 import com.shadowmask.databinding.set
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import com.topjohnwu.superuser.Shell
 import com.shadowmask.core.R as CoreR
 
@@ -96,16 +96,16 @@ object Restore : BaseSettingsItem.Blank() {
 
     override fun onPressed(view: View, handler: Handler) {
         handler.onItemPressed(view, this) {
-            MagiskDialog(view.activity).apply {
+            ShadowMaskDialog(view.activity).apply {
                 setTitle(CoreR.string.settings_restore_app_title)
                 setMessage(CoreR.string.restore_app_confirmation)
-                setButton(MagiskDialog.ButtonType.POSITIVE) {
+                setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                     text = android.R.string.ok
                     onClick {
                         handler.onItemAction(view, this@Restore)
                     }
                 }
-                setButton(MagiskDialog.ButtonType.NEGATIVE) {
+                setButton(ShadowMaskDialog.ButtonType.NEGATIVE) {
                     text = android.R.string.cancel
                 }
                 setCancelable(true)
@@ -198,10 +198,10 @@ object RandNameToggle : BaseSettingsItem.Toggle() {
     override var value by Config::randName
 }
 
-// --- Magisk
+// --- ShadowMask
 
-object Magisk : BaseSettingsItem.Section() {
-    override val title = CoreR.string.magisk.asText()
+object ShadowMask : BaseSettingsItem.Section() {
+    override val title = CoreR.string.shadowmask.asText()
 }
 
 object Zygisk : BaseSettingsItem.Toggle() {

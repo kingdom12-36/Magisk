@@ -30,7 +30,7 @@ void write_string(int fd, string_view str) {
     xwrite(fd, str.data(), str.size());
 }
 
-const char *get_magisk_tmp() {
+const char *get_shadowmask_tmp() {
     static const char *path = nullptr;
     if (path == nullptr) {
         if (access("/debug_ramdisk/" INTLROOT, F_OK) == 0) {

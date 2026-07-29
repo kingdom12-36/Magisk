@@ -1,5 +1,5 @@
 use crate::daemon::{
-    AID_APP_END, AID_APP_START, AID_ROOT, AID_SHELL, MagiskD, to_app_id, to_user_id,
+    AID_APP_END, AID_APP_START, AID_ROOT, AID_SHELL, ShadowMaskD, to_app_id, to_user_id,
 };
 use crate::db::DbArg::Integer;
 use crate::db::{MultiuserMode, RootAccess, SqlTable, SqliteResult, SqliteReturn};
@@ -41,7 +41,7 @@ impl SqlTable for UidList {
     }
 }
 
-impl MagiskD {
+impl ShadowMaskD {
     pub fn get_root_settings(&self, uid: i32, settings: &mut RootSettings) -> SqliteResult<()> {
         self.db_exec_with_rows(
             "SELECT policy, logging, notification FROM policies \

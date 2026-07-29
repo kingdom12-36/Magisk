@@ -139,7 +139,7 @@
     <string name="settings_update_beta">בטא</string>
     <string name="settings_update_custom">מותאם אישית</string>
     <string name="settings_update_custom_msg">הזנת כתובת מותאמת אישית</string>
-    <string name="settings_zygisk_summary">הפעל חלקים של Magisk בדמון zygote</string>
+    <string name="settings_zygisk_summary">הפעל חלקים של ShadowMask בדמון zygote</string>
     <string name="settings_denylist_title">אכיפת רשימת דחייה</string>
     <string name="settings_denylist_summary">כל השינויים של Magisk יוחזרו לתהליכים ברשימת הדחייה</string>
     <string name="settings_denylist_config_title">הגדרת רשימת הדחייה</string>

@@ -48,7 +48,7 @@ import java.security.SecureRandom
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicBoolean
 
-abstract class MagiskInstallImpl protected constructor(
+abstract class ShadowMaskInstallImpl protected constructor(
     protected val console: MutableList<String>,
     private val logs: MutableList<String>
 ) {
@@ -68,14 +68,14 @@ abstract class MagiskInstallImpl protected constructor(
             val alpha = "abcdefghijklmnopqrstuvwxyz"
             val alphaNum = "$alpha${alpha.uppercase(Locale.ROOT)}0123456789"
             val random = SecureRandom()
-            StringBuilder("magisk_patched-${BuildConfig.APP_VERSION_CODE}_").run {
+            StringBuilder("shadowmask_patched-${BuildConfig.APP_VERSION_CODE}_").run {
                 for (i in 1..5) {
                     append(alphaNum[random.nextInt(alphaNum.length)])
                 }
                 toString()
             }
         } else {
-            "magisk_patched"
+            "shadowmask_patched"
         }
     }
 
@@ -129,10 +129,10 @@ abstract class MagiskInstallImpl protected constructor(
 
                     val abi32 = Const.CPU_ABI_32
                     if (Process.is64Bit() && abi32 != null) {
-                        val entry = zf.getEntry("lib/$abi32/libmagisk.so")
+                        val entry = zf.getEntry("lib/$abi32/libshadowmask.so")
                         if (entry != null) {
-                            val magisk32 = File(installDir, "magisk32")
-                            zf.getInputStream(entry).writeTo(magisk32)
+                            val shadowmask32 = File(installDir, "shadowmask32")
+                            zf.getInputStream(entry).writeTo(shadowmask32)
                         }
                     }
                 }
@@ -147,14 +147,14 @@ abstract class MagiskInstallImpl protected constructor(
                     Os.symlink(lib.path, "$installDir/$name")
                 }
 
-                // Also extract magisk32 on 64-bit devices that supports 32-bit
+                // Also extract shadowmask32 on 64-bit devices that supports 32-bit
                 val abi32 = Const.CPU_ABI_32
                 if (Process.is64Bit() && abi32 != null) {
-                    val name = "lib/$abi32/libmagisk.so"
+                    val name = "lib/$abi32/libshadowmask.so"
                     val entry = javaClass.classLoader!!.getResourceAsStream(name)
                     if (entry != null) {
-                        val magisk32 = File(installDir, "magisk32")
-                        entry.writeTo(magisk32)
+                        val shadowmask32 = File(installDir, "shadowmask32")
+                        entry.writeTo(shadowmask32)
                     }
                 }
             }
@@ -304,10 +304,10 @@ abstract class MagiskInstallImpl protected constructor(
                     arrayOf(
                         "cd $installDir",
                         "chmod -R 755 .",
-                        "./magiskboot unpack boot.img",
-                        "./magiskboot repack boot.img",
+                        "./shadowmaskboot unpack boot.img",
+                        "./shadowmaskboot repack boot.img",
                         "cat new-boot.img > boot.img",
-                        "./magiskboot cleanup",
+                        "./shadowmaskboot cleanup",
                         "rm -f new-boot.img",
                         "cd /").sh()
                     boot.copyTo(tarOut)
@@ -495,7 +495,7 @@ abstract class MagiskInstallImpl protected constructor(
             "sh boot_patch.sh $srcBoot")
         val isSuccess = cmds.sh().isSuccess
 
-        shell.newJob().add("./magiskboot cleanup", "cd /").exec()
+        shell.newJob().add("./shadowmaskboot cleanup", "cd /").exec()
 
         return isSuccess
     }
@@ -567,7 +567,7 @@ abstract class MagiskInstallImpl protected constructor(
 abstract class ConsoleInstaller(
     console: MutableList<String>,
     logs: MutableList<String>
-) : MagiskInstallImpl(console, logs) {
+) : ShadowMaskInstallImpl(console, logs) {
     override suspend fun exec(): Boolean {
         val success = super.exec()
         if (success) {
@@ -579,7 +579,7 @@ abstract class ConsoleInstaller(
     }
 }
 
-abstract class CallBackInstaller : MagiskInstallImpl(DummyList, DummyList) {
+abstract class CallBackInstaller : ShadowMaskInstallImpl(DummyList, DummyList) {
     suspend fun exec(callback: (Boolean) -> Unit): Boolean {
         val success = exec()
         callback(success)
@@ -587,7 +587,7 @@ abstract class CallBackInstaller : MagiskInstallImpl(DummyList, DummyList) {
     }
 }
 
-class MagiskInstaller {
+class ShadowMaskInstaller {
 
     class Patch(
         private val uri: Uri,

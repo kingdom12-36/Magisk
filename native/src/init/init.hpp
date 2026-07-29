@@ -1,7 +1,7 @@
 #pragma once
 
 #define DEFAULT_DT_DIR "/proc/device-tree/firmware/android"
-#define REDIR_PATH "/data/magiskinit"
+#define REDIR_PATH "/data/shadowmaskinit"
 
 #define PRELOAD_LIB    "/dev/preload.so"
 #define PRELOAD_POLICY "/dev/sepolicy"
@@ -16,7 +16,7 @@ using kv_pairs = std::vector<std::pair<std::string, std::string>>;
 
 #include "init-rs.hpp"
 
-int magisk_proxy_main(int, char *argv[]);
+int shadowmask_proxy_main(int, char *argv[]);
 Utf8CStr backup_init();
 
 // Expose some constants to Rust

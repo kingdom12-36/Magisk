@@ -1,11 +1,11 @@
-package com.shadowmask.core.data.magiskdb
+package com.shadowmask.core.data.shadowmaskdb
 
 import com.shadowmask.core.ktx.await
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-open class MagiskDB {
+open class ShadowMaskDB {
 
     class Literal(
         val str: String

@@ -126,7 +126,7 @@ fun Project.setupCoreLib() {
                 for (abi in abiList) {
                     into(abi) {
                         from(rootFile("native/out/$abi")) {
-                            include("magiskboot", "magiskinit", "shadowmaskpolicy", "shadowmask", "libinit-ld.so")
+                            include("shadowmaskboot", "shadowmaskinit", "shadowmaskpolicy", "shadowmask", "libinit-ld.so")
                             rename { if (it.endsWith(".so")) it else "lib$it.so" }
                         }
                     }
@@ -188,8 +188,8 @@ fun Project.setupCoreLib() {
                 filesMatching("**/util_functions.sh") {
                     filter {
                         it.replace(
-                            "#MAGISK_VERSION_STUB",
-                            "MAGISK_VER='${Config.version}'\nMAGISK_VER_CODE=${Config.versionCode}"
+                            "#SHADOWMASK_VERSION_STUB",
+                            "SHADOWMASK_VER='${Config.version}'\nSHADOWMASK_VER_CODE=${Config.versionCode}"
                         )
                     }
                     filter<FixCrLfFilter>("eol" to FixCrLfFilter.CrLf.newInstance("lf"))

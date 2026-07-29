@@ -13,7 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.shadowmask.arch.BaseViewModel
 import com.shadowmask.core.AppContext
 import com.shadowmask.core.Config
-import com.shadowmask.core.data.magiskdb.PolicyDao
+import com.shadowmask.core.data.shadowmaskdb.PolicyDao
 import com.shadowmask.core.ktx.getLabel
 import com.shadowmask.core.model.su.SuPolicy.Companion.ALLOW
 import com.shadowmask.core.model.su.SuPolicy.Companion.DENY

@@ -297,11 +297,11 @@ pub fn resetprop_main(argc: i32, argv: *mut *mut c_char) -> i32 {
     if cli.run().is_ok() { 0 } else { 1 }
 }
 
-// Magisk's own helper functions
+// ShadowMask's own helper functions
 
 pub fn set_prop(key: &Utf8CStr, val: &Utf8CStr) {
     let prop = ResetProp {
-        // All Magisk's internal usage should skip property_service
+        // All ShadowMask's internal usage should skip property_service
         skip_svc: true,
         ..Default::default()
     };
@@ -310,7 +310,7 @@ pub fn set_prop(key: &Utf8CStr, val: &Utf8CStr) {
 
 pub fn load_prop_file(file: &Utf8CStr) {
     let prop = ResetProp {
-        // All Magisk's internal usage should skip property_service
+        // All ShadowMask's internal usage should skip property_service
         skip_svc: true,
         ..Default::default()
     };

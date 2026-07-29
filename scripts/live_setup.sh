@@ -1,20 +1,20 @@
 #####################################################################
-#   AVD Magisk Setup
+#   AVD ShadowMask Setup
 #####################################################################
 #
 # Support API level: 23 - 36
 #
-# For developing Magisk, just use:
+# For developing ShadowMask, just use:
 # ./build.py emulator
 #
-# This script will stop zygote, simulate the Magisk start up process
+# This script will stop zygote, simulate the ShadowMask start up process
 # that would've happened before zygote was started, and finally
 # restart zygote. This is useful for setting up the emulator for
-# developing Magisk, testing modules, and developing root apps using
+# developing ShadowMask, testing modules, and developing root apps using
 # the official Android emulator (AVD) instead of a real device.
 #
-# This only covers the "core" features of Magisk. For testing
-# magiskinit, please checkout avd_patch.sh.
+# This only covers the "core" features of ShadowMask. For testing
+# shadowmaskinit, please checkout avd_patch.sh.
 #
 #####################################################################
 
@@ -51,22 +51,22 @@ if [ -z "$FIRST_STAGE" ]; then
   fi
 fi
 
-pm install -r -g $(pwd)/magisk.apk
+pm install -r -g $(pwd)/shadowmask.apk
 
 # Extract files from APK
-unzip -oj magisk.apk 'assets/util_functions.sh' 'assets/stub.apk'
+unzip -oj shadowmask.apk 'assets/util_functions.sh' 'assets/stub.apk'
 . ./util_functions.sh
 
 api_level_arch_detect
 
-unzip -oj magisk.apk "lib/$ABI/*" -x "lib/$ABI/libbusybox.so"
+unzip -oj shadowmask.apk "lib/$ABI/*" -x "lib/$ABI/libbusybox.so"
 for file in lib*.so; do
   chmod 755 $file
   mv "$file" "${file:3:${#file}-6}"
 done
 
 if $IS64BIT && [ -e "/system/bin/linker" ]; then
-  unzip -oj magisk.apk "lib/$ABI32/libshadowmask.so"
+  unzip -oj shadowmask.apk "lib/$ABI32/libshadowmask.so"
   mv libshadowmask.so shadowmask32
   chmod 755 shadowmask32
 fi
@@ -86,7 +86,7 @@ if ! grep -q ' /cache ' /proc/mounts; then
   mount -t tmpfs -o 'mode=0755' tmpfs /cache
 fi
 
-MAGISKTMP=/sbin
+SHADOWMASKTMP=/sbin
 
 # Setup bin overlay
 if mount | grep -q rootfs; then
@@ -120,58 +120,58 @@ elif [ -e /sbin ]; then
   rm -rf /dev/sysroot
 else
   # Android Q+ without sbin
-  MAGISKTMP=/debug_ramdisk
+  SHADOWMASKTMP=/debug_ramdisk
   mount_tmpfs /debug_ramdisk
 fi
 
-# Magisk stuff
-mkdir -p $MAGISKBIN 2>/dev/null
-unzip -oj magisk.apk 'assets/*.sh' -d $MAGISKBIN
+# ShadowMask stuff
+mkdir -p $SHADOWMASKBIN 2>/dev/null
+unzip -oj shadowmask.apk 'assets/*.sh' -d $SHADOWMASKBIN
 mkdir /data/adb/modules 2>/dev/null
 mkdir /data/adb/post-fs-data.d 2>/dev/null
 mkdir /data/adb/service.d 2>/dev/null
 
 for file in shadowmask shadowmask32 shadowmaskpolicy stub.apk; do
   chmod 755 ./$file
-  cp -af ./$file $MAGISKTMP/$file
-  cp -af ./$file $MAGISKBIN/$file
+  cp -af ./$file $SHADOWMASKTMP/$file
+  cp -af ./$file $SHADOWMASKBIN/$file
 done
-cp -af ./magiskboot $MAGISKBIN/magiskboot
-cp -af ./magiskinit $MAGISKBIN/magiskinit
-cp -af ./busybox $MAGISKBIN/busybox
+cp -af ./shadowmaskboot $SHADOWMASKBIN/shadowmaskboot
+cp -af ./shadowmaskinit $SHADOWMASKBIN/shadowmaskinit
+cp -af ./busybox $SHADOWMASKBIN/busybox
 
-ln -s ./shadowmask $MAGISKTMP/su
-ln -s ./shadowmask $MAGISKTMP/resetprop
-ln -s ./shadowmaskpolicy $MAGISKTMP/supolicy
+ln -s ./shadowmask $SHADOWMASKTMP/su
+ln -s ./shadowmask $SHADOWMASKTMP/resetprop
+ln -s ./shadowmaskpolicy $SHADOWMASKTMP/supolicy
 
-mkdir -p $MAGISKTMP/.shadowmask/device
-mkdir -p $MAGISKTMP/.shadowmask/worker
-mount_tmpfs $MAGISKTMP/.shadowmask/worker
-mount --make-private $MAGISKTMP/.shadowmask/worker
-touch $MAGISKTMP/.shadowmask/config
+mkdir -p $SHADOWMASKTMP/.shadowmask/device
+mkdir -p $SHADOWMASKTMP/.shadowmask/worker
+mount_tmpfs $SHADOWMASKTMP/.shadowmask/worker
+mount --make-private $SHADOWMASKTMP/.shadowmask/worker
+touch $SHADOWMASKTMP/.shadowmask/config
 
-export MAGISKTMP
-MAKEDEV=1 $MAGISKTMP/shadowmask --preinit-device 2>&1
+export SHADOWMASKTMP
+MAKEDEV=1 $SHADOWMASKTMP/shadowmask --preinit-device 2>&1
 
 RULESCMD=""
-rule="$MAGISKTMP/.shadowmask/preinit/sepolicy.rule"
+rule="$SHADOWMASKTMP/.shadowmask/preinit/sepolicy.rule"
 [ -f "$rule" ] && RULESCMD="--apply $rule"
 
 # SELinux stuffs
 if [ -d /sys/fs/selinux ]; then
   if [ -f /vendor/etc/selinux/precompiled_sepolicy ]; then
-    ./shadowmaskpolicy --load /vendor/etc/selinux/precompiled_sepolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --load /vendor/etc/selinux/precompiled_sepolicy --live --shadowmask $RULESCMD 2>&1
   elif [ -f /sepolicy ]; then
-    ./shadowmaskpolicy --load /sepolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --load /sepolicy --live --shadowmask $RULESCMD 2>&1
   else
-    ./shadowmaskpolicy --live --magisk $RULESCMD 2>&1
+    ./shadowmaskpolicy --live --shadowmask $RULESCMD 2>&1
   fi
 fi
 
 # Boot up
-$MAGISKTMP/shadowmask --post-fs-data
+$SHADOWMASKTMP/shadowmask --post-fs-data
 start
-$MAGISKTMP/shadowmask --service
+$SHADOWMASKTMP/shadowmask --service
 # Make sure reset nb prop after zygote starts
 sleep 2
-$MAGISKTMP/shadowmask --boot-complete
+$SHADOWMASKTMP/shadowmask --boot-complete

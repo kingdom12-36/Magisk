@@ -90,7 +90,7 @@ sealed class IconLink : RvItem() {
         override val link get() = "https://paypal.me/$name"
 
         object Project : PayPal() {
-            override val name: String get() = "magiskdonate"
+            override val name: String get() = "shadowmaskdonate"
         }
     }
 

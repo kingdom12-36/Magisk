@@ -8,7 +8,7 @@ cvd_args="-daemon -enable_sandbox=false -memory_mb=8192 -report_anonymous_usage_
 cleanup() {
   print_error "! An error occurred"
   run_cvd_bin stop_cvd || true
-  rm -f magisk-*.img
+  rm -f shadowmask-*.img
 }
 
 run_cvd_bin() {
@@ -62,9 +62,9 @@ test_cf() {
 
   run_cvd_bin stop_cvd || true
 
-  local magisk_args="-init_boot_image=$image"
+  local shadowmask_args="-init_boot_image=$image"
 
-  timeout $boot_timeout bash -c "run_cvd_bin launch_cvd $cvd_args $magisk_args -resume=false"
+  timeout $boot_timeout bash -c "run_cvd_bin launch_cvd $cvd_args $shadowmask_args -resume=false"
   adb wait-for-device
   run_setup $apk
 
@@ -72,7 +72,7 @@ test_cf() {
   sleep 5
   run_cvd_bin stop_cvd || true
 
-  timeout $boot_timeout bash -c "run_cvd_bin launch_cvd $cvd_args $magisk_args"
+  timeout $boot_timeout bash -c "run_cvd_bin launch_cvd $cvd_args $shadowmask_args"
   adb wait-for-device
   run_tests
 }
@@ -86,7 +86,7 @@ test_main() {
   local apks=($(print_apks))
   local images=()
   for apk in "${apks[@]}"; do
-    images+=("magisk-$(basename $apk .apk).img")
+    images+=("shadowmask-$(basename $apk .apk).img")
     ./build.py -v avd_patch --apk "$apk" "$CF_HOME/init_boot.img" "${images[-1]}"
   done
 
@@ -97,7 +97,7 @@ test_main() {
 
   # Cleanup
   run_cvd_bin stop_cvd || true
-  rm -f magisk-*.img
+  rm -f shadowmask-*.img
 }
 
 if [ -z $CF_HOME ]; then

@@ -1,6 +1,6 @@
 use super::connect::SuAppContext;
 use super::db::RootSettings;
-use crate::daemon::{AID_ROOT, AID_SHELL, MagiskD, to_app_id, to_user_id};
+use crate::daemon::{AID_ROOT, AID_SHELL, ShadowMaskD, to_app_id, to_user_id};
 use crate::db::{DbSettings, MultiuserMode, RootAccess};
 use crate::ffi::{SuPolicy, SuRequest, exec_root_shell};
 use crate::socket::IpcRead;
@@ -113,7 +113,7 @@ impl AccessInfo {
     }
 }
 
-impl MagiskD {
+impl ShadowMaskD {
     pub fn su_daemon_handler(&self, mut client: UnixStream, cred: UCred) {
         debug!(
             "su: request from uid=[{}], pid=[{}], client=[{}]",

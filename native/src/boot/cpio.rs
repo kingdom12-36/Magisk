@@ -145,7 +145,7 @@ struct List {
 
 pub(crate) fn print_cpio_usage() {
     eprintln!(
-        r#"Usage: magiskboot cpio <incpio> [commands...]
+        r#"Usage: shadowmaskboot cpio <incpio> [commands...]
 
 Do cpio commands to <incpio> (modifications are done in-place).
 Each command is a single argument; add quotes for each command.
@@ -169,7 +169,7 @@ Supported commands:
     Extract ENTRY to OUT, or extract all entries to current directory
   test
     Test the cpio's status. Return values:
-    0:stock    1:Magisk    2:unsupported
+    0:stock    1:ShadowMask    2:unsupported
   patch
     Apply ramdisk patches
     Configure with env variables: KEEPVERITY KEEPFORCEENCRYPT
@@ -498,7 +498,7 @@ impl Cpio {
     }
 }
 
-const MAGISK_PATCHED: i32 = 1 << 0;
+const SHADOWMASK_PATCHED: i32 = 1 << 0;
 const UNSUPPORTED_CPIO: i32 = 1 << 1;
 
 impl Cpio {
@@ -549,11 +549,11 @@ impl Cpio {
         }
         for file in [
             ".backup/.shadowmask",
-            "init.magisk.rc",
-            "overlay/init.magisk.rc",
+            "init.shadowmask.rc",
+            "overlay/init.shadowmask.rc",
         ] {
             if self.exists(file) {
-                return MAGISK_PATCHED;
+                return SHADOWMASK_PATCHED;
             }
         }
         0
@@ -778,7 +778,7 @@ pub(crate) fn cpio_commands(file: &Utf8CStr, cmds: &Vec<String>) -> LoggedResult
             continue;
         }
         let mut cmd = CpioCommand::from_args(
-            &["magiskboot", "cpio", file],
+            &["shadowmaskboot", "cpio", file],
             cmd.split(' ')
                 .filter(|x| !x.is_empty())
                 .collect::<Vec<_>>()

@@ -95,13 +95,13 @@ static bool patch_rc_scripts(const char *src_path, const char *tmp_path, bool wr
         // Inject custom rc scripts
         for (auto &script : rc_list) {
             // Replace template arguments of rc scripts with dynamic paths
-            replace_all(script, "${MAGISKTMP}", tmp_path);
+            replace_all(script, "${SHADOWMASKTMP}", tmp_path);
             fprintf(dest_rc.get(), "\n%s\n", script.data());
         }
         rc_list.clear();
 
-        // Inject Magisk rc scripts
-        rust::inject_magisk_rc(fileno(dest_rc.get()), tmp_path);
+        // Inject ShadowMask rc scripts
+        rust::inject_shadowmask_rc(fileno(dest_rc.get()), tmp_path);
 
         fclone_attr(src_rc, fileno(dest_rc.get()));
     }
@@ -136,7 +136,7 @@ static bool patch_rc_scripts(const char *src_path, const char *tmp_path, bool wr
     return faccessat(src_fd, "init.fission_host.rc", F_OK, 0) == 0;
 }
 
-void MagiskInit::patch_fissiond(const char *tmp_path) noexcept {
+void ShadowMaskInit::patch_fissiond(const char *tmp_path) noexcept {
     {
         LOGD("Patching fissiond\n");
         mmap_data fissiond("/system/bin/fissiond", false);
@@ -232,15 +232,15 @@ static void recreate_sbin(const char *mirror, bool use_bind_mount) {
 }
 
 static void extract_files(bool sbin) {
-    const char *magisk_xz = sbin ? "/sbin/magisk.xz" : "magisk.xz";
+    const char *shadowmask_xz = sbin ? "/sbin/shadowmask.xz" : "shadowmask.xz";
     const char *stub_xz = sbin ? "/sbin/stub.xz" : "stub.xz";
     const char *init_ld_xz = sbin ? "/sbin/init-ld.xz" : "init-ld.xz";
 
-    if (access(magisk_xz, F_OK) == 0) {
-        mmap_data magisk(magisk_xz);
-        unlink(magisk_xz);
+    if (access(shadowmask_xz, F_OK) == 0) {
+        mmap_data shadowmask(shadowmask_xz);
+        unlink(shadowmask_xz);
         int fd = xopen("shadowmask", O_WRONLY | O_CREAT, 0755);
-        unxz(fd, magisk);
+        unxz(fd, shadowmask);
         close(fd);
     }
     if (access(stub_xz, F_OK) == 0) {
@@ -259,7 +259,7 @@ static void extract_files(bool sbin) {
     }
 }
 
-void MagiskInit::patch_ro_root() noexcept {
+void ShadowMaskInit::patch_ro_root() noexcept {
     mount_list.emplace_back("/data");
     parse_config_file();
 
@@ -334,10 +334,10 @@ void MagiskInit::patch_ro_root() noexcept {
     chdir("/");
 }
 
-#define PRE_TMPSRC "/magisk"
+#define PRE_TMPSRC "/shadowmask"
 #define PRE_TMPDIR PRE_TMPSRC "/tmp"
 
-void MagiskInit::patch_rw_root() noexcept {
+void ShadowMaskInit::patch_rw_root() noexcept {
     mount_list.emplace_back("/data");
     parse_config_file();
 
@@ -370,18 +370,18 @@ void MagiskInit::patch_rw_root() noexcept {
 
     chdir("/");
 
-    // Dump magiskinit as magisk
-    cp_afc(REDIR_PATH, "/sbin/magisk");
+    // Dump shadowmaskinit as shadowmask
+    cp_afc(REDIR_PATH, "/sbin/shadowmask");
 }
 
-int magisk_proxy_main(int, char *argv[]) {
+int shadowmask_proxy_main(int, char *argv[]) {
     rust::setup_klog();
     LOGD("%s\n", __FUNCTION__);
 
     // Mount rootfs as rw to do post-init rootfs patches
     xmount(nullptr, "/", nullptr, MS_REMOUNT, nullptr);
 
-    unlink("/sbin/magisk");
+    unlink("/sbin/shadowmask");
 
     // Move tmpfs to /sbin
     // make parent private before MS_MOVE
@@ -394,9 +394,9 @@ int magisk_proxy_main(int, char *argv[]) {
     // Create symlinks pointing back to /root
     recreate_sbin("/root", false);
 
-    // Tell magiskd to remount rootfs
+    // Tell shadowmaskd to remount rootfs
     setenv("REMOUNT_ROOT", "1", 1);
-    execve("/sbin/magisk", argv, environ);
+    execve("/sbin/shadowmask", argv, environ);
     return 1;
 }
 

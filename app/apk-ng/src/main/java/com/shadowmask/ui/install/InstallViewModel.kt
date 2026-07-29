@@ -124,7 +124,7 @@ class InstallViewModel(svc: NetworkService) : BaseViewModel() {
                 additionalData = _uiState.value.patchUri!!.toString()
             ))
             Method.DIRECT -> navigateTo(Route.Flash(
-                action = Const.Value.FLASH_MAGISK
+                action = Const.Value.FLASH_SHADOWMASK
             ))
             Method.INACTIVE_SLOT -> navigateTo(Route.Flash(
                 action = Const.Value.FLASH_INACTIVE_SLOT

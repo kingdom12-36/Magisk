@@ -1,4 +1,4 @@
-#MAGISK
+#SHADOWMASK
 ############################################
 # ShadowMask Uninstaller (updater-script)
 ############################################
@@ -28,12 +28,12 @@ setup_flashable
 # Detection
 ############
 
-if echo $MAGISK_VER | grep -q '\.'; then
-  PRETTY_VER=$MAGISK_VER
+if echo $SHADOWMASK_VER | grep -q '\.'; then
+  PRETTY_VER=$SHADOWMASK_VER
 else
-  PRETTY_VER="$MAGISK_VER($MAGISK_VER_CODE)"
+  PRETTY_VER="$SHADOWMASK_VER($SHADOWMASK_VER_CODE)"
 fi
-print_title "Magisk $PRETTY_VER Uninstaller"
+print_title "ShadowMask $PRETTY_VER Uninstaller"
 
 is_mounted /data || mount /data || abort "! Unable to mount /data, please uninstall with the ShadowMask app"
 mount_partitions
@@ -72,7 +72,7 @@ if [ -c $BOOTIMAGE ]; then
   BOOTNAND=$BOOTIMAGE
   BOOTIMAGE=boot.img
 fi
-./magiskboot unpack "$BOOTIMAGE"
+./shadowmaskboot unpack "$BOOTIMAGE"
 
 case $? in
   1 )
@@ -90,7 +90,7 @@ esac
 # Detect boot image state
 ui_print "- Checking ramdisk status"
 if [ -e ramdisk.cpio ]; then
-  ./magiskboot cpio ramdisk.cpio test
+  ./shadowmaskboot cpio ramdisk.cpio test
   STATUS=$?
 else
   # Stock A only system-as-root
@@ -103,7 +103,7 @@ case $((STATUS & 3)) in
   1 )  # ShadowMask patched
     ui_print "- ShadowMask patched image detected"
     # Find SHA1 of stock boot image
-    ./magiskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
+    ./shadowmaskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
     if [ -f config.orig ]; then
       chmod 0644 config.orig
       SHA1=$(grep_prop SHA1 config.orig)
@@ -123,12 +123,12 @@ case $((STATUS & 3)) in
     else
       ui_print "! Boot image backup unavailable"
       ui_print "- Restoring ramdisk with internal backup"
-      ./magiskboot cpio ramdisk.cpio restore
-      if ! ./magiskboot cpio ramdisk.cpio "exists init"; then
+      ./shadowmaskboot cpio ramdisk.cpio restore
+      if ! ./shadowmaskboot cpio ramdisk.cpio "exists init"; then
         # A only system-as-root
         rm -f ramdisk.cpio
       fi
-      ./magiskboot repack $BOOTIMAGE
+      ./shadowmaskboot repack $BOOTIMAGE
       # Sign chromeos boot
       $CHROMEOS && sign_chromeos
       ui_print "- Flashing restored boot image"

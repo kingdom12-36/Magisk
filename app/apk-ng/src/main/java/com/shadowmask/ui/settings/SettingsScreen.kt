@@ -72,7 +72,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             AppSettingsSection()
             if (Info.env.isActive) {
                 Spacer(Modifier.height(12.dp))
-                MagiskSection(viewModel)
+                ShadowMaskSection(viewModel)
             }
             if (Info.showSuperUser) {
                 Spacer(Modifier.height(12.dp))
@@ -241,11 +241,11 @@ private fun AppSettingsSection() {
     }
 }
 
-// --- Magisk ---
+// --- ShadowMask ---
 
 @Composable
-private fun MagiskSection(viewModel: SettingsViewModel) {
-    SmallTitle(text = stringResource(CoreR.string.magisk))
+private fun ShadowMaskSection(viewModel: SettingsViewModel) {
+    SmallTitle(text = stringResource(CoreR.string.shadowmask))
     Card(modifier = Modifier.fillMaxWidth()) {
         // Systemless Hosts
         SettingsArrow(

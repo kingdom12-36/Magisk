@@ -1,5 +1,5 @@
 use crate::consts::{ROOTMNT, ROOTOVL};
-use crate::ffi::MagiskInit;
+use crate::ffi::ShadowMaskInit;
 use base::nix::fcntl::OFlag;
 use base::{
     BufReadExt, Directory, FsPathBuilder, LoggedResult, ResultExt, Utf8CStr, Utf8CString,
@@ -10,8 +10,8 @@ use std::io::{BufReader, Write};
 use std::mem;
 use std::os::fd::{FromRawFd, RawFd};
 
-pub fn inject_magisk_rc(fd: RawFd, tmp_dir: &Utf8CStr) {
-    debug!("Injecting magisk rc");
+pub fn inject_shadowmask_rc(fd: RawFd, tmp_dir: &Utf8CStr) {
+    debug!("Injecting shadowmask rc");
 
     let mut file = unsafe { File::from_raw_fd(fd) };
 
@@ -39,7 +39,7 @@ on property:sys.boot_completed=1
 
 pub struct OverlayAttr(Utf8CString, Utf8CString);
 
-impl MagiskInit {
+impl ShadowMaskInit {
     pub(crate) fn parse_config_file(&mut self) {
         if let Ok(fd) = cstr!("/data/.backup/.shadowmask").open(OFlag::O_RDONLY) {
             let mut reader = BufReader::new(fd);

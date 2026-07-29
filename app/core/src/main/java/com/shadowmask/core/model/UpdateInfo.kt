@@ -11,7 +11,7 @@ import java.time.Instant
 
 @JsonClass(generateAdapter = true)
 class UpdateJson(
-    val magisk: UpdateInfo = UpdateInfo(),
+    val shadowmask: UpdateInfo = UpdateInfo(),
 )
 
 @Parcelize

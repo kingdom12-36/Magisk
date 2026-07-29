@@ -1,5 +1,5 @@
 use crate::consts::{LOG_PIPE, LOGFILE};
-use crate::ffi::get_magisk_tmp;
+use crate::ffi::get_shadowmask_tmp;
 use crate::logging::LogFile::{Actual, Buffer};
 use base::const_format::concatcp;
 use base::{
@@ -57,7 +57,7 @@ fn level_to_prio(level: LogLevel) -> i32 {
 
 fn android_log_write(level: LogLevel, msg: &Utf8CStr) {
     unsafe {
-        __android_log_write(level_to_prio(level), raw_cstr!("Magisk"), msg.as_ptr());
+        __android_log_write(level_to_prio(level), raw_cstr!("ShadowMask"), msg.as_ptr());
     }
 }
 
@@ -65,12 +65,12 @@ pub fn android_logging() {
     update_logger(|logger| logger.write = android_log_write);
 }
 
-pub fn magisk_logging() {
-    fn magisk_log_write(level: LogLevel, msg: &Utf8CStr) {
+pub fn shadowmask_logging() {
+    fn shadowmask_log_write(level: LogLevel, msg: &Utf8CStr) {
         android_log_write(level, msg);
-        magisk_log_to_pipe(level_to_prio(level), msg);
+        shadowmask_log_to_pipe(level_to_prio(level), msg);
     }
-    update_logger(|logger| logger.write = magisk_log_write);
+    update_logger(|logger| logger.write = shadowmask_log_write);
 }
 
 pub fn zygisk_logging() {
@@ -115,19 +115,19 @@ fn write_log_to_pipe(mut logd: &File, prio: i32, msg: &Utf8CStr) -> io::Result<u
     result
 }
 
-static MAGISK_LOGD_FD: Mutex<Option<Arc<File>>> = Mutex::new(None);
+static SHADOWMASK_LOGD_FD: Mutex<Option<Arc<File>>> = Mutex::new(None);
 
 fn with_logd_fd<R, F: FnOnce(&File) -> io::Result<R>>(f: F) {
-    let fd = MAGISK_LOGD_FD.lock().clone();
+    let fd = SHADOWMASK_LOGD_FD.lock().clone();
     if let Some(logd) = fd
         && f(&logd).is_err()
     {
         // If any error occurs, shut down the logd pipe
-        *MAGISK_LOGD_FD.lock() = None;
+        *SHADOWMASK_LOGD_FD.lock() = None;
     }
 }
 
-fn magisk_log_to_pipe(prio: i32, msg: &Utf8CStr) {
+fn shadowmask_log_to_pipe(prio: i32, msg: &Utf8CStr) {
     with_logd_fd(|logd| write_log_to_pipe(logd, prio, msg));
 }
 
@@ -150,7 +150,7 @@ pub fn zygisk_get_logd() -> i32 {
     // to pass FD checks, just to have it re-initialized immediately after any
     // logging happens ¯\_(ツ)_/¯.
     //
-    // To be consistent with this behavior, we also have to close the log pipe to magiskd
+    // To be consistent with this behavior, we also have to close the log pipe to shadowmaskd
     // to make zygote NOT crash if necessary. We accomplish this by hooking __android_log_close
     // and closing it at the same time as the rest of logging FDs.
 
@@ -158,7 +158,7 @@ pub fn zygisk_get_logd() -> i32 {
     if raw_fd < 0 {
         android_logging();
         let path = cstr::buf::default()
-            .join_path(get_magisk_tmp())
+            .join_path(get_shadowmask_tmp())
             .join_path(LOG_PIPE);
         // Open as RW as sometimes it may block
         if let Ok(fd) = path.open(OFlag::O_RDWR | OFlag::O_CLOEXEC) {
@@ -318,14 +318,14 @@ pub fn setup_logfile() {
 
 pub fn start_log_daemon() {
     let path = cstr::buf::default()
-        .join_path(get_magisk_tmp())
+        .join_path(get_shadowmask_tmp())
         .join_path(LOG_PIPE);
 
     extern "C" fn logfile_writer_thread(arg: usize) -> usize {
         let file = unsafe { File::from_raw_fd(arg as RawFd) };
         logfile_write_loop(file).ok();
         // If any error occurs, shut down the logd pipe
-        *MAGISK_LOGD_FD.lock() = None;
+        *SHADOWMASK_LOGD_FD.lock() = None;
         0
     }
 
@@ -334,7 +334,7 @@ pub fn start_log_daemon() {
         chown(path.as_utf8_cstr(), Some(Uid::from(0)), Some(Gid::from(0)))?;
         let read = path.open(OFlag::O_RDWR | OFlag::O_CLOEXEC)?;
         let write = path.open(OFlag::O_WRONLY | OFlag::O_CLOEXEC)?;
-        *MAGISK_LOGD_FD.lock() = Some(Arc::new(write));
+        *SHADOWMASK_LOGD_FD.lock() = Some(Arc::new(write));
         unsafe {
             new_daemon_thread(logfile_writer_thread, read.into_raw_fd() as usize);
         }

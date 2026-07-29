@@ -16,7 +16,7 @@
 #define to_app_id(uid)  (uid % AID_USER_OFFSET)
 #define to_user_id(uid) (uid / AID_USER_OFFSET)
 
-#define SDK_INT      (MagiskD::Get().sdk_int())
+#define SDK_INT      (ShadowMaskD::Get().sdk_int())
 #define APP_DATA_DIR (SDK_INT >= 24 ? "/data/user_de" : "/data/user")
 
 inline int connect_daemon(RequestCode req) {
@@ -30,7 +30,7 @@ int zygisk_main(int argc, char *argv[]);
 struct ModuleInfo;
 
 // Utils
-const char *get_magisk_tmp();
+const char *get_shadowmask_tmp();
 void unlock_blocks();
 bool check_key_combo();
 template<typename T> requires(std::is_trivially_copyable_v<T>)
@@ -81,11 +81,11 @@ bool is_deny_target(int uid, std::string_view process);
 void revert_unmount(int pid = -1) noexcept;
 void update_deny_flags(int uid, rust::Str process, uint32_t &flags);
 
-// MagiskSU
+// ShadowMaskSU
 void exec_root_shell(int client, int pid, SuRequest &req, MntNsMode mode);
 
 // Rust bindings
-inline Utf8CStr get_magisk_tmp_rs() { return get_magisk_tmp(); }
+inline Utf8CStr get_shadowmask_tmp_rs() { return get_shadowmask_tmp(); }
 inline rust::String resolve_preinit_dir_rs(Utf8CStr base_dir) {
     return resolve_preinit_dir(base_dir.c_str());
 }

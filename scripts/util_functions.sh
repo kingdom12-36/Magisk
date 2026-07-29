@@ -2,7 +2,7 @@
 # ShadowMask General Utility Functions
 ############################################
 
-#MAGISK_VERSION_STUB
+#SHADOWMASK_VERSION_STUB
 
 ###################
 # Global Variables
@@ -14,8 +14,8 @@
 # The path to store temporary files that don't need to persist
 # TMPDIR=
 
-# The non-volatile path where magisk executables are stored
-# MAGISKBIN=
+# The non-volatile path where shadowmask executables are stored
+# SHADOWMASKBIN=
 
 ###################
 # Helper Functions
@@ -61,8 +61,8 @@ grep_get_prop() {
 getvar() {
   local VARNAME=$1
   local VALUE
-  local PROPPATH='/data/.magisk /cache/.magisk'
-  [ ! -z $MAGISKTMP ] && PROPPATH="$MAGISKTMP/.shadowmask/config $PROPPATH"
+  local PROPPATH='/data/.shadowmask /cache/.shadowmask'
+  [ ! -z $SHADOWMASKTMP ] && PROPPATH="$SHADOWMASKTMP/.shadowmask/config $PROPPATH"
   VALUE=$(grep_prop $VARNAME $PROPPATH)
   [ ! -z $VALUE ] && eval $VARNAME=\$VALUE
 }
@@ -126,8 +126,8 @@ ensure_bb() {
   local bb
   if [ -f $TMPDIR/busybox ]; then
     bb=$TMPDIR/busybox
-  elif [ -f $MAGISKBIN/busybox ]; then
-    bb=$MAGISKBIN/busybox
+  elif [ -f $SHADOWMASKBIN/busybox ]; then
+    bb=$SHADOWMASKBIN/busybox
   else
     abort "! Cannot find BusyBox"
   fi
@@ -428,7 +428,7 @@ flash_image() {
 
 # Common installation script for flash_script.sh and addon.d.sh
 install_shadowmask() {
-  cd $MAGISKBIN
+  cd $SHADOWMASKBIN
 
   # Source the boot patcher
   SOURCEDMODE=true
@@ -445,7 +445,7 @@ install_shadowmask() {
       ;;
   esac
 
-  ./magiskboot cleanup
+  ./shadowmaskboot cleanup
   rm -f new-boot.img
 
   run_migrations
@@ -535,16 +535,16 @@ check_data() {
     $DATA && [ -d /data/adb ] && touch /data/adb/.rw && rm /data/adb/.rw && DATA_DE=true
     $DATA_DE && [ -d /data/adb/shadowmask ] || mkdir /data/adb/shadowmask || DATA_DE=false
   fi
-  MAGISKBIN="/data/shadowmask"
-  $DATA || MAGISKBIN="/cache/data_adb/shadowmask"
-  $DATA_DE && MAGISKBIN="/data/adb/shadowmask"
+  SHADOWMASKBIN="/data/shadowmask"
+  $DATA || SHADOWMASKBIN="/cache/data_adb/shadowmask"
+  $DATA_DE && SHADOWMASKBIN="/data/adb/shadowmask"
 }
 
 run_migrations() {
   local SHA1
   local TARGET
   # Legacy app installation
-  local BACKUP=$MAGISKBIN/stock_boot*.gz
+  local BACKUP=$SHADOWMASKBIN/stock_boot*.gz
   if [ -f $BACKUP ]; then
     cp $BACKUP /data
     rm -f $BACKUP
@@ -562,10 +562,10 @@ run_migrations() {
   # Stock backups
   SHA1=
   for name in boot dtb dtbo dtbs; do
-    BACKUP=$MAGISKBIN/stock_${name}.img
+    BACKUP=$SHADOWMASKBIN/stock_${name}.img
     [ -f $BACKUP ] || continue
     if [ $name = 'boot' ]; then
-      SHA1=$($MAGISKBIN/magiskboot sha1 $BACKUP)
+      SHA1=$($SHADOWMASKBIN/shadowmaskboot sha1 $BACKUP)
       mkdir /data/shadowmask_backup_${SHA1} 2>/dev/null
     fi
     [ -z $SHA1 ] && break
@@ -579,7 +579,7 @@ run_migrations() {
 }
 
 copy_preinit_files() {
-  local PREINITDIR=$MAGISKTMP/.shadowmask/preinit
+  local PREINITDIR=$SHADOWMASKTMP/.shadowmask/preinit
   if [ ! -d $PREINITDIR ]; then
     ui_print "- Unable to find preinit dir"
     return 1
@@ -760,4 +760,4 @@ install_module() {
 [ -z $BOOTMODE ] && BOOTMODE=false
 
 TMPDIR=/dev/tmp
-MAGISKBIN="/data/adb/shadowmask"
+SHADOWMASKBIN="/data/adb/shadowmask"

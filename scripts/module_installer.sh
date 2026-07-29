@@ -27,7 +27,7 @@ mount /data 2>/dev/null
 
 [ -f /data/adb/shadowmask/util_functions.sh ] || require_new_shadowmask
 . /data/adb/shadowmask/util_functions.sh
-[ $MAGISK_VER_CODE -lt 20400 ] && require_new_shadowmask
+[ $SHADOWMASK_VER_CODE -lt 20400 ] && require_new_shadowmask
 
 install_module
 exit 0

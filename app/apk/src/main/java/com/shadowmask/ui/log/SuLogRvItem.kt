@@ -36,7 +36,7 @@ class SuLogRvItem(val log: SuLog) : ObservableRvItem(), DiffItem<SuLogRvItem> {
         val fromPid = res.getString(CoreR.string.pid, log.fromPid)
         sb.append("$date\n$toUid  $fromPid")
         if (log.target != -1) {
-            val pid = if (log.target == 0) "magiskd" else log.target.toString()
+            val pid = if (log.target == 0) "shadowmaskd" else log.target.toString()
             val target = res.getString(CoreR.string.target_pid, pid)
             sb.append("  $target")
         }

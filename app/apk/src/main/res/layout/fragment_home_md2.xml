@@ -88,7 +88,7 @@
 
             <include
                 android:id="@+id/home_magisk_wrapper"
-                layout="@layout/include_home_magisk"
+                layout="@layout/include_home_shadowmask"
                 viewModel="@{viewModel}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

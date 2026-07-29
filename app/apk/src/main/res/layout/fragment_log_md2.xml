@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/log_filter_magisk"
-            layout="@layout/include_log_magisk"
+            layout="@layout/include_log_shadowmask"
             viewModel="@{viewModel}"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -1,6 +1,6 @@
-use crate::consts::{APP_PACKAGE_NAME, MAGISK_VER_CODE};
-use crate::daemon::{AID_APP_END, AID_APP_START, AID_USER_OFFSET, MagiskD, to_app_id};
-use crate::ffi::{DbEntryKey, get_magisk_tmp, install_apk, uninstall_pkg};
+use crate::consts::{APP_PACKAGE_NAME, SHADOWMASK_VER_CODE};
+use crate::daemon::{AID_APP_END, AID_APP_START, AID_USER_OFFSET, ShadowMaskD, to_app_id};
+use crate::ffi::{DbEntryKey, get_shadowmask_tmp, install_apk, uninstall_pkg};
 use base::WalkResult::{Abort, Continue, Skip};
 use base::{
     BufReadExt, Directory, FsPathBuilder, LoggedResult, ReadExt, ResultExt, Utf8CStrBuf,
@@ -230,7 +230,7 @@ impl TrackedFile {
 }
 
 impl ManagerInfo {
-    fn check_dyn(&mut self, daemon: &MagiskD, user: i32, pkg: &str) -> Status {
+    fn check_dyn(&mut self, daemon: &ShadowMaskD, user: i32, pkg: &str) -> Status {
         let apk = cstr::buf::default()
             .join_path(daemon.app_data_dir())
             .join_path_fmt(user)
@@ -243,7 +243,7 @@ impl ManagerInfo {
                 uid = fd_get_attr(fd.as_raw_fd())
                     .map(|attr| attr.st.st_uid as i32)
                     .unwrap_or(-1);
-                read_certificate(&mut fd, MAGISK_VER_CODE)
+                read_certificate(&mut fd, SHADOWMASK_VER_CODE)
             }
             Err(_) => {
                 warn!("pkg: no dyn APK, ignore");
@@ -294,7 +294,7 @@ impl ManagerInfo {
         };
 
         let cert = match apk.open(OFlag::O_RDONLY | OFlag::O_CLOEXEC) {
-            Ok(mut fd) => read_certificate(&mut fd, MAGISK_VER_CODE),
+            Ok(mut fd) => read_certificate(&mut fd, SHADOWMASK_VER_CODE),
             Err(_) => return Status::NotInstalled,
         };
 
@@ -333,7 +333,7 @@ impl ManagerInfo {
         }
     }
 
-    fn get_manager(&mut self, daemon: &MagiskD, user: i32, mut install: bool) -> (i32, &str) {
+    fn get_manager(&mut self, daemon: &ShadowMaskD, user: i32, mut install: bool) -> (i32, &str) {
         let db_pkg = daemon.get_db_string(DbEntryKey::SuManager);
 
         // If database changed, always re-check files
@@ -430,7 +430,7 @@ impl ManagerInfo {
     }
 }
 
-impl MagiskD {
+impl ShadowMaskD {
     fn get_package_uid(&self, user: i32, pkg: &str) -> i32 {
         let path = cstr::buf::default()
             .join_path(self.app_data_dir())
@@ -445,11 +445,11 @@ impl MagiskD {
         let mut info = self.manager_info.lock();
 
         let apk = cstr::buf::default()
-            .join_path(get_magisk_tmp())
+            .join_path(get_shadowmask_tmp())
             .join_path("stub.apk");
 
         if let Ok(mut fd) = apk.open(OFlag::O_RDONLY | OFlag::O_CLOEXEC) {
-            info.trusted_cert = read_certificate(&mut fd, MAGISK_VER_CODE);
+            info.trusted_cert = read_certificate(&mut fd, SHADOWMASK_VER_CODE);
             // Seek the fd back to start
             fd.seek(SeekFrom::Start(0)).log_ok();
             info.stub_apk_fd = Some(fd);

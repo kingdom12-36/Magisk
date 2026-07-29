@@ -29,7 +29,7 @@ object Shortcuts {
     fun addHomeIcon(context: Context) {
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return
         val info = ShortcutInfoCompat.Builder(context, Const.Nav.HOME)
-            .setShortLabel(context.getString(R.string.magisk))
+            .setShortLabel(context.getString(R.string.shadowmask))
             .setIntent(intent)
             .setIcon(context.getIconCompat(R.drawable.ic_launcher))
             .build()

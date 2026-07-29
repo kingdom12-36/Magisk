@@ -8,20 +8,20 @@ import com.shadowmask.core.Info
 import com.shadowmask.core.R
 import com.shadowmask.core.ktx.reboot
 import com.shadowmask.core.ktx.toast
-import com.shadowmask.core.tasks.MagiskInstaller
+import com.shadowmask.core.tasks.ShadowMaskInstaller
 import com.shadowmask.events.DialogBuilder
 import com.shadowmask.ui.home.HomeViewModel
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import com.topjohnwu.superuser.internal.UiThreadHandler
 import kotlinx.coroutines.launch
 
 class EnvFixDialog(private val vm: HomeViewModel, private val code: Int) : DialogBuilder {
 
-    override fun build(dialog: MagiskDialog) {
+    override fun build(dialog: ShadowMaskDialog) {
         dialog.apply {
             setTitle(R.string.env_fix_title)
             setMessage(R.string.env_fix_msg)
-            setButton(MagiskDialog.ButtonType.POSITIVE) {
+            setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                 text = android.R.string.ok
                 doNotDismiss = true
                 onClick {
@@ -32,7 +32,7 @@ class EnvFixDialog(private val vm: HomeViewModel, private val code: Int) : Dialo
                         setCancelable(false)
                     }
                     dialog.activity.lifecycleScope.launch {
-                        MagiskInstaller.FixEnv().exec { success ->
+                        ShadowMaskInstaller.FixEnv().exec { success ->
                             dialog.dismiss()
                             context.toast(
                                 if (success) R.string.reboot_delay_toast else R.string.setup_fail,
@@ -44,7 +44,7 @@ class EnvFixDialog(private val vm: HomeViewModel, private val code: Int) : Dialo
                     }
                 }
             }
-            setButton(MagiskDialog.ButtonType.NEGATIVE) {
+            setButton(ShadowMaskDialog.ButtonType.NEGATIVE) {
                 text = android.R.string.cancel
             }
         }
@@ -53,10 +53,10 @@ class EnvFixDialog(private val vm: HomeViewModel, private val code: Int) : Dialo
             Info.env.versionCode != BuildConfig.APP_VERSION_CODE ||
             Info.env.versionString != BuildConfig.APP_VERSION_NAME) {
             dialog.setMessage(R.string.env_full_fix_msg)
-            dialog.setButton(MagiskDialog.ButtonType.POSITIVE) {
+            dialog.setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                 text = android.R.string.ok
                 onClick {
-                    vm.onMagiskPressed()
+                    vm.onShadowMaskPressed()
                     dialog.dismiss()
                 }
             }

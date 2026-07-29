@@ -139,7 +139,7 @@
     <string name="settings_update_beta">Beta</string>
     <string name="settings_update_custom">Benutzerdefiniert</string>
     <string name="settings_update_custom_msg">Benutzerdefinierte URL einfügen</string>
-    <string name="settings_zygisk_summary">Teile von Magisk im Zygoten-Daemon ausführen</string>
+    <string name="settings_zygisk_summary">Teile von ShadowMask im Zygoten-Daemon ausführen</string>
     <string name="settings_denylist_title">Ausnahmeliste erzwingen</string>
     <string name="settings_denylist_summary">Bei Prozessen, die auf der Ausnahmeliste stehen, werden alle Magisk-Änderungen rückgängig gemacht.</string>
     <string name="settings_denylist_config_title">Ausnahmeliste konfigurieren</string>

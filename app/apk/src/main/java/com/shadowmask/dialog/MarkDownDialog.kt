@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.shadowmask.R
 import com.shadowmask.core.di.ServiceLocator
 import com.shadowmask.events.DialogBuilder
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ abstract class MarkDownDialog : DialogBuilder {
     abstract suspend fun getMarkdownText(): String
 
     @CallSuper
-    override fun build(dialog: MagiskDialog) {
+    override fun build(dialog: ShadowMaskDialog) {
         with(dialog) {
             val view = LayoutInflater.from(context).inflate(R.layout.markdown_window_md2, null)
             setView(view)

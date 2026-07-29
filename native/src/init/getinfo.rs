@@ -1,4 +1,4 @@
-use crate::ffi::{BootConfig, MagiskInit, backup_init};
+use crate::ffi::{BootConfig, ShadowMaskInit, backup_init};
 use base::{BytesExt, MappedFile, cstr};
 
 impl BootConfig {
@@ -39,7 +39,7 @@ impl BootConfig {
     }
 }
 
-impl MagiskInit {
+impl ShadowMaskInit {
     pub(crate) fn check_two_stage(&self) -> bool {
         cstr!("/first_stage_ramdisk").exists() ||
             cstr!("/second_stage_resources").exists() ||

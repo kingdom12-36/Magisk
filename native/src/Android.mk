@@ -49,7 +49,7 @@ endif
 ifdef B_INIT
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := magiskinit
+LOCAL_MODULE := shadowmaskinit
 LOCAL_STATIC_LIBRARIES := \
     libbase \
     libpolicy \
@@ -76,7 +76,7 @@ endif
 ifdef B_BOOT
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := magiskboot
+LOCAL_MODULE := shadowmaskboot
 LOCAL_STATIC_LIBRARIES := \
     libbase \
     liblz4 \

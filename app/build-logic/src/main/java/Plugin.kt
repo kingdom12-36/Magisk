@@ -22,8 +22,8 @@ object Config {
     fun contains(key: String) = get(key) != null
 
     val version: String get() = get("version")!!
-    val versionCode: Int get() = get("magisk.versionCode")!!.toInt()
-    val stubVersion: String get() = get("magisk.stubVersion")!!
+    val versionCode: Int get() = get("shadowmask.versionCode")!!.toInt()
+    val stubVersion: String get() = get("shadowmask.stubVersion")!!
     val abiList: List<String> get() = get("abiList")!!.split(",")
 }
 
@@ -33,15 +33,15 @@ fun Project.rootFile(path: String): File {
     else File(rootProject.file(".."), path)
 }
 
-class MagiskPlugin : Plugin<Project> {
+class ShadowMaskPlugin : Plugin<Project> {
     override fun apply(project: Project) = project.applyPlugin()
 
     private fun Project.applyPlugin() {
         initRandom(rootProject.file("dict.txt"))
         props.clear()
 
-        // Get gradle properties relevant to Magisk
-        props.putAll(properties.filter { (key, _) -> key.startsWith("magisk.") })
+        // Get gradle properties relevant to ShadowMask
+        props.putAll(properties.filter { (key, _) -> key.startsWith("shadowmask.") })
 
         // Load config.prop
         val configPath: String? by this

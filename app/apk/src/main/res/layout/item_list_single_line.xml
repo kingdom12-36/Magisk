@@ -6,11 +6,11 @@
 
         <variable
             name="item"
-            type="com.shadowmask.view.MagiskDialog.DialogItem" />
+            type="com.shadowmask.view.ShadowMaskDialog.DialogItem" />
 
         <variable
             name="listener"
-            type="com.shadowmask.view.MagiskDialog.DialogClickListener" />
+            type="com.shadowmask.view.ShadowMaskDialog.DialogClickListener" />
 
     </data>
 

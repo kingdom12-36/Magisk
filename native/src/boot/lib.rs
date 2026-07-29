@@ -47,7 +47,7 @@ pub mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("magiskboot.hpp");
+        include!("shadowmaskboot.hpp");
 
         #[cxx_name = "Utf8CStr"]
         type Utf8CStrRef<'a> = base::Utf8CStrRef<'a>;

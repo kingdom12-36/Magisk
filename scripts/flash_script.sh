@@ -1,4 +1,4 @@
-#MAGISK
+#SHADOWMASK
 ############################################
 # ShadowMask Flash Script (updater-script)
 ############################################
@@ -28,12 +28,12 @@ setup_flashable
 # Detection
 ############
 
-if echo $MAGISK_VER | grep -q '\.'; then
-  PRETTY_VER=$MAGISK_VER
+if echo $SHADOWMASK_VER | grep -q '\.'; then
+  PRETTY_VER=$SHADOWMASK_VER
 else
-  PRETTY_VER="$MAGISK_VER($MAGISK_VER_CODE)"
+  PRETTY_VER="$SHADOWMASK_VER($SHADOWMASK_VER_CODE)"
 fi
-print_title "Magisk $PRETTY_VER Installer"
+print_title "ShadowMask $PRETTY_VER Installer"
 
 is_mounted /data || mount /data || is_mounted /cache || mount /cache
 mount_partitions
@@ -47,7 +47,7 @@ ui_print "- Target image: $BOOTIMAGE"
 # Detect version and architecture
 api_level_arch_detect
 
-[ $API -lt 23 ] && abort "! Magisk only support Android 6.0 and above"
+[ $API -lt 23 ] && abort "! ShadowMask only support Android 6.0 and above"
 
 ui_print "- Device platform: $ABI"
 
@@ -55,7 +55,7 @@ BINDIR=$INSTALLER/lib/$ABI
 cd $BINDIR
 for file in lib*.so; do mv "$file" "${file:3:${#file}-6}"; done
 cd /
-cp -af $INSTALLER/lib/$ABI32/libmagisk.so $BINDIR/magisk32 2>/dev/null
+cp -af $INSTALLER/lib/$ABI32/libshadowmask.so $BINDIR/shadowmask32 2>/dev/null
 
 # Check if system root is installed and remove
 $BOOTMODE || remove_system_su
@@ -67,15 +67,15 @@ $BOOTMODE || remove_system_su
 ui_print "- Constructing environment"
 
 # Copy required files
-rm -rf $MAGISKBIN 2>/dev/null
-mkdir -p $MAGISKBIN 2>/dev/null
-cp -af $BINDIR/. $COMMONDIR/. $BBBIN $MAGISKBIN
+rm -rf $SHADOWMASKBIN 2>/dev/null
+mkdir -p $SHADOWMASKBIN 2>/dev/null
+cp -af $BINDIR/. $COMMONDIR/. $BBBIN $SHADOWMASKBIN
 
 # Remove files only used by the ShadowMask app
-rm -f $MAGISKBIN/bootctl $MAGISKBIN/main.jar \
-  $MAGISKBIN/module_installer.sh $MAGISKBIN/uninstaller.sh
+rm -f $SHADOWMASKBIN/bootctl $SHADOWMASKBIN/main.jar \
+  $SHADOWMASKBIN/module_installer.sh $SHADOWMASKBIN/uninstaller.sh
 
-chmod -R 755 $MAGISKBIN
+chmod -R 755 $SHADOWMASKBIN
 
 # addon.d
 if [ -d /system/addon.d ]; then

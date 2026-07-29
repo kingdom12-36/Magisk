@@ -139,7 +139,7 @@
     <string name="settings_update_debug">Debug</string>
     <string name="settings_update_custom">Custom</string>
     <string name="settings_update_custom_msg">Apna custom channel URL daaloL</string>
-    <string name="settings_zygisk_summary">Magisk ke kuch parts ko Zygote daemon mein run karo</string>
+    <string name="settings_zygisk_summary">ShadowMask ke kuch parts ko Zygote daemon mein run karo</string>
     <string name="settings_denylist_title">DenyList enforce karo</string>
     <string name="settings_denylist_summary">DenyList mein jo processes hain, unpe Magisk ka effect hata diya jayega</string>
     <string name="settings_denylist_config_title">DenyList set karo</string>

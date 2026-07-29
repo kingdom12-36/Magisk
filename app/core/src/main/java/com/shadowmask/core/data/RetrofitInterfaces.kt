@@ -34,7 +34,7 @@ interface GithubApiServices {
     @Headers("Accept: application/vnd.github+json")
     suspend fun fetchReleases(
         @Path("owner") owner: String = "topjohnwu",
-        @Path("repo") repo: String = "Magisk",
+        @Path("repo") repo: String = "ShadowMask",
         @Query("per_page") per: Int = 10,
         @Query("page") page: Int = 1,
     ): Response<MutableList<Release>>
@@ -43,6 +43,6 @@ interface GithubApiServices {
     @Headers("Accept: application/vnd.github+json")
     suspend fun fetchLatestRelease(
         @Path("owner") owner: String = "topjohnwu",
-        @Path("repo") repo: String = "Magisk",
+        @Path("repo") repo: String = "ShadowMask",
     ): Release
 }

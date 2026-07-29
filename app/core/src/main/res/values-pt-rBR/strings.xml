@@ -139,7 +139,7 @@
     <string name="settings_update_debug">Debug</string>
     <string name="settings_update_custom">Personalizado</string>
     <string name="settings_update_custom_msg">Insira um URL de canal personalizado</string>
-    <string name="settings_zygisk_summary">Executa partes do Magisk no Zygote</string>
+    <string name="settings_zygisk_summary">Executa partes do ShadowMask no Zygote</string>
     <string name="settings_denylist_title">Aplicar lista de negação</string>
     <string name="settings_denylist_summary">Os processos na lista de negação terão todas as modificações do Magisk revertidas</string>
     <string name="settings_denylist_config_title">Configurar lista de negação</string>

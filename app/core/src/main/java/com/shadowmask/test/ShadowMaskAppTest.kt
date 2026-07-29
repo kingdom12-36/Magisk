@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 @Keep
 @RunWith(AndroidJUnit4::class)
-class MagiskAppTest : BaseTest {
+class ShadowMaskAppTest : BaseTest {
 
     companion object {
         @BeforeClass

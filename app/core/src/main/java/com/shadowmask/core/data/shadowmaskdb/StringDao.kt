@@ -1,6 +1,6 @@
-package com.shadowmask.core.data.magiskdb
+package com.shadowmask.core.data.shadowmaskdb
 
-class StringDao : MagiskDB() {
+class StringDao : ShadowMaskDB() {
 
     suspend fun delete(key: String) {
         val query = "DELETE FROM ${Table.STRINGS} WHERE key=\"$key\""

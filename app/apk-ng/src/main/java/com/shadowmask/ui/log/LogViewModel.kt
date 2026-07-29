@@ -36,34 +36,34 @@ class LogViewModel(
 
     data class UiState(
         val loading: Boolean = true,
-        val magiskLog: String = "",
-        val magiskLogEntries: List<ShadowMaskLogEntry> = emptyList(),
+        val shadowmaskLog: String = "",
+        val shadowmaskLogEntries: List<ShadowMaskLogEntry> = emptyList(),
         val suLogs: List<SuLog> = emptyList(),
     )
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private var magiskLogRaw = ""
+    private var shadowmaskLogRaw = ""
 
     override suspend fun doLoadWork() {
         _uiState.update { it.copy(loading = true) }
         withContext(Dispatchers.Default) {
-            magiskLogRaw = repo.fetchMagiskLogs()
+            shadowmaskLogRaw = repo.fetchShadowMaskLogs()
             val suLogs = repo.fetchSuLogs()
-            val entries = ShadowMaskLogParser.parse(magiskLogRaw)
+            val entries = ShadowMaskLogParser.parse(shadowmaskLogRaw)
             _uiState.update { it.copy(
                 loading = false,
-                magiskLog = magiskLogRaw,
-                magiskLogEntries = entries,
+                shadowmaskLog = shadowmaskLogRaw,
+                shadowmaskLogEntries = entries,
                 suLogs = suLogs,
             ) }
         }
     }
 
-    fun saveMagiskLog() {
+    fun saveShadowMaskLog() {
         viewModelScope.launch(Dispatchers.IO) {
-            val filename = "magisk_log_%s.log".format(
+            val filename = "shadowmask_log_%s.log".format(
                 System.currentTimeMillis().toTime(timeFormatStandard))
             val logFile = MediaStoreUtils.getFile(filename)
             logFile.uri.outputStream().bufferedWriter().use { file ->
@@ -84,9 +84,9 @@ class LogViewModel(
                 file.write("\n\n---System MountInfo---\n\n")
                 FileInputStream("/proc/self/mountinfo").reader().use { it.copyTo(file) }
 
-                file.write("\n---Magisk Logs---\n")
+                file.write("\n---ShadowMask Logs---\n")
                 file.write("${Info.env.versionString} (${Info.env.versionCode})\n\n")
-                if (Info.env.isActive) file.write(magiskLogRaw)
+                if (Info.env.isActive) file.write(shadowmaskLogRaw)
 
                 file.write("\n---Manager Logs---\n")
                 file.write("${BuildConfig.APP_VERSION_NAME} (${BuildConfig.APP_VERSION_CODE})\n\n")
@@ -97,7 +97,7 @@ class LogViewModel(
         }
     }
 
-    fun clearMagiskLog() = repo.clearMagiskLogs {
+    fun clearShadowMaskLog() = repo.clearShadowMaskLogs {
         showSnackbar(R.string.logs_cleared)
         startLoading()
     }

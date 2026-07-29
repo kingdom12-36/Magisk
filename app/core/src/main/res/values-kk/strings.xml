@@ -140,7 +140,7 @@
     <string name="settings_update_beta">Beta</string>
     <string name="settings_update_custom">Басқа</string>
     <string name="settings_update_custom_msg">Басқа арнаның URL мекенжайын енгізіңіз</string>
-    <string name="settings_zygisk_summary">Magisk кодын zygote процесіне енгізу</string>
+    <string name="settings_zygisk_summary">ShadowMask кодын zygote процесіне енгізу</string>
     <string name="settings_denylist_title">DenyList-тi қолдану</string>
     <string name="settings_denylist_summary">Magisk жасаған барлық өзгеріс DenyList-тегі процестерден жасырылады.</string>
     <string name="settings_denylist_config_title">DenyList-тi баптау</string>

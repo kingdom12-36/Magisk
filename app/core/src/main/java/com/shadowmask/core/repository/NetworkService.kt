@@ -51,7 +51,7 @@ class NetworkService(
         while (true) {
             val response = api.fetchReleases(page = page)
             val releases = response.body() ?: throw HttpException(response)
-            // Remove all non Magisk releases
+            // Remove all non ShadowMask releases
             releases.removeAll { it.tag[0] != 'v' && !it.tag.startsWith("canary") }
             // Make sure it's sorted correctly
             releases.sortByDescending { it.createdTime }
@@ -106,7 +106,7 @@ class NetworkService(
         findRelease { true }.asInfo { it.name == "app-debug.apk" }
 
     private suspend fun fetchCustomUpdate(url: String): UpdateInfo {
-        val info = raw.fetchUpdateJson(url).magisk
+        val info = raw.fetchUpdateJson(url).shadowmask
         return info.let { it.copy(note = raw.fetchString(it.note)) }
     }
 

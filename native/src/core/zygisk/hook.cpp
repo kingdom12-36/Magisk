@@ -138,7 +138,7 @@ static HookContext *g_hook;
 // munmap ourselves afterwards — those GOT entries would become dangling
 // pointers and crash the target process with SIGSEGV (SEGV_MAPERR).
 // See: Crash.d — launcher + messaging crash at same fault addr 0x754fa94828.
-void disable_magisk_unmap() {
+void disable_shadowmask_unmap() {
     if (g_hook) {
         g_hook->should_unmap = false;
         // Mark spoof hooks as live so the destructor never schedules an unmap.

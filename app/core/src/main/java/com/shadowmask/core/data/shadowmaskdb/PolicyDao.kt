@@ -1,4 +1,4 @@
-package com.shadowmask.core.data.magiskdb
+package com.shadowmask.core.data.shadowmaskdb
 
 import com.shadowmask.core.AppContext
 import com.shadowmask.core.Const
@@ -6,7 +6,7 @@ import com.shadowmask.core.model.su.SuPolicy
 
 private const val SELECT_QUERY = "SELECT (until - strftime(\"%s\", \"now\")) AS remain, *"
 
-class PolicyDao : MagiskDB() {
+class PolicyDao : ShadowMaskDB() {
 
     suspend fun deleteOutdated() {
         val query = "DELETE FROM ${Table.POLICY} WHERE " +

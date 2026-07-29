@@ -1,6 +1,6 @@
 package com.shadowmask.core.model.su
 
-import com.shadowmask.core.data.magiskdb.MagiskDB
+import com.shadowmask.core.data.shadowmaskdb.ShadowMaskDB
 
 class SuPolicy(
     val uid: Int,
@@ -20,7 +20,7 @@ class SuPolicy(
         val until = if (remain <= 0) {
             remain
         } else {
-            MagiskDB.Literal("(strftime(\"%s\", \"now\") + $remain)")
+            ShadowMaskDB.Literal("(strftime(\"%s\", \"now\") + $remain)")
         }
         return mutableMapOf(
             "uid" to uid,

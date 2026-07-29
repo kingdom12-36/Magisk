@@ -6,11 +6,11 @@ import android.widget.EditText
 import androidx.core.net.toUri
 import com.shadowmask.core.R
 import com.shadowmask.events.DialogBuilder
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 
 class DownloadDialog(private val callback: (Uri) -> Unit) : DialogBuilder {
 
-    override fun build(dialog: MagiskDialog) {
+    override fun build(dialog: ShadowMaskDialog) {
         val editText = EditText(dialog.context).apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
             hint = context.getString(R.string.download_dialog_msg)
@@ -20,7 +20,7 @@ class DownloadDialog(private val callback: (Uri) -> Unit) : DialogBuilder {
         dialog.apply {
             setTitle(R.string.download_dialog_title)
             setView(editText)
-            setButton(MagiskDialog.ButtonType.POSITIVE) {
+            setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                 text = android.R.string.ok
                 onClick {
                     val url = editText.text.toString().trim()
@@ -33,7 +33,7 @@ class DownloadDialog(private val callback: (Uri) -> Unit) : DialogBuilder {
                     }
                 }
             }
-            setButton(MagiskDialog.ButtonType.NEGATIVE) {
+            setButton(ShadowMaskDialog.ButtonType.NEGATIVE) {
                 text = android.R.string.cancel
             }
             setCancelable(true)

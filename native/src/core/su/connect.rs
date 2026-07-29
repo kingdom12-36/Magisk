@@ -2,7 +2,7 @@ use super::SuInfo;
 use super::db::RootSettings;
 use crate::consts::{INTERNAL_DIR, SHADOWMASK_FILE_CON};
 use crate::daemon::to_user_id;
-use crate::ffi::{SuPolicy, SuRequest, get_magisk_tmp};
+use crate::ffi::{SuPolicy, SuRequest, get_shadowmask_tmp};
 use crate::socket::IpcRead;
 use ExtraVal::{Bool, Int, IntList, Str};
 use base::{
@@ -169,7 +169,7 @@ impl SuAppContext<'_> {
         let mut fifo = cstr::buf::new::<64>();
         fifo.write_fmt(format_args!(
             "{}/{}/su_request_{}",
-            get_magisk_tmp(),
+            get_shadowmask_tmp(),
             INTERNAL_DIR,
             self.cred.pid.unwrap_or(-1)
         ))

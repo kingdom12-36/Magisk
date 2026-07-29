@@ -31,7 +31,7 @@ case $(uname -m) in
 esac
 
 cleanup() {
-  rm -f magisk-*.img
+  rm -f shadowmask-*.img
   "$avd" delete avd -n test > /dev/null 2>&1
 }
 
@@ -174,13 +174,13 @@ test_emu() {
   local apk=$1
   local image=$2
 
-  local magisk_args="-ramdisk $image -feature -SystemAsRoot"
+  local shadowmask_args="-ramdisk $image -feature -SystemAsRoot"
 
   if [ -n "$AVD_TEST_LOG" ]; then
     rm -f logcat.log
-    "$emu" @test $emu_args $log_args $magisk_args > kernel.log 2>&1 &
+    "$emu" @test $emu_args $log_args $shadowmask_args > kernel.log 2>&1 &
   else
-    "$emu" @test $emu_args $magisk_args > /dev/null 2>&1 &
+    "$emu" @test $emu_args $shadowmask_args > /dev/null 2>&1 &
   fi
   timeout $boot_timeout bash -c wait_for_boot
 
@@ -223,7 +223,7 @@ test_main() {
   # Patch images
   local images=()
   for apk in "${apks[@]}"; do
-    images+=("magisk-$(basename $apk .apk).img")
+    images+=("shadowmask-$(basename $apk .apk).img")
     ./build.py -v avd_patch --apk "$apk" "$ramdisk" "${images[-1]}"
   done
 

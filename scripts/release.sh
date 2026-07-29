@@ -44,12 +44,12 @@ set_version() {
 
   sed -i "s:versionCode=.*:versionCode=${code}:g" $GCONFIG
   sed -i "s:version=.*:version=${ver}:g" $CONFIG
-  sed -i "1s:.*:## $(date +'%Y.%-m.%-d') Magisk v$ver:" $NOTES
+  sed -i "1s:.*:## $(date +'%Y.%-m.%-d') ShadowMask v$ver:" $NOTES
 
   # Commit version code changes
   git add -u .
   git status
-  git commit -m "Release Magisk v$ver" -m "[skip ci]"
+  git commit -m "Release ShadowMask v$ver" -m "[skip ci]"
 }
 
 # $1 = ver
@@ -66,10 +66,10 @@ build() {
 upload() {
   gh auth status
 
-  local code=$(grep_prop magisk.versionCode $GCONFIG)
+  local code=$(grep_prop shadowmask.versionCode $GCONFIG)
   local ver=$(echo - | awk "{ print $code / 1000 }")
   local tag="v$ver"
-  local title="Magisk v$ver"
+  local title="ShadowMask v$ver"
 
   local out=$(grep_prop outdir $CONFIG)
   if [ -z $out ]; then
@@ -84,7 +84,7 @@ upload() {
   tail -n +3 $NOTES > release.md
 
   # Publish release
-  local release_apk="Magisk-v${ver}.apk"
+  local release_apk="ShadowMask-v${ver}.apk"
   cp $out/app-release.apk $release_apk
   gh release create --verify-tag $tag -p -t "$title" -F release.md $release_apk $out/app-debug.apk $NOTES
 

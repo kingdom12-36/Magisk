@@ -22,7 +22,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.shadowmask.BR
 import com.shadowmask.R
 import com.shadowmask.arch.UIActivity
-import com.shadowmask.databinding.DialogMagiskBaseBinding
+import com.shadowmask.databinding.DialogShadowMaskBaseBinding
 import com.shadowmask.databinding.DiffItem
 import com.shadowmask.databinding.ItemWrapper
 import com.shadowmask.databinding.ObservableHost
@@ -30,16 +30,16 @@ import com.shadowmask.databinding.RvItem
 import com.shadowmask.databinding.bindExtra
 import com.shadowmask.databinding.set
 import com.shadowmask.databinding.setAdapter
-import com.shadowmask.view.MagiskDialog.DialogClickListener
+import com.shadowmask.view.ShadowMaskDialog.DialogClickListener
 
 typealias DialogButtonClickListener = (DialogInterface) -> Unit
 
-class MagiskDialog(
+class ShadowMaskDialog(
     context: Activity, theme: Int = 0
 ) : AppCompatDialog(context, theme) {
 
-    private val binding: DialogMagiskBaseBinding =
-        DialogMagiskBaseBinding.inflate(LayoutInflater.from(context))
+    private val binding: DialogShadowMaskBaseBinding =
+        DialogShadowMaskBaseBinding.inflate(LayoutInflater.from(context))
     private val data = Data()
 
     val activity: UIActivity<*> get() = ownerActivity as UIActivity<*>
@@ -119,7 +119,7 @@ class MagiskDialog(
         }
 
         fun clicked() {
-            onClickAction(this@MagiskDialog)
+            onClickAction(this@ShadowMaskDialog)
             if (!doNotDismiss) {
                 dismiss()
             }

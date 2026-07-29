@@ -11,9 +11,9 @@
 use crate::ffi::SuRequest;
 use crate::socket::Encodable;
 use base::derive::Decodable;
-use daemon::{MagiskD, connect_daemon_for_cxx};
+use daemon::{ShadowMaskD, connect_daemon_for_cxx};
 use logging::{android_logging, zygisk_close_logd, zygisk_get_logd, zygisk_logging};
-use magisk::magisk_main;
+use shadowmask::shadowmask_main;
 use mount::revert_unmount;
 use resetprop::{get_prop, resetprop_main};
 use selinux::{lgetfilecon, setfilecon};
@@ -31,7 +31,7 @@ mod consts;
 mod daemon;
 mod db;
 mod logging;
-mod magisk;
+mod shadowmask;
 mod module;
 mod mount;
 mod package;
@@ -122,7 +122,7 @@ pub mod ffi {
         ProcessGrantedRoot = 0x00000001,
         ProcessOnDenyList = 0x00000002,
         DenyListEnforced = 0x40000000,
-        ProcessIsMagiskApp = 0x80000000,
+        ProcessIsShadowMaskApp = 0x80000000,
     }
 
     #[derive(Decodable)]
@@ -144,8 +144,8 @@ pub mod ffi {
 
         include!("include/core.hpp");
 
-        #[cxx_name = "get_magisk_tmp_rs"]
-        fn get_magisk_tmp() -> Utf8CStrRef<'static>;
+        #[cxx_name = "get_shadowmask_tmp_rs"]
+        fn get_shadowmask_tmp() -> Utf8CStrRef<'static>;
         #[cxx_name = "resolve_preinit_dir_rs"]
         fn resolve_preinit_dir(base_dir: Utf8CStrRef) -> String;
         fn check_key_combo() -> bool;
@@ -204,7 +204,7 @@ pub mod ffi {
 
         #[cxx_name = "connect_daemon"]
         fn connect_daemon_for_cxx(code: RequestCode, create: bool) -> i32;
-        unsafe fn magisk_main(argc: i32, argv: *mut *mut c_char) -> i32;
+        unsafe fn shadowmask_main(argc: i32, argv: *mut *mut c_char) -> i32;
     }
 
     // Default constructors
@@ -214,18 +214,18 @@ pub mod ffi {
         fn default() -> SuRequest;
     }
 
-    // FFI for MagiskD
+    // FFI for ShadowMaskD
     extern "Rust" {
-        type MagiskD;
+        type ShadowMaskD;
         fn sdk_int(&self) -> i32;
         fn zygisk_enabled(&self) -> bool;
         fn get_db_setting(&self, key: DbEntryKey) -> i32;
         #[cxx_name = "set_db_setting"]
         fn set_db_setting_for_cxx(&self, key: DbEntryKey, value: i32) -> bool;
 
-        #[Self = MagiskD]
+        #[Self = ShadowMaskD]
         #[cxx_name = "Get"]
-        fn get() -> &'static MagiskD;
+        fn get() -> &'static ShadowMaskD;
     }
 }
 

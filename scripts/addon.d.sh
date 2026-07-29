@@ -2,15 +2,15 @@
 # ADDOND_VERSION=2
 ########################################################
 #
-# Magisk Survival Script for ROMs with addon.d support
+# ShadowMask Survival Script for ROMs with addon.d support
 # by topjohnwu and osm0sis
 #
 ########################################################
 
 trampoline() {
   mount /data 2>/dev/null
-  if [ -f $MAGISKBIN/addon.d.sh ]; then
-    exec sh $MAGISKBIN/addon.d.sh "$@"
+  if [ -f $SHADOWMASKBIN/addon.d.sh ]; then
+    exec sh $SHADOWMASKBIN/addon.d.sh "$@"
     exit $?
   elif [ "$1" = post-restore ]; then
     BOOTMODE=false
@@ -27,24 +27,24 @@ trampoline() {
     fi
     ui_print() {
       if $BOOTMODE; then
-        log -t Magisk -- "$1"
+        log -t ShadowMask -- "$1"
       else
         echo -e "ui_print $1\nui_print" >> /proc/self/fd/$OUTFD
       fi
     }
 
     ui_print "***********************"
-    ui_print " Magisk addon.d failed"
+    ui_print " ShadowMask addon.d failed"
     ui_print "***********************"
-    ui_print "! Cannot find Magisk binaries - was data wiped or not decrypted?"
-    ui_print "! Reflash OTA from decrypted recovery or reflash Magisk"
+    ui_print "! Cannot find ShadowMask binaries - was data wiped or not decrypted?"
+    ui_print "! Reflash OTA from decrypted recovery or reflash ShadowMask"
   fi
   exit 1
 }
 
 # Always use the script in /data
-MAGISKBIN=/data/adb/shadowmask
-[ "$0" = $MAGISKBIN/addon.d.sh ] || trampoline "$@"
+SHADOWMASKBIN=/data/adb/shadowmask
+[ "$0" = $SHADOWMASKBIN/addon.d.sh ] || trampoline "$@"
 
 V1_FUNCS=/tmp/backuptool.functions
 V2_FUNCS=/postinstall/tmp/backuptool.functions
@@ -60,11 +60,11 @@ fi
 
 initialize() {
   # Load utility functions
-  . $MAGISKBIN/util_functions.sh
+  . $SHADOWMASKBIN/util_functions.sh
 
   if $BOOTMODE; then
     # Override ui_print when booted
-    ui_print() { log -t Magisk -- "$1"; }
+    ui_print() { log -t ShadowMask -- "$1"; }
   fi
   OUTFD=
   setup_flashable
@@ -86,12 +86,12 @@ main() {
   mkdir -p $TMPDIR
   cd $TMPDIR
 
-  if echo $MAGISK_VER | grep -q '\.'; then
-    PRETTY_VER=$MAGISK_VER
+  if echo $SHADOWMASK_VER | grep -q '\.'; then
+    PRETTY_VER=$SHADOWMASK_VER
   else
-    PRETTY_VER="$MAGISK_VER($MAGISK_VER_CODE)"
+    PRETTY_VER="$SHADOWMASK_VER($SHADOWMASK_VER_CODE)"
   fi
-  print_title "Magisk $PRETTY_VER addon.d"
+  print_title "ShadowMask $PRETTY_VER addon.d"
 
   mount_partitions
   check_data
@@ -141,9 +141,9 @@ case "$1" in
       ui_print() { return; }
       get_flags
       find_boot_image
-      $MAGISKBIN/magiskboot unpack "$BOOTIMAGE"
-      $MAGISKBIN/magiskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
-      $MAGISKBIN/magiskboot cleanup
+      $SHADOWMASKBIN/shadowmaskboot unpack "$BOOTIMAGE"
+      $SHADOWMASKBIN/shadowmaskboot cpio ramdisk.cpio "extract .backup/.shadowmask config.orig"
+      $SHADOWMASKBIN/shadowmaskboot cleanup
     fi
   ;;
   post-backup)

@@ -41,7 +41,7 @@ class ShellInit : Shell.Initializer() {
             }
 
             if (shell.isRoot) {
-                add("export MAGISKTMP=\$(shadowmask --path)")
+                add("export SHADOWMASKTMP=\$(shadowmask --path)")
                 // Test if we can properly execute stuff in /data
                 Info.noDataExec = !shell.newJob()
                     .add("$localBB sh -c '$localBB true'").exec().isSuccess
@@ -50,9 +50,9 @@ class ShellInit : Shell.Initializer() {
             if (Info.noDataExec) {
                 // Copy it out of /data to workaround Samsung bullshit
                 add(
-                    "if [ -x \$MAGISKTMP/.shadowmask/busybox/busybox ]; then",
-                    "  cp -af $localBB \$MAGISKTMP/.shadowmask/busybox/busybox",
-                    "  exec \$MAGISKTMP/.shadowmask/busybox/busybox sh",
+                    "if [ -x \$SHADOWMASKTMP/.shadowmask/busybox/busybox ]; then",
+                    "  cp -af $localBB \$SHADOWMASKTMP/.shadowmask/busybox/busybox",
+                    "  exec \$SHADOWMASKTMP/.shadowmask/busybox/busybox sh",
                     "else",
                     "  cp -af $localBB /dev/busybox",
                     "  exec /dev/busybox sh",

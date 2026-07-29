@@ -5,7 +5,7 @@ import com.shadowmask.core.Info
 import com.shadowmask.core.R
 import com.shadowmask.core.download.DownloadEngine
 import com.shadowmask.core.download.Subject
-import com.shadowmask.view.MagiskDialog
+import com.shadowmask.view.ShadowMaskDialog
 import java.io.File
 
 class ManagerInstallDialog : MarkDownDialog() {
@@ -17,15 +17,15 @@ class ManagerInstallDialog : MarkDownDialog() {
         return text
     }
 
-    override fun build(dialog: MagiskDialog) {
+    override fun build(dialog: ShadowMaskDialog) {
         super.build(dialog)
         dialog.apply {
             setCancelable(true)
-            setButton(MagiskDialog.ButtonType.POSITIVE) {
+            setButton(ShadowMaskDialog.ButtonType.POSITIVE) {
                 text = R.string.install
                 onClick { DownloadEngine.startWithActivity(activity, Subject.App()) }
             }
-            setButton(MagiskDialog.ButtonType.NEGATIVE) {
+            setButton(ShadowMaskDialog.ButtonType.NEGATIVE) {
                 text = android.R.string.cancel
             }
         }

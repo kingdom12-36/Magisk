@@ -76,7 +76,7 @@ import com.shadowmask.core.download.Subject
 import com.shadowmask.core.ktx.reboot
 import com.shadowmask.core.ktx.toast
 import com.shadowmask.core.tasks.AppMigration
-import com.shadowmask.core.tasks.MagiskInstaller
+import com.shadowmask.core.tasks.ShadowMaskInstaller
 import com.shadowmask.ui.MainActivity
 import com.shadowmask.ui.component.LoadingDialogHandle
 import com.shadowmask.ui.component.MarkdownTextAsync
@@ -213,8 +213,8 @@ fun HomeScreen(viewModel: HomeViewModel, installVm: InstallViewModel) {
 
             CoreCard(
                 modifier = Modifier.fillMaxWidth(),
-                state = viewModel.magiskState,
-                version = viewModel.magiskInstalledVersion,
+                state = viewModel.shadowmaskState,
+                version = viewModel.shadowmaskInstalledVersion,
             ) { showInstallSheet.value = true }
 
             StatusCard()
@@ -408,14 +408,14 @@ private fun CoreCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
-                    painter = painterResource(CoreR.drawable.ic_magisk_outline),
+                    painter = painterResource(CoreR.drawable.ic_shadowmask_outline),
                     contentDescription = null,
                     modifier = Modifier.size(48.dp)
                 )
                 Spacer(Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = stringResource(CoreR.string.magisk),
+                        text = stringResource(CoreR.string.shadowmask),
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
@@ -457,7 +457,7 @@ private fun UninstallButton(
         )
         Spacer(Modifier.width(8.dp))
         Text(
-            text = stringResource(CoreR.string.uninstall_magisk_title),
+            text = stringResource(CoreR.string.uninstall_shadowmask_title),
             fontSize = 16.sp
         )
     }
@@ -729,10 +729,10 @@ private fun UninstallComposableDialog(
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
-            title = { Text(stringResource(CoreR.string.uninstall_magisk_title)) },
+            title = { Text(stringResource(CoreR.string.uninstall_shadowmask_title)) },
             text = {
                 Text(
-                    text = stringResource(CoreR.string.uninstall_magisk_msg),
+                    text = stringResource(CoreR.string.uninstall_shadowmask_msg),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -758,7 +758,7 @@ private fun UninstallComposableDialog(
                         showDialog.value = false
                         scope.launch {
                             val success = loadingDialog.withLoading {
-                                MagiskInstaller.Restore().exec()
+                                ShadowMaskInstaller.Restore().exec()
                             }
                             activity.toast(
                                 if (success) CoreR.string.restore_done else CoreR.string.restore_fail,
@@ -844,7 +844,7 @@ private fun EnvFixComposableDialog(
                         } else {
                             scope.launch {
                                 val success = loadingDialog.withLoading {
-                                    MagiskInstaller.FixEnv().exec()
+                                    ShadowMaskInstaller.FixEnv().exec()
                                 }
                                 activity.toast(
                                     if (success) CoreR.string.reboot_delay_toast else CoreR.string.setup_fail,

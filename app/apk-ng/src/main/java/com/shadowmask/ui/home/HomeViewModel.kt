@@ -41,7 +41,7 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    val magiskState
+    val shadowmaskState
         get() = when {
             Info.isRooted && Info.env.isUnsupported -> State.OUTDATED
             !Info.env.isActive -> State.INVALID
@@ -49,7 +49,7 @@ class HomeViewModel(
             else -> State.UP_TO_DATE
         }
 
-    val magiskInstalledVersion: String
+    val shadowmaskInstalledVersion: String
         get() = Info.env.run {
             if (isActive)
                 "$versionString ($versionCode)" + if (isDebug) " (D)" else ""
@@ -140,7 +140,7 @@ class HomeViewModel(
     }
 
     private suspend fun ensureEnv() {
-        if (magiskState == State.INVALID || checkedEnv) return
+        if (shadowmaskState == State.INVALID || checkedEnv) return
         val cmd = "env_check ${Info.env.versionString} ${Info.env.versionCode}"
         val code = Shell.cmd(cmd).await().code
         if (code != 0) {

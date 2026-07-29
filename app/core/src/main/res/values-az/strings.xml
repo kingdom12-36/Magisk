@@ -111,7 +111,7 @@
     <string name="module_action_install_external">Yaddaşdan yüklə</string>
     <string name="update_available">Yeniləmə Mövcuddur</string>
     <string name="suspend_text_riru">%1$s açıq olduğundan Magisk modulu dayandırıldı</string>
-    <string name="suspend_text_zygisk">%1$s qapalı olduğu üçün Magisk modulu dayandırıldı</string>
+    <string name="suspend_text_zygisk">%1$s qapalı olduğu üçün ShadowMask modulu dayandırıldı</string>
     <string name="zygisk_module_unloaded">Zygisk modulu uyğunsuzluq səbəbindən açılmadı</string>
     <string name="module_empty">Yüklü modul yoxdur</string>
     <string name="confirm_install">%1$s modulu yüklənsin?</string>
@@ -138,7 +138,7 @@
     <string name="settings_update_beta">Beta</string>
     <string name="settings_update_custom">Özəl</string>
     <string name="settings_update_custom_msg">Özəl kanal URL\'si daxil et</string>
-    <string name="settings_zygisk_summary">Magiskin bəzi hissələrini zygote daemonda aç</string>
+    <string name="settings_zygisk_summary">ShadowMaskin bəzi hissələrini zygote daemonda aç</string>
     <string name="settings_denylist_title">İstisnaları Məcbur İşlət</string>
     <string name="settings_denylist_summary">İstisnalar siyahısındakı proseslər Magisk əlavələrini tərsinə çevirəcək</string>
     <string name="settings_denylist_config_title">İstisnaları Ayarla</string>
@@ -223,7 +223,7 @@
     <string name="unsupport_magisk_msg">Tətbiqin bu versiyası Magiskin %1$s versiyasından aşağıları dəstəkləmir.\n\nTətbiq sanki Magisk heç yoxmuş kimi davranacaq, lütfən Magiski yüksəldin.</string>
     <string name="unsupport_general_title">Anormal Hal</string>
     <string name="unsupport_system_app_msg">Bu tətbiqi sistem tətbiqi kimi açmaq olmur. Onu yenidən istifadəçi tətbiqi etməlisiniz.</string>
-    <string name="unsupport_other_su_msg">Magiskdən olmayan \"su\" tapıldı. Lütfən digər kök tətbiqi silin yaxud Magiski yenidən quraşdırın.</string>
+    <string name="unsupport_other_su_msg">ShadowMaskdən olmayan \"su\" tapıldı. Lütfən digər kök tətbiqi silin yaxud ShadowMaski yenidən quraşdırın.</string>
     <string name="unsupport_external_storage_msg">Magisk xarici yaddaşa qurulub. Lütfən tətbiqi daxili yaddaşa keçirin.</string>
     <string name="unsupport_nonroot_stub_msg">Gizli Magisk tətbiqi kök itirildiyinə görə işləməyəcək. Orijinal APKnı geri qaytarın.</string>
     <string name="unsupport_nonroot_stub_title">@string/settings_restore_app_title</string>

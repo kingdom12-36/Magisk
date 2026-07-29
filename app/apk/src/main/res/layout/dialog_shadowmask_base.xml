@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.shadowmask.view.MagiskDialog.Data" />
+            type="com.shadowmask.view.ShadowMaskDialog.Data" />
 
     </data>
 

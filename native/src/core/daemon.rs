@@ -1,13 +1,13 @@
 use crate::bootstages::BootState;
 use crate::consts::{
-    SHADOWMASK_FILE_CON, SHADOWMASK_FULL_VER, SHADOWMASK_PROC_CON, MAGISK_VER_CODE, MAGISK_VERSION,
+    SHADOWMASK_FILE_CON, SHADOWMASK_FULL_VER, SHADOWMASK_PROC_CON, SHADOWMASK_VER_CODE, SHADOWMASK_VERSION,
     MAIN_CONFIG, MAIN_SOCKET, ROOTMNT, ROOTOVL,
 };
 use crate::db::Sqlite3;
 use crate::ffi::{
-    ModuleInfo, RequestCode, RespondCode, denylist_handler, get_magisk_tmp, scan_deny_apps,
+    ModuleInfo, RequestCode, RespondCode, denylist_handler, get_shadowmask_tmp, scan_deny_apps,
 };
-use crate::logging::{android_logging, magisk_logging, setup_logfile, start_log_daemon};
+use crate::logging::{android_logging, shadowmask_logging, setup_logfile, start_log_daemon};
 use crate::module::remove_modules;
 use crate::package::ManagerInfo;
 use crate::resetprop::{get_prop, set_prop};
@@ -36,8 +36,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::nonpoison::Mutex;
 use std::time::Duration;
 
-// Global magiskd singleton
-pub static MAGISKD: OnceLock<MagiskD> = OnceLock::new();
+// Global shadowmaskd singleton
+pub static SHADOWMASKD: OnceLock<ShadowMaskD> = OnceLock::new();
 
 pub const AID_ROOT: i32 = 0;
 pub const AID_SHELL: i32 = 2000;
@@ -54,7 +54,7 @@ pub const fn to_user_id(uid: i32) -> i32 {
 }
 
 #[derive(Default)]
-pub struct MagiskD {
+pub struct ShadowMaskD {
     pub sql_connection: Mutex<Option<Sqlite3>>,
     pub manager_info: Mutex<ManagerInfo>,
     pub boot_stage_lock: Mutex<BootState>,
@@ -68,9 +68,9 @@ pub struct MagiskD {
     exe_attr: FileAttr,
 }
 
-impl MagiskD {
-    pub fn get() -> &'static MagiskD {
-        unsafe { MAGISKD.get().unwrap_unchecked() }
+impl ShadowMaskD {
+    pub fn get() -> &'static ShadowMaskD {
+        unsafe { SHADOWMASKD.get().unwrap_unchecked() }
     }
 
     pub fn sdk_int(&self) -> i32 {
@@ -89,14 +89,14 @@ impl MagiskD {
         match code {
             RequestCode::CHECK_VERSION => {
                 #[cfg(debug_assertions)]
-                let s = concatcp!(MAGISK_VERSION, ":MAGISK:D");
+                let s = concatcp!(SHADOWMASK_VERSION, ":SHADOWMASK:D");
                 #[cfg(not(debug_assertions))]
-                let s = concatcp!(MAGISK_VERSION, ":MAGISK:R");
+                let s = concatcp!(SHADOWMASK_VERSION, ":SHADOWMASK:R");
 
                 client.write_encodable(s).log_ok();
             }
             RequestCode::CHECK_VERSION_CODE => {
-                client.write_pod(&MAGISK_VER_CODE).log_ok();
+                client.write_pod(&SHADOWMASK_VER_CODE).log_ok();
             }
             RequestCode::START_DAEMON => {
                 setup_logfile();
@@ -299,7 +299,7 @@ fn daemon_entry() {
 
     setsid().log_ok();
 
-    // Make sure the current context is magisk
+    // Make sure the current context is shadowmask
     if let Ok(mut current) =
         cstr!("/proc/self/attr/current").open(OFlag::O_WRONLY | OFlag::O_CLOEXEC)
     {
@@ -308,17 +308,17 @@ fn daemon_entry() {
     }
 
     start_log_daemon();
-    magisk_logging();
-    info!("Magisk {SHADOWMASK_FULL_VER} daemon started");
+    shadowmask_logging();
+    info!("ShadowMask {SHADOWMASK_FULL_VER} daemon started");
 
     let is_emulator = get_prop(cstr!("ro.kernel.qemu")) == "1"
         || get_prop(cstr!("ro.boot.qemu")) == "1"
         || get_prop(cstr!("ro.product.device")).contains("vsoc");
 
     // Load config status
-    let magisk_tmp = get_magisk_tmp();
+    let shadowmask_tmp = get_shadowmask_tmp();
     let mut tmp_path = cstr::buf::new::<64>()
-        .join_path(magisk_tmp)
+        .join_path(shadowmask_tmp)
         .join_path(MAIN_CONFIG);
     let mut is_recovery = false;
     if let Ok(main_config) = tmp_path.open(OFlag::O_RDONLY | OFlag::O_CLOEXEC) {
@@ -330,7 +330,7 @@ fn daemon_entry() {
             true
         });
     }
-    tmp_path.truncate(magisk_tmp.len());
+    tmp_path.truncate(shadowmask_tmp.len());
 
     let mut sdk_int = -1;
     if let Ok(build_prop) = cstr!("/system/build.prop").open(OFlag::O_RDONLY | OFlag::O_CLOEXEC) {
@@ -376,7 +376,7 @@ fn daemon_entry() {
             true
         })
     }
-    tmp_path.truncate(magisk_tmp.len());
+    tmp_path.truncate(shadowmask_tmp.len());
 
     // Remount rootfs as read-only if requested
     if std::env::var_os("REMOUNT_ROOT").is_some() {
@@ -387,7 +387,7 @@ fn daemon_entry() {
     // Remove all pre-init overlay files to free-up memory
     tmp_path.append_path(ROOTOVL);
     tmp_path.remove_all().ok();
-    tmp_path.truncate(magisk_tmp.len());
+    tmp_path.truncate(shadowmask_tmp.len());
 
     let exe_attr = cstr!("/proc/self/exe")
         .follow_link()
@@ -395,17 +395,17 @@ fn daemon_entry() {
         .log()
         .unwrap_or_default();
 
-    let daemon = MagiskD {
+    let daemon = ShadowMaskD {
         sdk_int,
         is_emulator,
         is_recovery,
         exe_attr,
         ..Default::default()
     };
-    MAGISKD.set(daemon).ok();
+    SHADOWMASKD.set(daemon).ok();
 
     let sock_path = cstr::buf::new::<64>()
-        .join_path(get_magisk_tmp())
+        .join_path(get_shadowmask_tmp())
         .join_path(MAIN_SOCKET);
     sock_path.remove().ok();
 
@@ -417,7 +417,7 @@ fn daemon_entry() {
     sock_path.set_secontext(cstr!(SHADOWMASK_FILE_CON)).log_ok();
 
     // Loop forever to listen for requests
-    let daemon = MagiskD::get();
+    let daemon = ShadowMaskD::get();
     for client in sock.incoming() {
         if let Ok(client) = client.log() {
             daemon.handle_requests(client);
@@ -429,7 +429,7 @@ fn daemon_entry() {
 
 pub fn connect_daemon(code: RequestCode, create: bool) -> LoggedResult<UnixStream> {
     let sock_path = cstr::buf::new::<64>()
-        .join_path(get_magisk_tmp())
+        .join_path(get_shadowmask_tmp())
         .join_path(MAIN_SOCKET);
 
     fn send_request(code: RequestCode, mut socket: UnixStream) -> LoggedResult<UnixStream> {
@@ -460,9 +460,9 @@ pub fn connect_daemon(code: RequestCode, create: bool) -> LoggedResult<UnixStrea
 
             let mut buf = cstr::buf::new::<64>();
             if cstr!("/proc/self/exe").read_link(&mut buf).is_err()
-                || !buf.starts_with(get_magisk_tmp().as_str())
+                || !buf.starts_with(get_shadowmask_tmp().as_str())
             {
-                return log_err!("Start daemon on magisk tmpfs");
+                return log_err!("Start daemon on shadowmask tmpfs");
             }
 
             // Fork a process and run the daemon

@@ -27,7 +27,7 @@ import com.shadowmask.core.base.UntrackedActivity
 import com.shadowmask.core.su.SuCallbackHandler
 import com.shadowmask.core.su.SuCallbackHandler.REQUEST
 import com.shadowmask.core.wrap
-import com.shadowmask.ui.MagiskTheme
+import com.shadowmask.ui.ShadowMaskTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -82,7 +82,7 @@ class SuRequestActivity : ComponentActivity(), UntrackedActivity {
         }
 
         setContent {
-        MagiskTheme {
+        ShadowMaskTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             SuRequestScreen(viewModel = viewModel)
         }

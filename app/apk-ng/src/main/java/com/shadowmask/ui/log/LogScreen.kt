@@ -71,7 +71,7 @@ fun LogScreen(viewModel: LogViewModel) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val tabTitles = listOf(
         stringResource(CoreR.string.superuser),
-        stringResource(CoreR.string.magisk)
+        stringResource(CoreR.string.shadowmask)
     )
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -81,7 +81,7 @@ fun LogScreen(viewModel: LogViewModel) {
                 title = { Text(stringResource(CoreR.string.logs)) },
                 actions = {
                     if (selectedTab == 1) {
-                        IconButton(onClick = { viewModel.saveMagiskLog() }) {
+                        IconButton(onClick = { viewModel.saveShadowMaskLog() }) {
                             Icon(
                                 imageVector = Icons.Default.Download,
                                 contentDescription = stringResource(CoreR.string.save_log),
@@ -92,7 +92,7 @@ fun LogScreen(viewModel: LogViewModel) {
                         modifier = Modifier.padding(end = 16.dp),
                         onClick = {
                             if (selectedTab == 0) viewModel.clearLog()
-                            else viewModel.clearMagiskLog()
+                            else viewModel.clearShadowMaskLog()
                         }
                     ) {
                         Icon(
@@ -137,8 +137,8 @@ fun LogScreen(viewModel: LogViewModel) {
                         logs = uiState.suLogs,
                         nestedScrollConnection = scrollBehavior.nestedScrollConnection
                     )
-                    1 -> MagiskLogTab(
-                        entries = uiState.magiskLogEntries,
+                    1 -> ShadowMaskLogTab(
+                        entries = uiState.shadowmaskLogEntries,
                         nestedScrollConnection = scrollBehavior.nestedScrollConnection
                     )
                 }
@@ -196,7 +196,7 @@ private fun SuLogCard(log: SuLog) {
     val uidPidText = buildString {
         append("UID: ${log.toUid}  PID: ${log.fromPid}")
         if (log.target != -1) {
-            val target = if (log.target == 0) "magiskd" else log.target.toString()
+            val target = if (log.target == 0) "shadowmaskd" else log.target.toString()
             append("  → $target")
         }
     }
@@ -280,7 +280,7 @@ private fun SuActionBadge(allowed: Boolean) {
 }
 
 @Composable
-private fun MagiskLogTab(
+private fun ShadowMaskLogTab(
     entries: List<ShadowMaskLogEntry>,
     nestedScrollConnection: NestedScrollConnection
 ) {
@@ -294,7 +294,7 @@ private fun MagiskLogTab(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(CoreR.string.log_data_magisk_none),
+                    text = stringResource(CoreR.string.log_data_shadowmask_none),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -312,7 +312,7 @@ private fun MagiskLogTab(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(entries.size, key = { it }) { index ->
-                    MagiskLogCard(entries[index])
+                    ShadowMaskLogCard(entries[index])
                 }
             }
         }
@@ -320,7 +320,7 @@ private fun MagiskLogTab(
 }
 
 @Composable
-private fun MagiskLogCard(entry: ShadowMaskLogEntry) {
+private fun ShadowMaskLogCard(entry: ShadowMaskLogEntry) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(

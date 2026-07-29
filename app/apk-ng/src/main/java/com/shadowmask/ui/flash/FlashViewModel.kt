@@ -13,7 +13,7 @@ import com.shadowmask.core.ktx.synchronized
 import com.shadowmask.core.ktx.timeFormatStandard
 import com.shadowmask.core.ktx.toTime
 import com.shadowmask.core.ktx.writeTo
-import com.shadowmask.core.tasks.MagiskInstaller
+import com.shadowmask.core.tasks.ShadowMaskInstaller
 import com.shadowmask.core.utils.MediaStoreUtils
 import com.shadowmask.core.utils.MediaStoreUtils.displayName
 import com.shadowmask.core.utils.MediaStoreUtils.inputStream
@@ -60,7 +60,7 @@ class FlashViewModel : BaseViewModel() {
         emulatorReady.complete(emu)
     }
 
-    // --- LazyColumn mode (MagiskInstaller) ---
+    // --- LazyColumn mode (ShadowMaskInstaller) ---
 
     val consoleItems = mutableStateListOf<String>()
     private val logItems = mutableListOf<String>().synchronized()
@@ -87,35 +87,35 @@ class FlashViewModel : BaseViewModel() {
                 Const.Value.UNINSTALL -> {
                     _showReboot.value = false
                     onResult(withContext(Dispatchers.IO) {
-                        MagiskInstaller.Uninstall(outItems, logItems).exec()
+                        ShadowMaskInstaller.Uninstall(outItems, logItems).exec()
                     })
                 }
-                Const.Value.FLASH_MAGISK -> {
+                Const.Value.FLASH_SHADOWMASK -> {
                     onResult(withContext(Dispatchers.IO) {
                         if (Info.isEmulator)
-                            MagiskInstaller.Emulator(outItems, logItems).exec()
+                            ShadowMaskInstaller.Emulator(outItems, logItems).exec()
                         else
-                            MagiskInstaller.Direct(outItems, logItems).exec()
+                            ShadowMaskInstaller.Direct(outItems, logItems).exec()
                     })
                 }
                 Const.Value.FLASH_INACTIVE_SLOT -> {
                     _showReboot.value = false
                     onResult(withContext(Dispatchers.IO) {
-                        MagiskInstaller.SecondSlot(outItems, logItems).exec()
+                        ShadowMaskInstaller.SecondSlot(outItems, logItems).exec()
                     })
                 }
                 Const.Value.PATCH_FILE -> {
                     uri ?: return@launch
                     _showReboot.value = false
                     onResult(withContext(Dispatchers.IO) {
-                        MagiskInstaller.Patch(uri, outItems, logItems).exec()
+                        ShadowMaskInstaller.Patch(uri, outItems, logItems).exec()
                     })
                 }
                 Const.Value.DOWNLOAD -> {
                     uri ?: return@launch
                     _showReboot.value = false
                     onResult(withContext(Dispatchers.IO) {
-                        MagiskInstaller.Download(uri.toString(), outItems, logItems).exec()
+                        ShadowMaskInstaller.Download(uri.toString(), outItems, logItems).exec()
                     })
                 }
             }
@@ -185,7 +185,7 @@ class FlashViewModel : BaseViewModel() {
 
     fun saveLog() {
         viewModelScope.launch(Dispatchers.IO) {
-            val name = "magisk_install_log_%s.log".format(
+            val name = "shadowmask_install_log_%s.log".format(
                 System.currentTimeMillis().toTime(timeFormatStandard)
             )
             val file = MediaStoreUtils.getFile(name)

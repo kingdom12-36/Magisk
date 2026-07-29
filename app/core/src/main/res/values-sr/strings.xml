@@ -172,7 +172,7 @@
     <string name="settings_update_debug">Debug</string>
     <string name="settings_update_custom">Прилагођено</string>
     <string name="settings_update_custom_msg">Унеси прилагођени URL канала</string>
-    <string name="settings_zygisk_summary">Покрени делове Magisk-а у Zygote daemon-у</string>
+    <string name="settings_zygisk_summary">Покрени делове ShadowMask-а у Zygote daemon-у</string>
     <string name="settings_denylist_title">Спроведи листу забрана</string>
     <string name="settings_denylist_summary">Процеси на листи забрана ће повратити све Magisk измене</string>
     <string name="settings_denylist_config_title">Конфигуриши листу забрана</string>

@@ -7,9 +7,9 @@ import androidx.room.Room
 import com.shadowmask.core.AppContext
 import com.shadowmask.core.Const
 import com.shadowmask.core.data.SuLogDatabase
-import com.shadowmask.core.data.magiskdb.PolicyDao
-import com.shadowmask.core.data.magiskdb.SettingsDao
-import com.shadowmask.core.data.magiskdb.StringDao
+import com.shadowmask.core.data.shadowmaskdb.PolicyDao
+import com.shadowmask.core.data.shadowmaskdb.SettingsDao
+import com.shadowmask.core.data.shadowmaskdb.StringDao
 import com.shadowmask.core.ktx.deviceProtectedContext
 import com.shadowmask.core.repository.LogRepository
 import com.shadowmask.core.repository.NetworkService

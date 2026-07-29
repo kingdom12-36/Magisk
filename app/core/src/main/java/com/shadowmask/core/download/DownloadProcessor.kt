@@ -91,7 +91,7 @@ class DownloadProcessor(notifier: DownloadNotifier) : DownloadNotifier by notifi
                 zout.closeArchiveEntry()
 
                 zout.putArchiveEntry(ZipArchiveEntry("META-INF/com/google/android/updater-script"))
-                zout.write("#MAGISK\n".toByteArray())
+                zout.write("#SHADOWMASK\n".toByteArray())
                 zout.closeArchiveEntry()
 
                 // Then simply copy all entries to output

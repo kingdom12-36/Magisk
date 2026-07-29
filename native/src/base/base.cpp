@@ -268,7 +268,7 @@ static int fmt_and_log_with_rs(LogLevel level, const char *fmt, va_list ap) {
 }
 
 // Used to override external C library logging
-extern "C" int magisk_log_print(int prio, const char *tag, const char *fmt, ...) {
+extern "C" int shadowmask_log_print(int prio, const char *tag, const char *fmt, ...) {
     LogLevel level;
     switch (prio) {
     case ANDROID_LOG_DEBUG:
@@ -311,7 +311,7 @@ extern "C" int magisk_log_print(int prio, const char *tag, const char *fmt, ...)
     va_end(argv);         \
 
 // LTO will optimize out the NOP function
-#if MAGISK_DEBUG
+#if SHADOWMASK_DEBUG
 void LOGD(const char *fmt, ...) { LOG_BODY(Debug) }
 #else
 void LOGD(const char *fmt, ...) {}
@@ -396,13 +396,13 @@ void mmap_data::swap(mmap_data &o) {
 string resolve_preinit_dir(const char *base_dir) {
     string dir = base_dir;
     if (access((dir + "/unencrypted").data(), F_OK) == 0) {
-        dir += "/unencrypted/magisk";
+        dir += "/unencrypted/shadowmask";
     } else if (access((dir + "/adb").data(), F_OK) == 0) {
         dir += "/adb";
     } else if (access((dir + "/watchdog").data(), F_OK) == 0) {
-        dir += "/watchdog/magisk";
+        dir += "/watchdog/shadowmask";
     } else {
-        dir += "/magisk";
+        dir += "/shadowmask";
     }
     return dir;
 }

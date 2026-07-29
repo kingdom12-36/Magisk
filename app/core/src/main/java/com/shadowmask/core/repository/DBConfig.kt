@@ -1,7 +1,7 @@
 package com.shadowmask.core.repository
 
-import com.shadowmask.core.data.magiskdb.SettingsDao
-import com.shadowmask.core.data.magiskdb.StringDao
+import com.shadowmask.core.data.shadowmaskdb.SettingsDao
+import com.shadowmask.core.data.shadowmaskdb.StringDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

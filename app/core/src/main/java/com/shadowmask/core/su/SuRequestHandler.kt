@@ -5,7 +5,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.shadowmask.core.BuildConfig
 import com.shadowmask.core.Config
-import com.shadowmask.core.data.magiskdb.PolicyDao
+import com.shadowmask.core.data.shadowmaskdb.PolicyDao
 import com.shadowmask.core.di.ServiceLocator
 import com.shadowmask.core.ktx.getLabel
 import com.shadowmask.core.ktx.getPackageInfo
