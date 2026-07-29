@@ -63,7 +63,7 @@
 
                 <Button
                     style="@style/WidgetFoundation.Button"
-                    gone="@{viewModel.magiskState != State.OUTDATED}"
+                    gone="@{viewModel.shadowmaskState != State.OUTDATED}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> viewModel.onShadowMaskPressed()}"
@@ -74,7 +74,7 @@
 
                 <Button
                     style="@style/WidgetFoundation.Button.Text"
-                    gone="@{viewModel.magiskState == State.OUTDATED}"
+                    gone="@{viewModel.shadowmaskState == State.OUTDATED}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:referencedIds="@{viewModel.magiskTitleBarrierIds}"
+                app:referencedIds="@{viewModel.shadowmaskTitleBarrierIds}"
                 tools:constraint_referenced_ids="home_magisk_icon,home_magisk_title,home_magisk_button" />
 
             <HorizontalScrollView
@@ -122,7 +122,7 @@
 
                             <TextView
                                 style="@style/W.Home.ItemContent.Right"
-                                android:text="@{viewModel.magiskInstalledVersion}"
+                                android:text="@{viewModel.shadowmaskInstalledVersion}"
                                 tools:text="22.0 (22000)" />
 
                         </LinearLayout>

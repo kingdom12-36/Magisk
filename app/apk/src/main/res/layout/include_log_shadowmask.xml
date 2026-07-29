@@ -66,7 +66,7 @@
                 android:layout_gravity="center">
 
                 <include
-                    item="@{viewModel.itemMagiskEmpty}"
+                    item="@{viewModel.itemShadowMaskEmpty}"
                     layout="@layout/item_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
