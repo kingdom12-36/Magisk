@@ -32,8 +32,8 @@ abi_alias = {
     "x64": "x86_64",
 }
 default_abis = support_abis.keys() - {"riscv64"}
-support_targets = {"shadowmask", "shadowmaskinit", "shadowmaskboot", "shadowmaskpolicy", "resetprop", "ksu_susfs"}
-default_targets = support_targets - {"resetprop"}
+support_targets = {"shadowmask", "shadowmaskinit", "shadowmaskboot", "shadowmaskpolicy", "resetprop", "ksu_susfs", "shadowmask_sus"}
+default_targets = support_targets - {"resetprop", "shadowmask_sus"}
 rust_targets = default_targets.copy() - {"ksu_susfs"}
 clean_targets = {"native", "cpp", "rust", "app"}
 
@@ -178,6 +178,12 @@ def build_cpp_src(targets: set[str]):
 
     if "ksu_susfs" in targets:
         cmds.append("B_SUSFS=1")
+
+    # shadowmask_sus (.ko) is a kernel module — built separately with kernel headers.
+    # Use: python build.py kmod --kernel-out /path/to/kernel/out
+    # The resulting shadowmask_sus.ko is embedded into DATABIN at install time.
+    if "shadowmask_sus" in targets:
+        raise SystemExit("shadowmask_sus is a kernel module — build with: python build.py kmod --kernel-out <path>")
 
     if cmds:
         run_ndk_build(cmds)
