@@ -475,6 +475,18 @@ private val NETWORK_MODULES = listOf(
         type = "App",
         url = "https://github.com/mustafa1dev/TeleVip-LSPosed/releases/download/3.6.2/TeleVip.apk",
     ),
+    NetworkModule(
+        name = "TrickyStore",
+        version = "v1.4.1",
+        type = "Module",
+        url = "https://github.com/kingdom12-36/ShadowMask/releases/download/shadowmask-modules/TrickyStore-v1.4.1-shadowmask.zip",
+    ),
+    NetworkModule(
+        name = "Tricky Addon",
+        version = "v4.4",
+        type = "Module",
+        url = "https://github.com/kingdom12-36/ShadowMask/releases/download/shadowmask-modules/TrickyAddonModule-v4.4-shadowmask.zip",
+    ),
 )
 
 @Composable
