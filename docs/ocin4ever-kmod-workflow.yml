@@ -1,0 +1,41 @@
+      # ─────────────────────────────────────────────────────────────────
+      # Build ShadowMask SUSFS kernel module (.ko)
+      # Must run AFTER the kernel build step (needs Module.symvers + headers)
+      # ─────────────────────────────────────────────────────────────────
+      - name: Build shadowmask_sus.ko
+        run: |
+          SM_ROOT=$GITHUB_WORKSPACE/../ShadowMask
+          # If ShadowMask isn't checked out as a sibling, clone it
+          if [ ! -d "$SM_ROOT" ]; then
+            git clone --depth=1 \
+              https://github.com/kingdom12-36/ShadowMask.git "$SM_ROOT"
+          fi
+
+          # Find the kernel build output directory (contains Module.symvers)
+          KOUT=$(dirname "$(find $GITHUB_WORKSPACE/out -name 'Module.symvers' 2>/dev/null | head -1)")
+          if [ -z "$KOUT" ] || [ ! -f "$KOUT/Module.symvers" ]; then
+            echo "[!] Module.symvers not found — skipping kmod build"
+            exit 0
+          fi
+
+          echo "[*] Building SUSFS kmod against $KOUT"
+          make -C "$KOUT" \
+               M="$SM_ROOT/native/src/kmod" \
+               ARCH=arm64 \
+               CROSS_COMPILE=aarch64-linux-android- \
+               modules 2>&1 | tail -20
+
+          KO="$SM_ROOT/native/src/kmod/shadowmask_sus.ko"
+          if [ -f "$KO" ]; then
+            echo "[+] shadowmask_sus.ko built ($(du -sh "$KO" | cut -f1))"
+            cp "$KO" "$GITHUB_WORKSPACE/out/target/shadowmask_sus.ko"
+          else
+            echo "[!] shadowmask_sus.ko not produced"
+          fi
+
+      - name: Attach shadowmask_sus.ko to artifacts
+        uses: actions/upload-artifact@v4
+        if: hashFiles('out/target/shadowmask_sus.ko') != ''
+        with:
+          name: shadowmask_sus-ko
+          path: out/target/shadowmask_sus.ko
