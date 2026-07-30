@@ -1,4 +1,4 @@
-use crate::consts::{APP_PACKAGE_NAME, BBPATH, DATABIN, KSU_BIN_DIR, MODULEROOT, SECURE_DIR};
+use crate::consts::{APP_PACKAGE_NAME, BBPATH, DATABIN, KSU_BIN_DIR, MODULEROOT, SECURE_DIR, SUSFS_KMOD_LOAD_MARKER, SUSFS_KMOD_PATH};
 use crate::daemon::ShadowMaskD;
 use crate::ffi::{
     DbEntryKey, RequestCode, check_key_combo, exec_common_scripts, exec_module_scripts,
@@ -105,6 +105,8 @@ impl ShadowMaskD {
 
         // Setup SUSFS compatibility directory for susfs4ksu-module
         self.setup_susfs_env();
+        // Load SUSFS kernel module (provides sus_path/mount/kstat/map without kernel patches)
+        self.load_susfs_kmod();
 
         true
     }
@@ -146,6 +148,43 @@ impl ShadowMaskD {
             src_sus_su.copy_to(dst).log_ok();
             dst.follow_link().chmod(0o755).log_ok();
             info!("* SUSFS: deployed sus_su to {}", KSU_BIN_DIR);
+        }
+    }
+
+
+    /// Load the ShadowMask SUSFS kernel module (shadowmask_sus.ko).
+    ///
+    /// Provides SUSFS-compatible hiding (sus_path, sus_mount, sus_kstat, sus_map)
+    /// via kallsyms + syscall-table hooks — no kernel source patches required.
+    /// Compatible with the ksu_susfs userspace tool (same syscall ABI).
+    /// Safe to call on kernels that don't support modules — errors are non-fatal.
+    fn load_susfs_kmod(&self) {
+        // Skip if already loaded
+        if cstr!(SUSFS_KMOD_LOAD_MARKER).exists() {
+            info!("* SUSFS kmod already active");
+            return;
+        }
+
+        let kmod = cstr!(SUSFS_KMOD_PATH);
+        if !kmod.exists() {
+            info!("* SUSFS kmod not present — userspace tool will return ERR_CMD_NOT_SUPPORTED");
+            return;
+        }
+
+        info!("* Loading SUSFS kmod: {}", SUSFS_KMOD_PATH);
+        let status = Command::new("insmod")
+            .arg(SUSFS_KMOD_PATH)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+
+        match status {
+            Ok(s) if s.success() =>
+                info!("* SUSFS kmod loaded — hiding features active"),
+            Ok(s) =>
+                info!("* SUSFS kmod insmod exit {}", s.code().unwrap_or(-1)),
+            Err(e) =>
+                info!("* SUSFS kmod insmod error: {e}"),
         }
     }
 
