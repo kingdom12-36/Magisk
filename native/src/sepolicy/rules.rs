@@ -129,10 +129,13 @@ impl SePolicy {
             allow(["zygote"], ["zygote"], ["process"], ["execmem"]);
             allow(["domain"], [proc], ["memfd_file"], ["getattr", "read", "write", "map", "execute"]);
             allow(["zygote"], ["fs_type"], ["filesystem"], ["unmount"]);
-            allow(["system_server"], ["system_server"], ["process"], ["execmem"]);
-
             // Shut llkd up
             dontaudit(["llkd"], [proc], ["process"], ["ptrace"]);
+
+            // Block dirty sepolicy fingerprints used by root detection tools
+            deny(["untrusted_app", "untrusted_app_all", "ephemeral_app"],
+                ["xposed_data"], ["file", "dir", "chr_file", "fifo_file", "sock_file"], all);
+            deny(["fsck_untrusted"], ["fsck_untrusted"], ["capability"], ["sys_admin"]);
 
             // Keep /data/adb/* context
             deny(["init"], ["adb_data_file"], ["dir"], ["search"]);
