@@ -25,6 +25,10 @@ pub const SHADOWMASKDB: &str = concatcp!(SECURE_DIR, "/shadowmask.db");
 // KSU compatibility paths — required by susfs4ksu-module
 pub const KSU_DIR: &str = concatcp!(SECURE_DIR, "/ksu");
 pub const KSU_BIN_DIR: &str = concatcp!(KSU_DIR, "/bin");
+// SUSFS LKM — kernel module for SUSFS without kernel patches
+pub const SUSFS_KMOD_NAME: &str = "shadowmask_sus.ko";
+pub const SUSFS_KMOD_PATH: &str = concatcp!(DATABIN, "/shadowmask_sus.ko");
+pub const SUSFS_KMOD_LOAD_MARKER: &str = "/sys/module/shadowmask_sus";
 
 // tmpfs paths
 pub const INTERNAL_DIR: &str = ".shadowmask";
