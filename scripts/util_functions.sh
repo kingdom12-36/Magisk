@@ -466,7 +466,7 @@ sign_chromeos() {
 remove_system_su() {
   [ -d /postinstall/tmp ] && POSTINST=/postinstall
   cd $POSTINST/system
-  if [ -f bin/su -o -f xbin/su -o -f system_ext/bin/su ] && [ ! -f /su/bin/su ]; then
+  if [ -f bin/su -o -f xbin/su ] && [ ! -f /su/bin/su ]; then
     ui_print "- Removing system installed root"
     blockdev --setrw /dev/block/mapper/system$SLOT 2>/dev/null
     mount -o rw,remount $POSTINST/system
@@ -486,7 +486,7 @@ remove_system_su() {
     cd ..
     rm -rf .pin bin/.ext etc/.installed_su_daemon etc/.has_su_daemon \
     xbin/daemonsu xbin/su xbin/sugote xbin/sugote-mksh xbin/supolicy \
-    bin/app_process_init bin/su system_ext/bin/su /cache/su lib/libsupol.so lib64/libsupol.so \
+    bin/app_process_init bin/su /cache/su lib/libsupol.so lib64/libsupol.so \
     su.d etc/init.d/99SuperSUDaemon etc/install-recovery.sh /cache/install-recovery.sh \
     .supersu /cache/.supersu /data/.supersu \
     app/Superuser.apk app/SuperSU /cache/Superuser.apk
@@ -761,3 +761,4 @@ install_module() {
 
 TMPDIR=/dev/tmp
 SHADOWMASKBIN="/data/adb/shadowmask"
+
