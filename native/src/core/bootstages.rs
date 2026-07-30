@@ -1,4 +1,4 @@
-use crate::consts::{APP_PACKAGE_NAME, BBPATH, DATABIN, MODULEROOT, SECURE_DIR};
+use crate::consts::{APP_PACKAGE_NAME, BBPATH, DATABIN, KSU_BIN_DIR, MODULEROOT, SECURE_DIR};
 use crate::daemon::ShadowMaskD;
 use crate::ffi::{
     DbEntryKey, RequestCode, check_key_combo, exec_common_scripts, exec_module_scripts,
@@ -103,7 +103,50 @@ impl ShadowMaskD {
             shadowmaskpolicy.copy_to(tmp).log_ok();
         }
 
+        // Setup SUSFS compatibility directory for susfs4ksu-module
+        self.setup_susfs_env();
+
         true
+    }
+
+    /// Create /data/adb/ksu/bin/ and populate it with the SUSFS userspace tool.
+    ///
+    /// The susfs4ksu-module expects:
+    ///   - /data/adb/ksu/bin/  (directory) to exist at install time
+    ///   - /data/adb/ksu/bin/ksu_susfs  (binary)
+    ///   - /data/adb/ksu/bin/sus_su     (binary, deprecated — kept for compatibility)
+    ///
+    /// The module's customize.sh copies its own bundled binaries into this directory,
+    /// overwriting whatever we pre-populate.  We still pre-populate from DATABIN so
+    /// the directory is valid even before the module is installed.
+    fn setup_susfs_env(&self) {
+        info!("* Setting up SUSFS compatibility directory");
+
+        // Create /data/adb/ksu/bin/
+        let ksu_bin = cstr!(KSU_BIN_DIR);
+        if ksu_bin.mkdirs(0o755).is_err() {
+            // Directory already exists — that is fine
+        }
+        ksu_bin.follow_link().chmod(0o755).log_ok();
+
+        // Copy ksu_susfs binary from ShadowMask DATABIN if present
+        let src_susfs = cstr!(concatcp!(DATABIN, "/ksu_susfs"));
+        if src_susfs.exists() {
+            let dst = cstr!(concatcp!(KSU_BIN_DIR, "/ksu_susfs"));
+            src_susfs.copy_to(dst).log_ok();
+            dst.follow_link().chmod(0o755).log_ok();
+            info!("* SUSFS: deployed ksu_susfs to {}", KSU_BIN_DIR);
+        }
+
+        // Copy sus_su binary from ShadowMask DATABIN if present (deprecated but kept
+        // for compatibility with modules that still reference it)
+        let src_sus_su = cstr!(concatcp!(DATABIN, "/sus_su"));
+        if src_sus_su.exists() {
+            let dst = cstr!(concatcp!(KSU_BIN_DIR, "/sus_su"));
+            src_sus_su.copy_to(dst).log_ok();
+            dst.follow_link().chmod(0o755).log_ok();
+            info!("* SUSFS: deployed sus_su to {}", KSU_BIN_DIR);
+        }
     }
 
     fn post_fs_data(&self) -> bool {

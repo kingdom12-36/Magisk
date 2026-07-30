@@ -22,6 +22,10 @@ pub const MODULEUPGRADE: &str = concatcp!(SECURE_DIR, "/modules_update");
 pub const DATABIN: &str = concatcp!(SECURE_DIR, "/shadowmask");
 pub const SHADOWMASKDB: &str = concatcp!(SECURE_DIR, "/shadowmask.db");
 
+// KSU compatibility paths — required by susfs4ksu-module
+pub const KSU_DIR: &str = concatcp!(SECURE_DIR, "/ksu");
+pub const KSU_BIN_DIR: &str = concatcp!(KSU_DIR, "/bin");
+
 // tmpfs paths
 pub const INTERNAL_DIR: &str = ".shadowmask";
 pub const MAIN_CONFIG: &str = concatcp!(INTERNAL_DIR, "/config");

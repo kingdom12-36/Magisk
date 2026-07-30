@@ -129,6 +129,33 @@ include $(BUILD_EXECUTABLE)
 
 endif
 
+ifdef B_SUSFS
+
+include $(CLEAR_VARS)
+LOCAL_MODULE    := ksu_susfs
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/susfs/includes
+LOCAL_SRC_FILES := \
+    susfs/main.c \
+    susfs/susfs_utils.c \
+    susfs/features/sus_path.c \
+    susfs/features/sus_mount.c \
+    susfs/features/sus_kstat.c \
+    susfs/features/sus_map.c \
+    susfs/features/spoof_uname.c \
+    susfs/features/spoof_cmdline_or_bootconfig.c \
+    susfs/features/enable_log.c \
+    susfs/features/avc_log_spoofing.c \
+    susfs/features/open_redirect.c \
+    susfs/features/show.c
+LOCAL_CFLAGS    := -O3 -fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIC \
+                   -flto=thin -ffunction-sections -fdata-sections -fvisibility=hidden
+LOCAL_LDFLAGS   := -Wl,--gc-sections -flto=thin
+LOCAL_LDLIBS    := -llog
+LOCAL_STRIP     := true
+include $(BUILD_EXECUTABLE)
+
+endif
+
 ########################
 # Libraries
 ########################

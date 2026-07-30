@@ -598,6 +598,36 @@ copy_preinit_files() {
 }
 
 #################
+# SUSFS Support
+#################
+
+# setup_ksu_compat — create /data/adb/ksu/bin/ so modules that target
+# KernelSU (susfs4ksu-module, etc.) can install their binaries there.
+# Called automatically by install_module before running customize.sh.
+setup_ksu_compat() {
+  local KSU_BIN_DIR=/data/adb/ksu/bin
+  if [ ! -d "$KSU_BIN_DIR" ]; then
+    ui_print "- Creating KSU compat directory: $KSU_BIN_DIR"
+    mkdir -p "$KSU_BIN_DIR"
+    chmod 755 /data/adb/ksu "$KSU_BIN_DIR"
+    chcon u:object_r:system_data_file:s0 /data/adb/ksu "$KSU_BIN_DIR" 2>/dev/null || true
+  fi
+
+  # Pre-populate ksu_susfs from ShadowMask's own bin dir if available
+  # (the module's customize.sh will overwrite this with its bundled version)
+  local SM_SUSFS="$SHADOWMASKBIN/ksu_susfs"
+  local SM_SUS_SU="$SHADOWMASKBIN/sus_su"
+  if [ -f "$SM_SUSFS" ] && [ ! -f "$KSU_BIN_DIR/ksu_susfs" ]; then
+    cp -f "$SM_SUSFS" "$KSU_BIN_DIR/ksu_susfs"
+    chmod 755 "$KSU_BIN_DIR/ksu_susfs"
+  fi
+  if [ -f "$SM_SUS_SU" ] && [ ! -f "$KSU_BIN_DIR/sus_su" ]; then
+    cp -f "$SM_SUS_SU" "$KSU_BIN_DIR/sus_su"
+    chmod 755 "$KSU_BIN_DIR/sus_su"
+  fi
+}
+
+#################
 # Module Related
 #################
 
@@ -706,6 +736,11 @@ install_module() {
       unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH >&2
       set_default_perm $MODPATH
     fi
+
+    # Ensure KSU compatibility directory exists before running customize.sh.
+    # The susfs4ksu-module (and other SUSFS modules) check for /data/adb/ksu/bin/
+    # and abort installation if it is missing.
+    setup_ksu_compat
 
     # Load customization script
     [ -f $MODPATH/customize.sh ] && . $MODPATH/customize.sh

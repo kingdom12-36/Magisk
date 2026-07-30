@@ -32,9 +32,9 @@ abi_alias = {
     "x64": "x86_64",
 }
 default_abis = support_abis.keys() - {"riscv64"}
-support_targets = {"shadowmask", "shadowmaskinit", "shadowmaskboot", "shadowmaskpolicy", "resetprop"}
+support_targets = {"shadowmask", "shadowmaskinit", "shadowmaskboot", "shadowmaskpolicy", "resetprop", "ksu_susfs"}
 default_targets = support_targets - {"resetprop"}
-rust_targets = default_targets.copy()
+rust_targets = default_targets.copy() - {"ksu_susfs"}
 clean_targets = {"native", "cpp", "rust", "app"}
 
 # Global vars
@@ -175,6 +175,9 @@ def build_cpp_src(targets: set[str]):
 
     if "resetprop" in targets:
         cmds.append("B_PROP=1")
+
+    if "ksu_susfs" in targets:
+        cmds.append("B_SUSFS=1")
 
     if cmds:
         run_ndk_build(cmds)
