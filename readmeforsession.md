@@ -5,6 +5,23 @@
 
 ---
 
+## ✅ ما تم إنجازه في هذه الجلسة
+
+| الملف | الوصف | الحالة |
+|---|---|---|
+| `native/src/kmod/shadowmask_sus.h` | Header — ABI structs + constants | ✅ مرفوع |
+| `native/src/kmod/shadowmask_sus.c` | Main LKM entry point | ✅ مرفوع |
+| `native/src/kmod/syscall_hook.c` | Syscall table hook (SYS_reboot interception) | ✅ مرفوع |
+| `native/src/kmod/proc_filter.c` | /proc/pid/maps + mountinfo seq_file filter | ✅ مرفوع |
+| `native/src/kmod/Makefile` | Kernel module build rules | ✅ مرفوع |
+| `native/src/include/consts.rs` | SUSFS_KMOD_PATH + SUSFS_KMOD_LOAD_MARKER | ✅ محدَّث |
+| `native/src/core/bootstages.rs` | load_susfs_kmod() + call site | ✅ محدَّث |
+| `build.py` | shadowmask_sus في support_targets | ✅ محدَّث |
+| `docs/susfs-lkm.md` | Build + integration guide | ✅ مرفوع |
+| `docs/ocin4ever-kmod-workflow.yml` | CI snippet لـ Ocin4everKernel | ✅ مرفوع |
+
+---
+
 ## 1. ما تم بناؤه في الـ Commit الأخير ✅
 
 الـ commit `c39fd4c` أضاف الـ SUSFS userspace side كاملاً:
@@ -222,12 +239,12 @@ mount -t overlay overlay -o \
 
 ## 8. خطوات العمل المتبقية
 
-- [ ] كتابة `native/src/kmod/shadowmask_sus.c` (LKM الرئيسي)
-- [ ] إضافة `B_KMOD` target في `Android.mk`
-- [ ] إضافة `load_susfs_kmod()` في `bootstages.rs`
-- [ ] تعديل GitHub Actions workflow لبناء الـ `.ko` مع kernel headers
-- [ ] اختبار على جهاز `d2s` (أو جهاز بنفس kernel config)
-- [ ] إضافة runtime detection: هل الـ kernel يدعم SUSFS أم LKM fallback؟
+- [x] كتابة `native/src/kmod/shadowmask_sus.c` (LKM الرئيسي)
+- [x] إضافة `shadowmask_sus` في `build.py` مع حماية من NDK build
+- [x] إضافة `load_susfs_kmod()` في `bootstages.rs`
+- [x] توثيق workflow snippet في `docs/ocin4ever-kmod-workflow.yml`
+- [ ] اختبار على جهاز `d2s` (يتطلب hardware) (أو جهاز بنفس kernel config)
+- [ ] إضافة runtime detection في الـ app UI: هل الـ kernel يدعم SUSFS أم LKM fallback؟
 - [ ] تحديث الـ app UI لإظهار حالة SUSFS
 
 ---
